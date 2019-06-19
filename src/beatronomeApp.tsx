@@ -12,7 +12,7 @@ export class BeatronomeApp extends React.Component<
 		super(props);
 		this.state = { masterVolume: 1.0 };
 
-		audioManInstance.load();
+		audioManInstance.load({ bd: { url: "assets/drumsets/hydro/bd.mp3" } });
 	}
 
 	public render() {

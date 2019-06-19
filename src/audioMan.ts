@@ -4,6 +4,22 @@ import {
 	IAudioContext
 } from "standardized-audio-context";
 
+export interface IDrumInstrument {
+	url: string;
+	audioBuffer?: AudioBuffer;
+}
+
+export interface IDrumset {
+	bd?: IDrumInstrument;
+	hho?: IDrumInstrument;
+	hhc?: IDrumInstrument;
+	sn?: IDrumInstrument;
+	tomHi?: IDrumInstrument;
+	tomMidHi?: IDrumInstrument;
+	tomMidLo?: IDrumInstrument;
+	tomLo?: IDrumInstrument;
+}
+
 export class AudioMan {
 	public audioCtx: AudioContext;
 	public gainNode: IGainNode<IAudioContext>;
@@ -15,27 +31,31 @@ export class AudioMan {
 		this.gainNode.connect(this.audioCtx.destination);
 	}
 
-	public load() {
-		Promise.all([
-			this.loadSample("assets/samples/hydro/bd.mp3"),
-			this.loadSample("assets/samples/hydro/hho.mp3"),
-			this.loadSample("assets/samples/hydro/hhc.mp3"),
-			this.loadSample("assets/samples/hydro/sn.mp3")
-		]).then(loadedSamples => {
+	public async load(drumset: IDrumset) {
+		const allDrums = Object.keys(drumset);
+		const loadingPromises = allDrums.map(instrument =>
+			this.loadInstrument(drumset[instrument])
+		);
+
+		Promise.all(loadingPromises).then(loadedSamples => {
 			console.log(loadedSamples);
-			this.playSound(loadedSamples[0]);
+			this.playInstrument(drumset.bd);
 		});
 	}
 
-	private async loadSample(url: string) {
-		const result = await fetch(url);
+	private async loadInstrument(instrument: IDrumInstrument): Promise<void> {
+		const result = await fetch(instrument.url);
 		const buffer = await result.arrayBuffer();
-		return this.audioCtx.decodeAudioData(buffer);
+		const decoded = await this.audioCtx.decodeAudioData(buffer);
+		instrument.audioBuffer = decoded;
 	}
 
-	private playSound(buffer) {
+	private playInstrument(instrument: IDrumInstrument): void {
+		if (!instrument.audioBuffer) {
+			return;
+		}
 		let source = this.audioCtx.createBufferSource(); // creates a sound source
-		source.buffer = buffer; // tell the source which sound to play
+		source.buffer = instrument.audioBuffer; // tell the source which sound to play
 		source.connect(this.gainNode); // connect the source to the context's destination (the speakers)
 		source.start(0); // play the source now
 		// note: on older systems, may have to use deprecated noteOn(time);
