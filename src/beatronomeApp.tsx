@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { PRODUCTION } from "./";
+
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
 	IBeatronomeAppState
@@ -9,7 +11,7 @@ export class BeatronomeApp extends React.Component<
 	}
 
 	public render() {
-		return <div>Yeah</div>;
+		return <div>Yeah{PRODUCTION ? "PRODUCTION" : "DEVELOPMENT"}</div>;
 	}
 }
 

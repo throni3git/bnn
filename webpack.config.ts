@@ -3,7 +3,9 @@ import * as webpackDevServer from "webpack-dev-server";
 import * as htmlPlugin from "html-webpack-plugin";
 import * as path from "path";
 
-const config: webpack.Configuration = {
+const timestamp = JSON.stringify(new Date().toISOString());
+
+const config = {
 	entry: "./src/index.ts",
 	resolve: {
 		extensions: [".js", ".ts", ".tsx"]
@@ -17,7 +19,10 @@ const config: webpack.Configuration = {
 		]
 	},
 	plugins: [
-		new htmlPlugin({ title: "Rendering-Support-Service TestClient" })
+		new webpack.DefinePlugin({
+			BUILD_TIMESTAMP: timestamp
+		}),
+		new htmlPlugin({ title: "Beatronome" })
 	],
 	output: {
 		path: path.resolve("dist")
