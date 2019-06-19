@@ -31,10 +31,10 @@ export class AudioMan {
 		this.gainNode.connect(this.audioCtx.destination);
 	}
 
-	public async load(drumset: IDrumset) {
+	public async load(drumset: IDrumset, basePath: string): Promise<void> {
 		const allDrums = Object.keys(drumset);
 		const loadingPromises = allDrums.map(instrument =>
-			this.loadInstrument(drumset[instrument])
+			this.loadInstrument(drumset[instrument], basePath)
 		);
 
 		Promise.all(loadingPromises).then(loadedSamples => {
@@ -43,8 +43,11 @@ export class AudioMan {
 		});
 	}
 
-	private async loadInstrument(instrument: IDrumInstrument): Promise<void> {
-		const result = await fetch(instrument.url);
+	private async loadInstrument(
+		instrument: IDrumInstrument,
+		basePath: string
+	): Promise<void> {
+		const result = await fetch(basePath + instrument.url);
 		const buffer = await result.arrayBuffer();
 		const decoded = await this.audioCtx.decodeAudioData(buffer);
 		instrument.audioBuffer = decoded;
