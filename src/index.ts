@@ -3,6 +3,11 @@ import * as React from "react";
 
 import { BeatronomeApp } from "./beatronomeApp";
 
+declare var BUILD_TIMESTAMP: string;
+console.log("Beatronome " + BUILD_TIMESTAMP);
+
+export let PRODUCTION = process.env.NODE_ENV == "production";
+
 const html = document.getElementsByTagName("html")[0];
 html.style.margin = "0";
 html.style.width = "100%";

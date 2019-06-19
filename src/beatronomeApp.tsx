@@ -1,5 +1,8 @@
 import * as React from "react";
+
 import { oscillatorNode } from "./audioMan";
+
+import { PRODUCTION } from "./";
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -12,7 +15,7 @@ export class BeatronomeApp extends React.Component<
 	}
 
 	public render() {
-		return <div>Yeah</div>;
+		return <div>Yeah{PRODUCTION ? "PRODUCTION" : "DEVELOPMENT"}</div>;
 	}
 }
 
