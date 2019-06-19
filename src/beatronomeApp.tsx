@@ -15,7 +15,24 @@ export class BeatronomeApp extends React.Component<
 	}
 
 	public render() {
-		return <div>Yeah{PRODUCTION ? "PRODUCTION" : "DEVELOPMENT"}</div>;
+		return (
+			<div>
+				<div>Yeah{PRODUCTION ? "PRODUCTION" : "DEVELOPMENT"}</div>
+				<div>
+					<input
+						type="range"
+						min={0}
+						max={1000}
+						onChange={e => {
+							audioManInstance.gainNode.gain.setValueAtTime(
+								e.target.valueAsNumber / 1000,
+								0
+							);
+						}}
+					></input>
+				</div>
+			</div>
+		);
 	}
 }
 

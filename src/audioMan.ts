@@ -1,11 +1,20 @@
-import { AudioContext } from "standardized-audio-context";
-
-const audioCtx = new AudioContext();
-export const oscillatorNode = audioCtx.createOscillator();
-
-oscillatorNode.connect(audioCtx.destination);
+import {
+	AudioContext,
+	IGainNode,
+	IAudioContext
+} from "standardized-audio-context";
 
 export class AudioMan {
+	public audioCtx: AudioContext;
+	public gainNode: IGainNode<IAudioContext>;
+
+	constructor() {
+		this.audioCtx = new AudioContext();
+		this.gainNode = this.audioCtx.createGain();
+		this.gainNode.gain.setTargetAtTime(0.2, 0, 0);
+		this.gainNode.connect(this.audioCtx.destination);
+	}
+
 	public load() {
 		Promise.all([
 			this.loadSample("assets/samples/hydro/bd.mp3"),
@@ -21,13 +30,13 @@ export class AudioMan {
 	private async loadSample(url: string) {
 		const result = await fetch(url);
 		const buffer = await result.arrayBuffer();
-		return audioCtx.decodeAudioData(buffer);
+		return this.audioCtx.decodeAudioData(buffer);
 	}
 
 	private playSound(buffer) {
-		let source = audioCtx.createBufferSource(); // creates a sound source
+		let source = this.audioCtx.createBufferSource(); // creates a sound source
 		source.buffer = buffer; // tell the source which sound to play
-		source.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+		source.connect(this.gainNode); // connect the source to the context's destination (the speakers)
 		source.start(0); // play the source now
 		// note: on older systems, may have to use deprecated noteOn(time);
 
