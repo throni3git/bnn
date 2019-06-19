@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { oscillatorNode } from "./audioMan";
+import { audioManInstance } from "./audioMan";
 
 import { PRODUCTION } from "./";
 
@@ -11,7 +11,7 @@ export class BeatronomeApp extends React.Component<
 	constructor(props: BeatronomeApp["props"]) {
 		super(props);
 
-		oscillatorNode.start();
+		audioManInstance.load();
 	}
 
 	public render() {
