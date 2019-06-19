@@ -1,4 +1,5 @@
 import * as React from "react";
+import { oscillatorNode } from "./audioMan";
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -6,6 +7,8 @@ export class BeatronomeApp extends React.Component<
 > {
 	constructor(props: BeatronomeApp["props"]) {
 		super(props);
+
+		oscillatorNode.start();
 	}
 
 	public render() {
