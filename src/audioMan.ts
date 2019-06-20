@@ -27,7 +27,7 @@ export class AudioMan {
 	constructor() {
 		this.audioCtx = new AudioContext();
 		this.gainNode = this.audioCtx.createGain();
-		this.gainNode.gain.setValueAtTime(1, 0);
+		this.gainNode.gain.setValueAtTime(0, 0);
 		this.gainNode.connect(this.audioCtx.destination);
 	}
 
