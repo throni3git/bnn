@@ -3,6 +3,7 @@ import * as React from "react";
 import { audioManInstance, IDrumset } from "./audioMan";
 
 import { PRODUCTION } from "./";
+import { subscribe, setUserInterfaceState, getState } from "./store";
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -10,7 +11,9 @@ export class BeatronomeApp extends React.Component<
 > {
 	constructor(props: BeatronomeApp["props"]) {
 		super(props);
-		this.state = { masterVolume: 1.0 };
+		// this.state = { masterVolume: 1.0 };
+
+		subscribe(() => this.setState({}));
 
 		this.loadDrumset("assets/drumsets/hydro.json");
 	}
@@ -29,12 +32,12 @@ export class BeatronomeApp extends React.Component<
 				<div>
 					<input
 						type="range"
-						value={this.state.masterVolume * 1000.0}
+						value={getState().ui.masterVolume * 1000.0}
 						min={0}
 						max={1000}
 						onChange={e => {
 							const vol = e.target.valueAsNumber / 1000;
-							this.setState({ masterVolume: vol });
+							setUserInterfaceState("masterVolume", vol);
 							audioManInstance.gainNode.gain.setValueAtTime(
 								e.target.valueAsNumber / 1000,
 								0
@@ -51,6 +54,4 @@ export default BeatronomeApp;
 
 export interface IBeatronomeAppProps {}
 
-interface IBeatronomeAppState {
-	masterVolume: number;
-}
+interface IBeatronomeAppState {}

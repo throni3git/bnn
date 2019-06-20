@@ -1,4 +1,8 @@
-export interface IUserInterfaceState {}
+import { PRODUCTION } from ".";
+
+export interface IUserInterfaceState {
+	masterVolume: number;
+}
 
 export interface IDebuggingState {}
 
@@ -8,7 +12,7 @@ export interface IState {
 }
 
 let currentState: IState = {
-	ui: {},
+	ui: { masterVolume: PRODUCTION ? 1 : 0 },
 	debugging: {}
 };
 
