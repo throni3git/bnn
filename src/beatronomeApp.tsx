@@ -1,10 +1,16 @@
 import * as React from "react";
 
 import { PRODUCTION } from "./";
-import { subscribe, setUserInterfaceState, getState } from "./store";
+import {
+	subscribe,
+	setUserInterfaceState,
+	getState,
+	setAudioState
+} from "./store";
 import { IDrumset, DrumsetKeys, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
 import { log } from "./util";
+import Button from "./button";
 
 const bracketsRegEx = /\[[^\]]*\]/;
 
@@ -79,6 +85,8 @@ export class BeatronomeApp extends React.Component<
 		}
 
 		log("logDrumLoopParsing", drumloop);
+
+		setAudioState("drumLoop", drumloop);
 	}
 
 	public render() {
@@ -88,18 +96,28 @@ export class BeatronomeApp extends React.Component<
 				<div>
 					<input
 						type="range"
-						value={getState().ui.masterVolume * 1000.0}
+						value={getState().audio.masterVolume * 1000.0}
 						min={0}
 						max={1000}
 						onChange={e => {
 							const vol = e.target.valueAsNumber / 1000;
-							setUserInterfaceState("masterVolume", vol);
+							setAudioState("masterVolume", vol);
 							audioManInstance.gainNode.gain.setValueAtTime(
 								e.target.valueAsNumber / 1000,
 								0
 							);
 						}}
 					></input>
+				</div>
+				<div>
+					<Button
+						caption="StartLoop"
+						action={() => audioManInstance.startLoop()}
+					></Button>
+					<Button
+						caption="StopLoop"
+						action={() => audioManInstance.stopLoop()}
+					></Button>
 				</div>
 			</div>
 		);

@@ -5,6 +5,8 @@ import {
 } from "standardized-audio-context";
 
 import { IDrumInstrument, IDrumset, DrumsetKeys } from "./types";
+import { log } from "./util";
+import { getState } from "./store";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
@@ -57,6 +59,31 @@ export class AudioMan {
 
 		source.loop = true;
 	}
+
+	private startTime: number;
+	private handleInterval: number;
+
+	public startLoop(): void {
+		this.stopLoop();
+		this.startTime = Date.now();
+		this.handleInterval = setInterval(this.loop, 1000);
+		this.loop();
+	}
+
+	public stopLoop(): void {
+		clearInterval(this.handleInterval);
+	}
+
+	private loop = () => {
+		const now = Date.now();
+		log("logLoopInterval", now - this.startTime);
+		log("logLoopInterval", now);
+		log("logLoopInterval", this.audioCtx.currentTime);
+
+		const dl = getState().audio.drumLoop;
+		const bpm = getState().audio.bpm;
+		const interval = 4 / dl.denominator / bpm;
+	};
 }
 
 export const audioManInstance = new AudioMan();
