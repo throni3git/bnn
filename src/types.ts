@@ -13,3 +13,5 @@ export interface IDrumset {
 	tomMidLo?: IDrumInstrument;
 	tomLo?: IDrumInstrument;
 }
+
+export type DrumsetKeys = keyof IDrumset;

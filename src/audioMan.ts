@@ -4,7 +4,7 @@ import {
 	IAudioContext
 } from "standardized-audio-context";
 
-import { IDrumInstrument, IDrumset } from "./types";
+import { IDrumInstrument, IDrumset, DrumsetKeys } from "./types";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
@@ -21,7 +21,7 @@ export class AudioMan {
 		drumset: IDrumset,
 		basePath: string
 	): Promise<void> {
-		const allDrums = Object.keys(drumset) as (keyof IDrumset)[];
+		const allDrums = Object.keys(drumset) as DrumsetKeys[];
 		const loadingPromises = allDrums.map(instrument =>
 			this.loadInstrument(drumset[instrument], basePath)
 		);
