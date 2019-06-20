@@ -59,15 +59,20 @@ export class BeatronomeApp extends React.Component<
 				const instrKey = DrumsetKeyArray.find(key =>
 					line.startsWith(key)
 				);
+
 				if (instrKey) {
 					const drumLine = bracketsRegEx.exec(line);
 					log("logDrumLoopParsing", drumLine);
 					if (drumLine && drumLine[0]) {
+						const dl = drumLine[0].substring(
+							1,
+							drumLine[0].length - 1
+						);
 						log(
 							"logDrumLoopParsing",
 							"drumLine [" + instrKey + "] found: " + drumLine[0]
 						);
-						drumloop.measure[instrKey] = drumLine[0];
+						drumloop.measure[instrKey] = dl.split("|");
 					}
 				}
 			}

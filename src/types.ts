@@ -38,6 +38,6 @@ export type IDrumLoop = {
 	denominator: number;
 	enumerator: number;
 	measure: {
-		[key in DrumsetKeys]?: string;
+		[key in DrumsetKeys]?: string[];
 	};
 };
