@@ -31,16 +31,22 @@ export class AudioMan {
 		this.gainNode.connect(this.audioCtx.destination);
 	}
 
-	public async load(drumset: IDrumset, basePath: string): Promise<void> {
-		const allDrums = Object.keys(drumset);
+	public async loadDrumset(
+		drumset: IDrumset,
+		basePath: string
+	): Promise<void> {
+		const allDrums = Object.keys(drumset) as (keyof IDrumset)[];
 		const loadingPromises = allDrums.map(instrument =>
 			this.loadInstrument(drumset[instrument], basePath)
 		);
 
-		Promise.all(loadingPromises).then(loadedSamples => {
-			console.log(loadedSamples);
-			this.playInstrument(drumset.bd);
-		});
+		await Promise.all(loadingPromises);
+
+		for (const instrumentName of allDrums) {
+			const instrument = drumset[instrumentName];
+			console.log(instrument);
+			this.playInstrument(instrument);
+		}
 	}
 
 	private async loadInstrument(
