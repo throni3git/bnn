@@ -3,15 +3,41 @@ export interface IDrumInstrument {
 	audioBuffer?: AudioBuffer;
 }
 
-export interface IDrumset {
-	bd?: IDrumInstrument;
-	hho?: IDrumInstrument;
-	hhc?: IDrumInstrument;
-	sn?: IDrumInstrument;
-	tomHi?: IDrumInstrument;
-	tomMidHi?: IDrumInstrument;
-	tomMidLo?: IDrumInstrument;
-	tomLo?: IDrumInstrument;
-}
+// export interface IDrumset {
+// 	bd?: IDrumInstrument;
+// 	hho?: IDrumInstrument;
+// 	hhc?: IDrumInstrument;
+// 	sn?: IDrumInstrument;
+// 	tomHi?: IDrumInstrument;
+// 	tomMidHi?: IDrumInstrument;
+// 	tomMidLo?: IDrumInstrument;
+// 	tomLo?: IDrumInstrument;
+// }
 
-export type DrumsetKeys = keyof IDrumset;
+export const DrumsetKeyArray = <const>[
+	"bd",
+	"hho",
+	"hhc",
+	"sn",
+	"tomHi",
+	"tomMidHi",
+	"tomMidLo",
+	"tomLo"
+];
+
+export type DrumsetKeys = typeof DrumsetKeyArray[number];
+
+export type IDrumset = Record<DrumsetKeys, IDrumInstrument>;
+
+// const furniture = <const>["chair", "table", "lamp"];
+// type Furniture = typeof furniture[number];
+
+// export type DrumsetKeys = keyof IDrumset;
+
+export type IDrumLoop = {
+	denominator: number;
+	enumerator: number;
+	measure: {
+		[key in DrumsetKeys]?: string;
+	};
+};

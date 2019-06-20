@@ -4,7 +4,9 @@ export interface IUserInterfaceState {
 	masterVolume: number;
 }
 
-export interface IDebuggingState {}
+export interface IDebuggingState {
+	logDrumLoopParsing: boolean;
+}
 
 export interface IState {
 	ui: IUserInterfaceState;
@@ -13,7 +15,7 @@ export interface IState {
 
 let currentState: IState = {
 	ui: { masterVolume: PRODUCTION ? 1 : 0 },
-	debugging: {}
+	debugging: { logDrumLoopParsing: !PRODUCTION }
 };
 
 export type Subscriber = () => void;
