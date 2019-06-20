@@ -66,7 +66,8 @@ export class AudioMan {
 	public startLoop(): void {
 		this.stopLoop();
 		this.startTime = Date.now();
-		this.handleInterval = setInterval(this.loop, 1000);
+		const lui = getState().audio.loopUpdateInterval;
+		this.handleInterval = setInterval(this.loop, lui);
 		this.loop();
 	}
 
@@ -79,9 +80,11 @@ export class AudioMan {
 		log("logLoopInterval", now - this.startTime);
 		log("logLoopInterval", now);
 		log("logLoopInterval", this.audioCtx.currentTime);
+		const audioState = getState().audio;
 
-		const dl = getState().audio.drumLoop;
-		const bpm = getState().audio.bpm;
+		const dl = audioState.drumLoop;
+		const bpm = audioState.bpm;
+		const lui = audioState.loopUpdateInterval;
 		const interval = 4 / dl.denominator / bpm;
 	};
 }

@@ -5,6 +5,7 @@ export interface IAudioState {
 	masterVolume: number;
 	drumLoop: IDrumLoop;
 	bpm: number;
+	loopUpdateInterval: number;
 }
 
 export interface IUserInterfaceState {}
@@ -21,7 +22,12 @@ export interface IState {
 }
 
 let currentState: IState = {
-	audio: { masterVolume: PRODUCTION ? 1 : 0, drumLoop: null, bpm: 60 },
+	audio: {
+		masterVolume: PRODUCTION ? 1 : 0,
+		drumLoop: null,
+		bpm: 60,
+		loopUpdateInterval: 1000
+	},
 	debugging: {
 		logDrumLoopParsing: !PRODUCTION,
 		logLoopInterval: !PRODUCTION
@@ -53,8 +59,8 @@ export const setAudioState = <K extends keyof IAudioState>(
 	key: K,
 	value: IAudioState[K]
 ) => {
-	setState("ui", {
-		...currentState.ui,
+	setState("audio", {
+		...currentState.audio,
 		[key]: value
 	});
 };
