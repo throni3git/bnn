@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { audioManInstance, IDrumset } from "./audioMan";
-
 import { PRODUCTION } from "./";
 import { subscribe, setUserInterfaceState, getState } from "./store";
+import { IDrumset } from "./types";
+import { audioManInstance } from "./audioMan";
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -11,7 +11,6 @@ export class BeatronomeApp extends React.Component<
 > {
 	constructor(props: BeatronomeApp["props"]) {
 		super(props);
-		// this.state = { masterVolume: 1.0 };
 
 		subscribe(() => this.setState({}));
 

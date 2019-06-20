@@ -4,21 +4,7 @@ import {
 	IAudioContext
 } from "standardized-audio-context";
 
-export interface IDrumInstrument {
-	url: string;
-	audioBuffer?: AudioBuffer;
-}
-
-export interface IDrumset {
-	bd?: IDrumInstrument;
-	hho?: IDrumInstrument;
-	hhc?: IDrumInstrument;
-	sn?: IDrumInstrument;
-	tomHi?: IDrumInstrument;
-	tomMidHi?: IDrumInstrument;
-	tomMidLo?: IDrumInstrument;
-	tomLo?: IDrumInstrument;
-}
+import { IDrumInstrument, IDrumset } from "./types";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
