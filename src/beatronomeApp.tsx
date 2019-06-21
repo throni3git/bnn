@@ -13,6 +13,7 @@ import { log } from "./util";
 import Button from "./button";
 
 const bracketsRegEx = /\[[^\]]*\]/;
+const meterRegEx = /\d/;
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -65,20 +66,20 @@ export class BeatronomeApp extends React.Component<
 				const instrKey = DrumsetKeyArray.find(key =>
 					line.startsWith(key)
 				);
+				const drumLine = bracketsRegEx.exec(line);
 
-				if (instrKey) {
-					const drumLine = bracketsRegEx.exec(line);
+				if (instrKey && drumLine && drumLine[0]) {
 					log("logDrumLoopParsing", drumLine);
-					if (drumLine && drumLine[0]) {
-						const dl = drumLine[0].substring(
-							1,
-							drumLine[0].length - 1
-						);
-						log(
-							"logDrumLoopParsing",
-							"drumLine [" + instrKey + "] found: " + drumLine[0]
-						);
-						drumloop.measure[instrKey] = dl.split("|");
+					log(
+						"logDrumLoopParsing",
+						"drumLine [" + instrKey + "] found: " + drumLine[0]
+					);
+
+					// only take drum lines that have notes
+					const dl = drumLine[0].substring(1, drumLine[0].length - 1);
+					const singleMeters = dl.split("|");
+					if (singleMeters.some(meter => meterRegEx.test(meter))) {
+						drumloop.measure[instrKey] = singleMeters;
 					}
 				}
 			}
