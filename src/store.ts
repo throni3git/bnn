@@ -24,7 +24,7 @@ export interface IState {
 
 let currentState: IState = {
 	audio: {
-		masterVolume: PRODUCTION ? 1 : 0,
+		masterVolume: PRODUCTION ? 1 : 0.07,
 		drumLoop: null,
 		bpm: 80,
 		loopUpdateInterval: 1.0,
