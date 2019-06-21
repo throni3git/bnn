@@ -35,6 +35,8 @@ export class AudioMan {
 			console.log(instrument);
 			this.playInstrument(instrument);
 		}
+
+		setAudioState("drumset", drumset);
 	}
 
 	private async loadInstrument(

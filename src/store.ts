@@ -1,9 +1,10 @@
 import { PRODUCTION } from ".";
-import { IDrumLoop } from "./types";
+import { IDrumLoop, IDrumset } from "./types";
 
 export interface IAudioState {
 	masterVolume: number;
 	drumLoop: IDrumLoop;
+	drumset: IDrumset;
 	bpm: number;
 	loopUpdateInterval: number;
 }
@@ -25,8 +26,9 @@ let currentState: IState = {
 	audio: {
 		masterVolume: PRODUCTION ? 1 : 0,
 		drumLoop: null,
-		bpm: 60,
-		loopUpdateInterval: 1000
+		bpm: 80,
+		loopUpdateInterval: 1.0,
+		drumset: null
 	},
 	debugging: {
 		logDrumLoopParsing: !PRODUCTION,
