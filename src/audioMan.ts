@@ -40,7 +40,7 @@ export class AudioMan {
 			const instrument = drumset[instrumentName];
 			console.log(instrument);
 			// this.loopInstrument(instrument);
-			this.playInstrument(instrument, this.audioCtx.currentTime + 1, 1);
+			this.playInstrument(instrument, this.audioCtx.currentTime, 1);
 		}
 
 		setAudioState("drumset", drumset);
