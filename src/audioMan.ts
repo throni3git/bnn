@@ -81,7 +81,7 @@ export class AudioMan {
 	}
 
 	private startTime: number;
-	private currentTime: number;
+	private oldTime: number;
 	private handleInterval: number;
 	private vergangen: number;
 
@@ -121,33 +121,44 @@ export class AudioMan {
 	private loop = () => {
 		const now = this.audioCtx.currentTime;
 		log("logLoopInterval", now);
-		log("logLoopInterval", this.audioCtx.currentTime);
-		this.vergangen = this.audioCtx.currentTime - this.currentTime;
-		log("logLoopInterval", this.vergangen);
+		this.vergangen = now - this.oldTime;
+		log("logLoopInterval", "vergangen " + this.vergangen);
+		log("logLoopInterval", "this.currentPosition " + this.currentPosition);
 
 		const audioState = getState().audio;
 
 		const dLoop = audioState.drumLoop;
 		const dSet = audioState.drumset;
 		const bpm = audioState.bpm;
-		const lui = audioState.loopUpdateInterval;
+		const bps = bpm / 60;
+		const tLui = audioState.loopUpdateInterval;
+
+		const tDeltaNextLoop = 2 * tLui - this.vergangen;
+		const tOffset = this.vergangen - tLui;
+		log("logLoopInterval", "tDeltaNextLoop " + tDeltaNextLoop);
+
+		let newPosition = this.currentPosition + tLui * bps;
+
+		if (newPosition + tLui * bps > dLoop.denominator) {
+			newPosition -= dLoop.denominator;
+		}
 
 		// duration of a quarter note
-		const tInterval = 60 / bpm;
-		const pFloorCurrent = Math.floor(this.currentPosition);
-
-		this.debugPianoRoll = {};
+		const tInterval = 1 / bps;
 
 		for (const instrKey of DrumsetKeyArray) {
 			const dl = dLoop.measure[instrKey];
-			if (!dl) {
+			const instrument = dSet[instrKey];
+			if (!dl || !instrument) {
 				continue;
 			}
-			this.debugPianoRoll[instrKey] = [];
-			const instrument = dSet[instrKey];
+			if (!this.debugPianoRoll[instrKey]) {
+				this.debugPianoRoll[instrKey] = [];
+			}
 
-			for (let pIdx = pFloorCurrent; pIdx < dl.length; pIdx++) {
+			for (let pIdx = 0; pIdx < dl.length; pIdx++) {
 				const part = dl[pIdx];
+				const tDeltaMacro = pIdx * tInterval;
 				const tMicroInterval = tInterval / part.length;
 
 				for (let dIdx = 0; dIdx < part.length; dIdx++) {
@@ -158,14 +169,13 @@ export class AudioMan {
 					}
 
 					const tDeltaMicro = dIdx * tMicroInterval;
-					const tDeltaMacro = pIdx * tInterval;
 					const delta =
 						tDeltaMicro +
 						tDeltaMacro -
 						this.currentPosition * tInterval;
 
-					if (delta >= 0 && delta < lui) {
-						const onsetTime = this.audioCtx.currentTime + delta;
+					if (delta >= 0 && delta < tLui) {
+						const onsetTime = now + delta - tOffset;
 						this.playInstrument(instrument, onsetTime, velocity);
 						this.debugPianoRoll[instrKey].push(
 							onsetTime - this.startTime
@@ -174,12 +184,11 @@ export class AudioMan {
 				}
 			}
 		}
-		this.currentPosition += (this.vergangen * bpm) / 60;
-		this.currentPosition %= dLoop.denominator;
+		this.currentPosition = newPosition;
 
 		log("logLoopInterval", this.debugPianoRoll);
 
-		this.currentTime = this.audioCtx.currentTime;
+		this.oldTime = now;
 	};
 }
 
