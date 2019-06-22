@@ -152,7 +152,7 @@ export class AudioMan {
 
 				for (let dIdx = 0; dIdx < part.length; dIdx++) {
 					const digit = part[dIdx];
-					const velocity = parseInt(digit, 10);
+					const velocity = parseInt(digit, 16) / 15;
 					if (isNaN(velocity) || !isFinite(velocity)) {
 						continue;
 					}
