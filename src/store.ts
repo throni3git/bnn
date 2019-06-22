@@ -6,6 +6,9 @@ export interface IAudioState {
 	drumLoop: IDrumLoop;
 	drumset: IDrumset;
 	bpm: number;
+	maxBpm: number;
+	minBpm: number;
+	stepBpm: number;
 	loopUpdateInterval: number;
 }
 
@@ -27,6 +30,9 @@ let currentState: IState = {
 		masterVolume: PRODUCTION ? 1 : 0.3,
 		drumLoop: null,
 		bpm: 60,
+		maxBpm: 200,
+		minBpm: 40,
+		stepBpm: 4,
 		loopUpdateInterval: 1.0,
 		drumset: null
 	},

@@ -125,6 +125,16 @@ export class BeatronomeApp extends React.Component<
 					></Button>
 				</div>
 				<div>
+					<Button
+						caption="Increase 4 bpm"
+						action={this.increaseBpm}
+					></Button>
+					<Button
+						caption="Decrease 4 bpm"
+						action={this.decreaseBpm}
+					></Button>
+				</div>
+				<div>
 					<input
 						type="range"
 						value={getState().audio.bpm}
@@ -140,6 +150,30 @@ export class BeatronomeApp extends React.Component<
 				</div>
 			</div>
 		);
+	}
+
+	/**
+	 * increase tempo by x bpm
+	 */
+	private increaseBpm(): void {
+		const audioState = getState().audio;
+		const bpm = Math.min(
+			audioState.maxBpm,
+			audioState.bpm + audioState.stepBpm
+		);
+		setAudioState("bpm", bpm);
+	}
+
+	/**
+	 * decrease tempo by x bpm
+	 */
+	private decreaseBpm(): void {
+		const audioState = getState().audio;
+		const bpm = Math.max(
+			audioState.minBpm,
+			audioState.bpm - audioState.stepBpm
+		);
+		setAudioState("bpm", bpm);
 	}
 }
 
