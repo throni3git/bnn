@@ -15,14 +15,14 @@ import { getState, setAudioState } from "./store";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
-	public gainNode: IGainNode<IAudioContext>;
+	public masterGainNode: IGainNode<IAudioContext>;
 
 	constructor() {
 		this.audioCtx = new AudioContext();
-		this.gainNode = this.audioCtx.createGain();
+		this.masterGainNode = this.audioCtx.createGain();
 		const volume = getState().audio.masterVolume;
-		this.gainNode.gain.setValueAtTime(volume, 0);
-		this.gainNode.connect(this.audioCtx.destination);
+		this.masterGainNode.gain.setValueAtTime(volume, 0);
+		this.masterGainNode.connect(this.audioCtx.destination);
 	}
 
 	public async loadDrumset(
@@ -40,7 +40,7 @@ export class AudioMan {
 			const instrument = drumset[instrumentName];
 			console.log(instrument);
 			// this.loopInstrument(instrument);
-			this.playInstrument(instrument, this.audioCtx.currentTime + 1, 10);
+			this.playInstrument(instrument, this.audioCtx.currentTime + 1, 1);
 		}
 
 		setAudioState("drumset", drumset);
@@ -77,9 +77,18 @@ export class AudioMan {
 		if (!instrument.audioBuffer) {
 			return;
 		}
-		let source = this.audioCtx.createBufferSource(); // creates a sound source
+		const source = this.audioCtx.createBufferSource(); // creates a sound source
 		source.buffer = instrument.audioBuffer; // tell the source which sound to play
-		source.connect(this.gainNode); // connect the source to the context's destination (the speakers)
+
+		if (!instrument.gainNode) {
+			const gainNode = this.audioCtx.createGain();
+			instrument.gainNode = gainNode;
+
+			gainNode.connect(this.masterGainNode);
+		}
+		instrument.gainNode.gain.setValueAtTime(velocity, startTime);
+
+		source.connect(instrument.gainNode); // connect the source to the context's destination (the speakers)
 		source.start(startTime); // play the source now
 		// note: on older systems, may have to use deprecated noteOn(time);
 	}

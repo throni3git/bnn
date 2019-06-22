@@ -107,7 +107,7 @@ export class BeatronomeApp extends React.Component<
 						onChange={e => {
 							const vol = e.target.valueAsNumber / 1000;
 							setAudioState("masterVolume", vol);
-							audioManInstance.gainNode.gain.setValueAtTime(
+							audioManInstance.masterGainNode.gain.setValueAtTime(
 								e.target.valueAsNumber / 1000,
 								0
 							);
