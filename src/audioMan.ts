@@ -88,12 +88,27 @@ export class AudioMan {
 	private debugPianoRoll: Record<string, number[]>;
 
 	public startLoop(): void {
+		const audioState = getState().audio;
+
+		const lui = audioState.loopUpdateInterval;
+		const dLoop = audioState.drumLoop;
+		const dSet = audioState.drumset;
+
+		this.debugPianoRoll = {};
+		for (const instrKey of DrumsetKeyArray) {
+			const dl = dLoop.measure[instrKey];
+			const instrument = dSet[instrKey];
+			if (!dl || !instrument) {
+				continue;
+			}
+			this.debugPianoRoll[instrKey] = [];
+		}
+
 		this.stopLoop();
 		this.startTime = this.audioCtx.currentTime;
-		this.currentTime = this.audioCtx.currentTime;
+		this.oldTime = this.audioCtx.currentTime - lui;
 		this.currentPosition = 0;
 
-		const lui = getState().audio.loopUpdateInterval;
 		this.handleInterval = setInterval(this.loop, lui * 1000);
 		this.loop();
 	}
