@@ -24,14 +24,14 @@ export interface IState {
 
 let currentState: IState = {
 	audio: {
-		masterVolume: PRODUCTION ? 1 : 0.07,
+		masterVolume: PRODUCTION ? 1 : 0.3,
 		drumLoop: null,
-		bpm: 80,
+		bpm: 60,
 		loopUpdateInterval: 1.0,
 		drumset: null
 	},
 	debugging: {
-		logDrumLoopParsing: !PRODUCTION,
+		logDrumLoopParsing: !PRODUCTION && false,
 		logLoopInterval: !PRODUCTION
 	},
 	ui: {}
