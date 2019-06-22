@@ -124,6 +124,20 @@ export class BeatronomeApp extends React.Component<
 						action={() => audioManInstance.stopLoop()}
 					></Button>
 				</div>
+				<div>
+					<input
+						type="range"
+						value={getState().audio.bpm}
+						min={40}
+						max={200}
+						onChange={e => {
+							const bpm = e.target.valueAsNumber;
+							const bps = bpm / 60;
+							setAudioState("bpm", bpm);
+							setAudioState("loopUpdateInterval", 1 / bps);
+						}}
+					></input>
+				</div>
 			</div>
 		);
 	}
