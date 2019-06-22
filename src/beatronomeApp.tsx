@@ -26,7 +26,7 @@ export class BeatronomeApp extends React.Component<
 
 		this.loadDrumset("assets/drumsets/hydro.json");
 
-		if (!PRODUCTION) {
+		if (PRODUCTION) {
 			this.loadDrumloop("assets/loops/straight44.txt");
 		} else {
 			this.loadDrumloop("assets/loops/debug.txt");
