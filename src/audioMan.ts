@@ -109,12 +109,11 @@ export class AudioMan {
 		this.oldTime = this.audioCtx.currentTime - lui;
 		this.currentPosition = 0;
 
-		this.handleInterval = setInterval(this.loop, lui * 1000);
 		this.loop();
 	}
 
 	public stopLoop(): void {
-		clearInterval(this.handleInterval);
+		clearTimeout(this.handleInterval);
 	}
 
 	currentPosition: number;
@@ -189,6 +188,8 @@ export class AudioMan {
 		log("logLoopInterval", this.debugPianoRoll);
 
 		this.oldTime = now;
+
+		this.handleInterval = setTimeout(this.loop, tLui * 1000);
 	};
 }
 
