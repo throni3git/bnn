@@ -56,19 +56,6 @@ export class AudioMan {
 		instrument.audioBuffer = decoded;
 	}
 
-	private loopInstrument(instrument: IDrumInstrument): void {
-		if (!instrument.audioBuffer) {
-			return;
-		}
-		let source = this.audioCtx.createBufferSource(); // creates a sound source
-		source.buffer = instrument.audioBuffer; // tell the source which sound to play
-		source.connect(this.gainNode); // connect the source to the context's destination (the speakers)
-		source.start(0); // play the source now
-		// note: on older systems, may have to use deprecated noteOn(time);
-
-		source.loop = true;
-	}
-
 	private playInstrument(
 		instrument: IDrumInstrument,
 		startTime: number,
