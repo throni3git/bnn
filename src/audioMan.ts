@@ -105,6 +105,7 @@ export class AudioMan {
 		}
 
 		this.stopLoop();
+		this.masterGainNode.gain.setValueAtTime(audioState.masterVolume, 0);
 		this.startTime = this.audioCtx.currentTime;
 		this.oldTime = this.audioCtx.currentTime - lui;
 		this.currentPosition = 0;
@@ -113,6 +114,7 @@ export class AudioMan {
 	}
 
 	public stopLoop(): void {
+		this.masterGainNode.gain.setValueAtTime(0, 0);
 		clearTimeout(this.handleInterval);
 	}
 
