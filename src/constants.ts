@@ -5,3 +5,5 @@ export const COLORS = {
 	lightBorder: "#dddddd",
 	lightHighlight: "#eeeeee"
 };
+
+export const DIR_ASSETS = "assets/";

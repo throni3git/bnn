@@ -24,7 +24,13 @@ export class BeatronomeApp extends React.Component<
 
 		subscribe(() => this.setState({}));
 
-		this.loadDrumset("assets/drumsets/hydro.json");
+		this.initialize();
+	}
+
+	private async initialize(): Promise<void> {
+		await this.loadDrumsetIndex();
+
+		this.loadDrumset(getState().audio.availableDrumsets[0]);
 
 		if (PRODUCTION) {
 			this.loadDrumloop("assets/loops/straight44.txt");
@@ -34,19 +40,28 @@ export class BeatronomeApp extends React.Component<
 	}
 
 	/**
-	 * prepare drumset and set it as current
-	 * @param url 
+	 * get overview of drumsets available
+	 * @param url
 	 */
-	private async loadDrumset(url: string): Promise<void> {
-		const basePath = url.substring(0, url.lastIndexOf("/") + 1);
-		const rawJson = await fetch(url);
+	private async loadDrumsetIndex(): Promise<void> {
+		const rawJson = await fetch("assets/drumsets/index.json");
+		const overview = (await rawJson.json()) as { entries: Array<string> };
+		setAudioState("availableDrumsets", overview.entries);
+	}
+
+	/**
+	 * prepare drumset and set it as current
+	 * @param url
+	 */
+	private async loadDrumset(name: string): Promise<void> {
+		const rawJson = await fetch("assets/drumsets/" + name);
 		const drumset = (await rawJson.json()) as IDrumset;
-		audioManInstance.loadDrumset(drumset, basePath);
+		audioManInstance.loadDrumset(drumset, "assets/drumsets/");
 	}
 
 	/**
 	 * parse drumloop from text file
-	 * @param url 
+	 * @param url
 	 */
 	private async loadDrumloop(url: string): Promise<void> {
 		const rawText = await fetch(url);
