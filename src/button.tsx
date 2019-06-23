@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import styled from "styled-components";
-import { COLORS } from "./colors";
+import { COLORS } from "./constants";
 
 const ButtonDiv = styled.div`
 	background: ${COLORS.light};
