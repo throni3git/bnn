@@ -33,6 +33,10 @@ export class BeatronomeApp extends React.Component<
 		}
 	}
 
+	/**
+	 * prepare drumset and set it as current
+	 * @param url 
+	 */
 	private async loadDrumset(url: string): Promise<void> {
 		const basePath = url.substring(0, url.lastIndexOf("/") + 1);
 		const rawJson = await fetch(url);
@@ -40,6 +44,10 @@ export class BeatronomeApp extends React.Component<
 		audioManInstance.loadDrumset(drumset, basePath);
 	}
 
+	/**
+	 * parse drumloop from text file
+	 * @param url 
+	 */
 	private async loadDrumloop(url: string): Promise<void> {
 		const rawText = await fetch(url);
 		const text = await rawText.text();
