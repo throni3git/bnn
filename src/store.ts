@@ -1,21 +1,46 @@
 import { PRODUCTION } from ".";
+import { IDrumLoop, IDrumset } from "./types";
 
-export interface IUserInterfaceState {
+export interface IAudioState {
 	masterVolume: number;
+	drumLoop: IDrumLoop;
+	drumset: IDrumset;
+	bpm: number;
+	maxBpm: number;
+	minBpm: number;
+	stepBpm: number;
+	loopUpdateInterval: number;
 }
+
+export interface IUserInterfaceState {}
 
 export interface IDebuggingState {
 	logDrumLoopParsing: boolean;
+	logLoopInterval: boolean;
 }
 
 export interface IState {
 	ui: IUserInterfaceState;
 	debugging: IDebuggingState;
+	audio: IAudioState;
 }
 
 let currentState: IState = {
-	ui: { masterVolume: PRODUCTION ? 1 : 0 },
-	debugging: { logDrumLoopParsing: !PRODUCTION }
+	audio: {
+		masterVolume: PRODUCTION ? 1 : 0.3,
+		drumLoop: null,
+		bpm: 60,
+		maxBpm: 200,
+		minBpm: 40,
+		stepBpm: 4,
+		loopUpdateInterval: 1.0,
+		drumset: null
+	},
+	debugging: {
+		logDrumLoopParsing: !PRODUCTION && false,
+		logLoopInterval: !PRODUCTION
+	},
+	ui: {}
 };
 
 export type Subscriber = () => void;
@@ -36,6 +61,16 @@ export const setState = <K extends keyof IState>(key: K, value: IState[K]) => {
 		[key]: value
 	};
 	update();
+};
+
+export const setAudioState = <K extends keyof IAudioState>(
+	key: K,
+	value: IAudioState[K]
+) => {
+	setState("audio", {
+		...currentState.audio,
+		[key]: value
+	});
 };
 
 export const setUserInterfaceState = <K extends keyof IUserInterfaceState>(

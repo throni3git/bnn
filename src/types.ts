@@ -1,6 +1,9 @@
+import { IGainNode, IAudioContext } from "standardized-audio-context";
+
 export interface IDrumInstrument {
 	url: string;
 	audioBuffer?: AudioBuffer;
+	gainNode?: IGainNode<IAudioContext>;
 }
 
 // export interface IDrumset {

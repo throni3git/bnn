@@ -1,12 +1,19 @@
 import * as React from "react";
 
 import { PRODUCTION } from "./";
-import { subscribe, setUserInterfaceState, getState } from "./store";
+import {
+	subscribe,
+	setUserInterfaceState,
+	getState,
+	setAudioState
+} from "./store";
 import { IDrumset, DrumsetKeys, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
 import { log } from "./util";
+import Button from "./button";
 
 const bracketsRegEx = /\[[^\]]*\]/;
+const meterRegEx = /\d/;
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -19,7 +26,11 @@ export class BeatronomeApp extends React.Component<
 
 		this.loadDrumset("assets/drumsets/hydro.json");
 
-		this.loadDrumloop("assets/loops/straight44.txt");
+		if (PRODUCTION) {
+			this.loadDrumloop("assets/loops/straight44.txt");
+		} else {
+			this.loadDrumloop("assets/loops/debug.txt");
+		}
 	}
 
 	private async loadDrumset(url: string): Promise<void> {
@@ -59,26 +70,28 @@ export class BeatronomeApp extends React.Component<
 				const instrKey = DrumsetKeyArray.find(key =>
 					line.startsWith(key)
 				);
+				const drumLine = bracketsRegEx.exec(line);
 
-				if (instrKey) {
-					const drumLine = bracketsRegEx.exec(line);
+				if (instrKey && drumLine && drumLine[0]) {
 					log("logDrumLoopParsing", drumLine);
-					if (drumLine && drumLine[0]) {
-						const dl = drumLine[0].substring(
-							1,
-							drumLine[0].length - 1
-						);
-						log(
-							"logDrumLoopParsing",
-							"drumLine [" + instrKey + "] found: " + drumLine[0]
-						);
-						drumloop.measure[instrKey] = dl.split("|");
+					log(
+						"logDrumLoopParsing",
+						"drumLine [" + instrKey + "] found: " + drumLine[0]
+					);
+
+					// only take drum lines that have notes
+					const dl = drumLine[0].substring(1, drumLine[0].length - 1);
+					const singleMeters = dl.split("|");
+					if (singleMeters.some(meter => meterRegEx.test(meter))) {
+						drumloop.measure[instrKey] = singleMeters;
 					}
 				}
 			}
 		}
 
 		log("logDrumLoopParsing", drumloop);
+
+		setAudioState("drumLoop", drumloop);
 	}
 
 	public render() {
@@ -88,21 +101,79 @@ export class BeatronomeApp extends React.Component<
 				<div>
 					<input
 						type="range"
-						value={getState().ui.masterVolume * 1000.0}
+						value={getState().audio.masterVolume * 1000.0}
 						min={0}
 						max={1000}
 						onChange={e => {
 							const vol = e.target.valueAsNumber / 1000;
-							setUserInterfaceState("masterVolume", vol);
-							audioManInstance.gainNode.gain.setValueAtTime(
+							setAudioState("masterVolume", vol);
+							audioManInstance.masterGainNode.gain.setValueAtTime(
 								e.target.valueAsNumber / 1000,
 								0
 							);
 						}}
 					></input>
 				</div>
+				<div>
+					<Button
+						caption="StartLoop"
+						action={() => audioManInstance.startLoop()}
+					></Button>
+					<Button
+						caption="StopLoop"
+						action={() => audioManInstance.stopLoop()}
+					></Button>
+				</div>
+				<div>
+					<Button
+						caption="Increase 4 bpm"
+						action={this.increaseBpm}
+					></Button>
+					<Button
+						caption="Decrease 4 bpm"
+						action={this.decreaseBpm}
+					></Button>
+				</div>
+				<div>
+					<input
+						type="range"
+						value={getState().audio.bpm}
+						min={40}
+						max={200}
+						onChange={e => {
+							const bpm = e.target.valueAsNumber;
+							const bps = bpm / 60;
+							setAudioState("bpm", bpm);
+							setAudioState("loopUpdateInterval", 1 / bps);
+						}}
+					></input>
+				</div>
 			</div>
 		);
+	}
+
+	/**
+	 * increase tempo by x bpm
+	 */
+	private increaseBpm(): void {
+		const audioState = getState().audio;
+		const bpm = Math.min(
+			audioState.maxBpm,
+			audioState.bpm + audioState.stepBpm
+		);
+		setAudioState("bpm", bpm);
+	}
+
+	/**
+	 * decrease tempo by x bpm
+	 */
+	private decreaseBpm(): void {
+		const audioState = getState().audio;
+		const bpm = Math.max(
+			audioState.minBpm,
+			audioState.bpm - audioState.stepBpm
+		);
+		setAudioState("bpm", bpm);
 	}
 }
 

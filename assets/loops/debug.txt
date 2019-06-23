@@ -1,0 +1,5 @@
+# straight beat in 4 4 fpr debugging
+time[4/4]
+bd.......[9   |    |7   |    ]
+hhc......[9 6 |7 6 |8 6 |7 6 ]
+sn.......[0123|4567|89ab|cdef]
