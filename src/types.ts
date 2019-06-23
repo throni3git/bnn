@@ -21,6 +21,12 @@ export type DrumsetKeys = typeof DrumsetKeyArray[number];
 
 export type IDrumset = Record<DrumsetKeys, IDrumInstrument>;
 
+export interface IOnset {
+	position: number;
+	velocity: number;
+	isPlanned: boolean;
+}
+
 export type IDrumLoop = {
 	denominator: number;
 	enumerator: number;
