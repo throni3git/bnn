@@ -1,6 +1,8 @@
 import * as webpack from "webpack";
 import * as webpackDevServer from "webpack-dev-server";
 import * as htmlPlugin from "html-webpack-plugin";
+import * as copyWebpackPlugin from "copy-webpack-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import * as path from "path";
 
 const timestamp = JSON.stringify(new Date().toISOString());
@@ -22,7 +24,14 @@ const config = {
 		new webpack.DefinePlugin({
 			BUILD_TIMESTAMP: timestamp
 		}),
-		new htmlPlugin({ title: "Beatronome" })
+		new htmlPlugin({ title: "Beatronome" }),
+		new CleanWebpackPlugin({}),
+		new copyWebpackPlugin([
+			{
+				from: "assets/**/*",
+				to: "./"
+			}
+		])
 	],
 	output: {
 		path: path.resolve("dist")
