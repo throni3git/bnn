@@ -71,7 +71,8 @@ export class BeatronomeApp extends React.Component<
 		const drumloop: IDrumLoop = {
 			denominator: 4,
 			enumerator: 4,
-			measure: {}
+			measure: {},
+			compiledMeasure: {}
 		};
 
 		for (const line of lines) {

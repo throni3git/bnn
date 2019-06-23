@@ -33,4 +33,7 @@ export type IDrumLoop = {
 	measure: {
 		[key in DrumsetKeys]?: string[];
 	};
+	compiledMeasure: {
+		[key in DrumsetKeys]?: IOnset[];
+	};
 };

@@ -8,7 +8,8 @@ import {
 	IDrumInstrument,
 	IDrumset,
 	DrumsetKeys,
-	DrumsetKeyArray
+	DrumsetKeyArray,
+	IOnset
 } from "./types";
 import { log } from "./util";
 import { getState, setAudioState } from "./store";
@@ -105,6 +106,9 @@ export class AudioMan {
 		}
 
 		this.stopLoop();
+
+		this.compile();
+
 		this.masterGainNode.gain.setValueAtTime(audioState.masterVolume, 0);
 		this.startTime = this.audioCtx.currentTime;
 		this.oldTime = this.audioCtx.currentTime - lui;
@@ -118,7 +122,44 @@ export class AudioMan {
 		clearTimeout(this.handleInterval);
 	}
 
-	currentPosition: number;
+	private currentPosition: number;
+
+	private compile(): void {
+		const audioState = getState().audio;
+
+		const dLoop = audioState.drumLoop;
+		const dSet = audioState.drumset;
+
+		for (const instrKey of DrumsetKeyArray) {
+			const dl = dLoop.measure[instrKey];
+			const instrument = dSet[instrKey];
+			if (!dl || !instrument) {
+				continue;
+			}
+			dLoop.compiledMeasure[instrKey] = [];
+
+			for (let pIdx = 0; pIdx < dl.length; pIdx++) {
+				const part = dl[pIdx];
+
+				for (let dIdx = 0; dIdx < part.length; dIdx++) {
+					const digit = part[dIdx];
+					const velocity = parseInt(digit, 16) / 15;
+					if (isNaN(velocity) || !isFinite(velocity)) {
+						continue;
+					}
+
+					const position = pIdx + dIdx / part.length;
+					const onset: IOnset = {
+						position,
+						velocity,
+						isPlanned: false
+					};
+					dLoop.compiledMeasure[instrKey].push(onset);
+				}
+			}
+		}
+	}
+
 	private loop = () => {
 		const now = this.audioCtx.currentTime;
 		log("logLoopInterval", now);
@@ -139,52 +180,44 @@ export class AudioMan {
 		log("logLoopInterval", "tDeltaNextLoop " + tDeltaNextLoop);
 
 		let newPosition = this.currentPosition + tLui * bps;
-
 		if (newPosition + tLui * bps > dLoop.denominator) {
 			newPosition -= dLoop.denominator;
+			log("logLoopInterval", "newPosition RESET: " + newPosition);
 		}
 
 		// duration of a quarter note
 		const tInterval = 1 / bps;
 
-		for (const instrKey of DrumsetKeyArray) {
-			const dl = dLoop.measure[instrKey];
-			const instrument = dSet[instrKey];
-			if (!dl || !instrument) {
-				continue;
-			}
-			if (!this.debugPianoRoll[instrKey]) {
-				this.debugPianoRoll[instrKey] = [];
-			}
+		const usedInstruments = Object.keys(dLoop.compiledMeasure);
+		for (const instrKey of usedInstruments) {
+			const onsets = dLoop.compiledMeasure[instrKey] as IOnset[];
+			const instrument = dSet[instrKey] as IDrumInstrument;
 
-			for (let pIdx = 0; pIdx < dl.length; pIdx++) {
-				const part = dl[pIdx];
-				const tDeltaMacro = pIdx * tInterval;
-				const tMicroInterval = tInterval / part.length;
+			for (const onset of onsets) {
+				const delta =
+					onset.position * tInterval -
+					this.currentPosition * tInterval;
 
-				for (let dIdx = 0; dIdx < part.length; dIdx++) {
-					const digit = part[dIdx];
-					const velocity = parseInt(digit, 16) / 15;
-					if (isNaN(velocity) || !isFinite(velocity)) {
-						continue;
-					}
+				if (delta >= 0 && delta < tLui * 2 && !onset.isPlanned) {
+					const onsetTime = now + delta - tOffset;
+					this.playInstrument(instrument, onsetTime, onset.velocity);
+					this.debugPianoRoll[instrKey].push(
+						onsetTime - this.startTime
+					);
+					onset.isPlanned = true;
+					// } else if (delta >= 0 && delta < tLui * 2) {
+					// log("logLoopInterval", "already planned: ", onset);
+				}
 
-					const tDeltaMicro = dIdx * tMicroInterval;
-					const delta =
-						tDeltaMicro +
-						tDeltaMacro -
-						this.currentPosition * tInterval;
-
-					if (delta >= 0 && delta < tLui) {
-						const onsetTime = now + delta - tOffset;
-						this.playInstrument(instrument, onsetTime, velocity);
-						this.debugPianoRoll[instrKey].push(
-							onsetTime - this.startTime
-						);
-					}
+				if (onset.position < this.currentPosition) {
+					onset.isPlanned = false;
+				}
+				if (delta > tLui * 2) {
+					onset.isPlanned = false;
 				}
 			}
 		}
+
 		this.currentPosition = newPosition;
 
 		log("logLoopInterval", this.debugPianoRoll);
