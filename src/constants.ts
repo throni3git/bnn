@@ -7,3 +7,5 @@ export const COLORS = {
 };
 
 export const DIR_ASSETS = "assets/";
+export const DIR_DRUMSETS = DIR_ASSETS + "drumsets/";
+export const DIR_LOOPS = DIR_ASSETS + "loops/";

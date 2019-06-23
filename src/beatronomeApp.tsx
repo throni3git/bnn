@@ -11,6 +11,7 @@ import { IDrumset, DrumsetKeys, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
 import { log } from "./util";
 import Button from "./button";
+import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
@@ -33,9 +34,9 @@ export class BeatronomeApp extends React.Component<
 		this.loadDrumset(getState().audio.availableDrumsets[0]);
 
 		if (PRODUCTION) {
-			this.loadDrumloop("assets/loops/straight44.txt");
+			this.loadDrumloop("straight44.txt");
 		} else {
-			this.loadDrumloop("assets/loops/debug.txt");
+			this.loadDrumloop("debug.txt");
 		}
 	}
 
@@ -44,7 +45,7 @@ export class BeatronomeApp extends React.Component<
 	 * @param url
 	 */
 	private async loadDrumsetIndex(): Promise<void> {
-		const rawJson = await fetch("assets/drumsets/index.json");
+		const rawJson = await fetch(DIR_DRUMSETS + "index.json");
 		const overview = (await rawJson.json()) as { entries: Array<string> };
 		setAudioState("availableDrumsets", overview.entries);
 	}
@@ -54,17 +55,17 @@ export class BeatronomeApp extends React.Component<
 	 * @param url
 	 */
 	private async loadDrumset(name: string): Promise<void> {
-		const rawJson = await fetch("assets/drumsets/" + name);
+		const rawJson = await fetch(DIR_DRUMSETS + name);
 		const drumset = (await rawJson.json()) as IDrumset;
-		audioManInstance.loadDrumset(drumset, "assets/drumsets/");
+		audioManInstance.loadDrumset(drumset, DIR_DRUMSETS);
 	}
 
 	/**
 	 * parse drumloop from text file
 	 * @param url
 	 */
-	private async loadDrumloop(url: string): Promise<void> {
-		const rawText = await fetch(url);
+	private async loadDrumloop(name: string): Promise<void> {
+		const rawText = await fetch(DIR_LOOPS + name);
 		const text = await rawText.text();
 		const lines = text.split("\n");
 		const drumloop: IDrumLoop = {
