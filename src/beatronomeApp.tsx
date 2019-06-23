@@ -121,8 +121,13 @@ export class BeatronomeApp extends React.Component<
 	public render() {
 		return (
 			<div>
-				<div>Yeah{PRODUCTION ? "PRODUCTION" : "DEVELOPMENT"}</div>
 				<div>
+					<h1 style={{ textAlign: "center" }}>
+						BEATRONOME{PRODUCTION ? "" : " (development)"}
+					</h1>
+				</div>
+				<div>
+					<span>Volume</span>
 					<input
 						type="range"
 						value={getState().audio.masterVolume * 1000.0}
@@ -137,6 +142,7 @@ export class BeatronomeApp extends React.Component<
 							);
 						}}
 					></input>
+					<span>{getState().audio.masterVolume}</span>
 				</div>
 				<div>
 					<Button
@@ -159,6 +165,7 @@ export class BeatronomeApp extends React.Component<
 					></Button>
 				</div>
 				<div>
+					<span>Tempo</span>
 					<input
 						type="range"
 						value={getState().audio.bpm}
@@ -171,6 +178,7 @@ export class BeatronomeApp extends React.Component<
 							setAudioState("loopUpdateInterval", 1 / bps);
 						}}
 					></input>
+					<span>{"" + getState().audio.bpm + " BPM"}</span>
 				</div>
 			</div>
 		);
