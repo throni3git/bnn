@@ -160,6 +160,8 @@ export class AudioMan {
 		}
 	}
 
+	// https://www.html5rocks.com/en/tutorials/audio/scheduling/
+
 	private loop = () => {
 		const now = this.audioCtx.currentTime;
 		log("logLoopInterval", now);
