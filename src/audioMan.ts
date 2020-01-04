@@ -12,7 +12,7 @@ import {
 	IOnset
 } from "./types";
 import { log } from "./util";
-import { getState, setAudioState } from "./store";
+import { getState, setAudioState, LOOP_UPDATE_INTERVAL } from "./store";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
@@ -91,7 +91,9 @@ export class AudioMan {
 	public startLoop(): void {
 		const audioState = getState().audio;
 
-		const lui = audioState.loopUpdateInterval;
+		const bpm = audioState.bpm;
+		const bps = bpm / 60;
+		const tLui = LOOP_UPDATE_INTERVAL / bps;
 		const dLoop = audioState.drumLoop;
 		const dSet = audioState.drumset;
 
@@ -111,7 +113,7 @@ export class AudioMan {
 
 		this.masterGainNode.gain.setValueAtTime(audioState.masterVolume, 0);
 		this.startTime = this.audioCtx.currentTime;
-		this.oldTime = this.audioCtx.currentTime - lui;
+		this.oldTime = this.audioCtx.currentTime - tLui;
 		this.currentPosition = 0;
 
 		this.loop();
@@ -175,7 +177,7 @@ export class AudioMan {
 		const dSet = audioState.drumset;
 		const bpm = audioState.bpm;
 		const bps = bpm / 60;
-		const tLui = audioState.loopUpdateInterval;
+		const tLui = LOOP_UPDATE_INTERVAL / bps;
 
 		const tDeltaNextLoop = 2 * tLui - this.vergangen;
 		const tOffset = this.vergangen - tLui;

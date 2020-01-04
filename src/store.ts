@@ -1,6 +1,8 @@
 import { PRODUCTION } from ".";
 import { IDrumLoop, IDrumset } from "./types";
 
+export const LOOP_UPDATE_INTERVAL = 0.025;
+
 export interface IAudioState {
 	masterVolume: number;
 	drumLoop: IDrumLoop;
@@ -9,7 +11,6 @@ export interface IAudioState {
 	maxBpm: number;
 	minBpm: number;
 	stepBpm: number;
-	loopUpdateInterval: number;
 	availableDrumsets: string[];
 }
 
@@ -34,7 +35,6 @@ let currentState: IState = {
 		maxBpm: 200,
 		minBpm: 40,
 		stepBpm: 4,
-		loopUpdateInterval: 0.025,
 		drumset: null,
 		availableDrumsets: []
 	},
