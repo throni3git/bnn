@@ -34,7 +34,7 @@ let currentState: IState = {
 		maxBpm: 200,
 		minBpm: 40,
 		stepBpm: 4,
-		loopUpdateInterval: 0.1,
+		loopUpdateInterval: 0.025,
 		drumset: null,
 		availableDrumsets: []
 	},
