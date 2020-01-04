@@ -71,12 +71,15 @@ export class BeatronomeApp extends React.Component<
 		const drumloop: IDrumLoop = {
 			denominator: 4,
 			enumerator: 4,
-			measure: {}
+			measure: {},
+			compiledMeasure: {}
 		};
 
 		for (const line of lines) {
 			log("logDrumLoopParsing", line);
 
+			// set time signature
+			// e.g.: time[4/4]
 			if (line.startsWith("time")) {
 				const time = bracketsRegEx.exec(line);
 				if (time && time[0]) {
@@ -91,6 +94,7 @@ export class BeatronomeApp extends React.Component<
 				}
 			} else {
 				// check if an instrument is referenced
+				// e.g.: hhc......[9 6 |8 6 |9 6 |8 6 ]
 				const instrKey = DrumsetKeyArray.find(key =>
 					line.startsWith(key)
 				);
@@ -119,6 +123,8 @@ export class BeatronomeApp extends React.Component<
 	}
 
 	public render() {
+		const audioState = getState().audio;
+
 		return (
 			<div>
 				<div>
@@ -130,7 +136,7 @@ export class BeatronomeApp extends React.Component<
 					<span>Volume</span>
 					<input
 						type="range"
-						value={getState().audio.masterVolume * 1000.0}
+						value={audioState.masterVolume * 1000.0}
 						min={0}
 						max={1000}
 						onChange={e => {
@@ -142,7 +148,7 @@ export class BeatronomeApp extends React.Component<
 							);
 						}}
 					></input>
-					<span>{getState().audio.masterVolume}</span>
+					<span>{audioState.masterVolume}</span>
 				</div>
 				<div>
 					<Button
@@ -156,11 +162,11 @@ export class BeatronomeApp extends React.Component<
 				</div>
 				<div>
 					<Button
-						caption="Increase 4 bpm"
+						caption={"Increase " + audioState.stepBpm + " bpm"}
 						action={this.increaseBpm}
 					></Button>
 					<Button
-						caption="Decrease 4 bpm"
+						caption={"Decrease " + audioState.stepBpm + " bpm"}
 						action={this.decreaseBpm}
 					></Button>
 				</div>
@@ -171,18 +177,24 @@ export class BeatronomeApp extends React.Component<
 						value={getState().audio.bpm}
 						min={40}
 						max={200}
-						onChange={e => {
-							const bpm = e.target.valueAsNumber;
-							const bps = bpm / 60;
-							setAudioState("bpm", bpm);
-							setAudioState("loopUpdateInterval", 1 / bps);
-						}}
+						onChange={this.changeTempo}
 					></input>
-					<span>{"" + getState().audio.bpm + " BPM"}</span>
+					<span>{"" + audioState.bpm + " BPM"}</span>
 				</div>
 			</div>
 		);
 	}
+
+	/**
+	 * callback setting up state for new tempo
+	 */
+	private changeTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const now = Date.now();
+		const bpm = e.target.valueAsNumber;
+		console.log(bpm);
+
+		setAudioState("bpm", bpm);
+	};
 
 	/**
 	 * increase tempo by x bpm
