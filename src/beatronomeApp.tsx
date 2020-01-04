@@ -78,6 +78,8 @@ export class BeatronomeApp extends React.Component<
 		for (const line of lines) {
 			log("logDrumLoopParsing", line);
 
+			// set time signature
+			// e.g.: time[4/4]
 			if (line.startsWith("time")) {
 				const time = bracketsRegEx.exec(line);
 				if (time && time[0]) {
@@ -92,6 +94,7 @@ export class BeatronomeApp extends React.Component<
 				}
 			} else {
 				// check if an instrument is referenced
+				// e.g.: hhc......[9 6 |8 6 |9 6 |8 6 ]
 				const instrKey = DrumsetKeyArray.find(key =>
 					line.startsWith(key)
 				);
@@ -185,18 +188,12 @@ export class BeatronomeApp extends React.Component<
 	/**
 	 * callback setting up state for new tempo
 	 */
-	private lastTempoChange = 0;
 	private changeTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const now = Date.now();
-		// if (now - this.lastTempoChange > 100) {
 		const bpm = e.target.valueAsNumber;
 		console.log(bpm);
-		const bps = bpm / 60;
 
 		setAudioState("bpm", bpm);
-		setAudioState("loopUpdateInterval", 1 / bps);
-		// }
-		this.lastTempoChange = now;
 	};
 
 	/**
