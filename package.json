@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode=development --watch",
-    "dist": "webpack --mode=production -p"
+    "dist": "webpack --mode=production -p",
+    "electron": "electron ./start-electron.js",
+	"packElectron": "electron-packager ./start-electron.js bnn"
   },
   "keywords": [
     "audio"
@@ -31,6 +33,8 @@
     "webpack-dev-server": "^3.7.1"
   },
   "dependencies": {
+    "electron": "^7.1.8",
+    "electron-packager": "^14.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "standardized-audio-context": "^20.1.6",
