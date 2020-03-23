@@ -1,4 +1,5 @@
 import { IDebuggingState, getState, setAudioState } from "./store";
+import { audioManInstance } from "./audioMan";
 
 export function log(key: keyof IDebuggingState, ...args): void {
 	const state = getState();
@@ -25,4 +26,13 @@ export function decreaseBpm(): void {
 		audioState.bpm - audioState.stepBpm
 	);
 	setAudioState("bpm", bpm);
+}
+
+/** toggle playback state */
+export function togglePlay(): void {
+	if (getState().audio.isPlaying) {
+		audioManInstance.stopLoop();
+	} else {
+		audioManInstance.startLoop();
+	}
 }

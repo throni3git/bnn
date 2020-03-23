@@ -9,7 +9,7 @@ import {
 } from "./store";
 import { IDrumset, DrumsetKeys, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
-import { log, increaseBpm, decreaseBpm } from "./util";
+import { log, increaseBpm, decreaseBpm, togglePlay } from "./util";
 import Button from "./button";
 import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 
@@ -152,12 +152,8 @@ export class BeatronomeApp extends React.Component<
 				</div>
 				<div>
 					<Button
-						caption="StartLoop"
-						action={() => audioManInstance.startLoop()}
-					></Button>
-					<Button
-						caption="StopLoop"
-						action={() => audioManInstance.stopLoop()}
+						caption={audioState.isPlaying ? "StopLoop" : "StartLoop"}
+						action={() => togglePlay()}
 					></Button>
 				</div>
 				<div>
