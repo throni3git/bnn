@@ -9,7 +9,7 @@ import {
 } from "./store";
 import { IDrumset, DrumsetKeys, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
-import { log } from "./util";
+import { log, increaseBpm, decreaseBpm } from "./util";
 import Button from "./button";
 import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 
@@ -163,11 +163,11 @@ export class BeatronomeApp extends React.Component<
 				<div>
 					<Button
 						caption={"Increase " + audioState.stepBpm + " bpm"}
-						action={this.increaseBpm}
+						action={increaseBpm}
 					></Button>
 					<Button
 						caption={"Decrease " + audioState.stepBpm + " bpm"}
-						action={this.decreaseBpm}
+						action={decreaseBpm}
 					></Button>
 				</div>
 				<div>
@@ -195,30 +195,6 @@ export class BeatronomeApp extends React.Component<
 
 		setAudioState("bpm", bpm);
 	};
-
-	/**
-	 * increase tempo by x bpm
-	 */
-	private increaseBpm(): void {
-		const audioState = getState().audio;
-		const bpm = Math.min(
-			audioState.maxBpm,
-			audioState.bpm + audioState.stepBpm
-		);
-		setAudioState("bpm", bpm);
-	}
-
-	/**
-	 * decrease tempo by x bpm
-	 */
-	private decreaseBpm(): void {
-		const audioState = getState().audio;
-		const bpm = Math.max(
-			audioState.minBpm,
-			audioState.bpm - audioState.stepBpm
-		);
-		setAudioState("bpm", bpm);
-	}
 }
 
 export default BeatronomeApp;
