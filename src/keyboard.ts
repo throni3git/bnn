@@ -1,5 +1,5 @@
 import { Key } from "ts-keycode-enum";
-import { increaseBpm, decreaseBpm } from "./util";
+import { increaseBpm, decreaseBpm, togglePlay } from "./util";
 
 const keyHandler = (event: KeyboardEvent) => {
 	switch (event.which) {
@@ -9,6 +9,10 @@ const keyHandler = (event: KeyboardEvent) => {
 		}
 		case Key.Subtract: {
 			decreaseBpm();
+			break;
+		}
+		case Key.Space: {
+			togglePlay();
 			break;
 		}
 	}
