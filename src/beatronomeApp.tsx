@@ -1,15 +1,16 @@
 import * as React from "react";
 
 import { PRODUCTION } from "./";
-import {
-	subscribe,
-	setUserInterfaceState,
-	getState,
-	setAudioState
-} from "./store";
-import { IDrumset, DrumsetKeys, DrumsetKeyArray, IDrumLoop } from "./types";
+import { subscribe, getState, setAudioState } from "./store";
+import { IDrumset, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
-import { log, increaseBpm, decreaseBpm, togglePlay } from "./util";
+import {
+	log,
+	increaseBpm,
+	decreaseBpm,
+	togglePlay,
+	setMasterVolume
+} from "./util";
 import Button from "./button";
 import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 
@@ -141,18 +142,16 @@ export class BeatronomeApp extends React.Component<
 						max={1000}
 						onChange={e => {
 							const vol = e.target.valueAsNumber / 1000;
-							setAudioState("masterVolume", vol);
-							audioManInstance.masterGainNode.gain.setValueAtTime(
-								e.target.valueAsNumber / 1000,
-								0
-							);
+							setMasterVolume(vol);
 						}}
 					></input>
-					<span>{audioState.masterVolume}</span>
+					<span>{audioState.masterVolume.toFixed(2)}</span>
 				</div>
 				<div>
 					<Button
-						caption={audioState.isPlaying ? "StopLoop" : "StartLoop"}
+						caption={
+							audioState.isPlaying ? "StopLoop" : "StartLoop"
+						}
 						action={() => togglePlay()}
 					></Button>
 				</div>

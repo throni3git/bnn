@@ -36,3 +36,23 @@ export function togglePlay(): void {
 		audioManInstance.startLoop();
 	}
 }
+
+/** set volume */
+export function setMasterVolume(vol: number): void {
+	setAudioState("masterVolume", vol);
+	audioManInstance.masterGainNode.gain.setValueAtTime(vol, 0);
+}
+
+/** increase volume by 0.05 */
+export function increaseVolume(): void {
+	let vol = getState().audio.masterVolume;
+	vol = Math.min(vol + 0.05, 1.0);
+	setMasterVolume(vol);
+}
+
+/** decrease volume by 0.05 */
+export function decreaseVolume(): void {
+	let vol = getState().audio.masterVolume;
+	vol = Math.max(vol - 0.05, 0.0);
+	setMasterVolume(vol);
+}
