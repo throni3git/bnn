@@ -29,6 +29,14 @@ const keyHandler = (event: KeyboardEvent) => {
 			decreaseVolume();
 			break;
 		}
+		case Key.RightArrow: {
+			increaseBpm();
+			break;
+		}
+		case Key.LeftArrow: {
+			decreaseBpm();
+			break;
+		}
 	}
 };
 
