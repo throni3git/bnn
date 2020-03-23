@@ -1,4 +1,5 @@
 // https://electronjs.org/docs/tutorial/first-app
+// https://entwickler.de/online/javascript/electron-react-desktopanwendungen-579896835.html
 
 const { app, BrowserWindow } = require("electron");
 

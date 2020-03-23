@@ -1,5 +1,6 @@
 {
   "name": "beatronome",
+  "homepage": ".",
   "version": "2.0.0",
   "description": "simple drum computer",
   "main": "index.js",
