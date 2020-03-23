@@ -7,8 +7,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode=development --watch",
     "dist": "webpack --mode=production -p",
-    "electron": "electron ./start-electron.js",
-    "packElectron": "electron-packager ./start-electron.js bnn --overwrite --asar --prune=true --out=release-builds"
+    "electron-run": "electron ./start-electron.js",
+    "electron": "electron-packager ./start-electron.js bnn --overwrite --asar --prune=true --out=release-builds"
   },
   "keywords": [
     "audio"
