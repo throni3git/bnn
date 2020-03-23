@@ -3,6 +3,8 @@ import * as React from "react";
 
 import { BeatronomeApp } from "./beatronomeApp";
 
+import { registerGlobalKeyHandler } from "./keyboard";
+
 declare var BUILD_TIMESTAMP: string;
 console.log("Beatronome " + BUILD_TIMESTAMP);
 
@@ -26,5 +28,7 @@ appMount.style.height = "100%";
 appMount.style.overflow = "hidden";
 
 body.appendChild(appMount);
+
+registerGlobalKeyHandler();
 
 ReactDOM.render(React.createElement(BeatronomeApp), appMount);
