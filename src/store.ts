@@ -12,6 +12,7 @@ export interface IAudioState {
 	minBpm: number;
 	stepBpm: number;
 	availableDrumsets: string[];
+	isPlaying: boolean;
 }
 
 export interface IUserInterfaceState {}
@@ -36,7 +37,8 @@ let currentState: IState = {
 		minBpm: 40,
 		stepBpm: 4,
 		drumset: null,
-		availableDrumsets: []
+		availableDrumsets: [],
+		isPlaying: false
 	},
 	debugging: {
 		logDrumLoopParsing: !PRODUCTION && false,

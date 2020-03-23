@@ -117,11 +117,14 @@ export class AudioMan {
 		this.currentPosition = 0;
 
 		this.loop();
+
+		setAudioState("isPlaying", true);
 	}
 
 	public stopLoop(): void {
 		this.masterGainNode.gain.setValueAtTime(0, 0);
 		clearTimeout(this.handleInterval);
+		setAudioState("isPlaying", false);
 	}
 
 	private currentPosition: number;
