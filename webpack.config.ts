@@ -38,7 +38,7 @@ const config = {
 	},
 	devtool: "source-map",
 	devServer: {
-		port: 8001
+		port: 3000
 	} as webpackDevServer.Configuration
 };
 
