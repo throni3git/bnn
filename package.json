@@ -3,12 +3,13 @@
   "homepage": ".",
   "version": "2.0.0",
   "description": "simple drum computer",
-  "main": "index.js",
+  "main": "start-electron.js",
   "scripts": {
     "start": "webpack-dev-server --mode=development --watch",
     "dist": "webpack --mode=production -p",
     "electron-run": "electron ./start-electron.js",
-    "electron": "electron-packager ./start-electron.js bnn --overwrite --asar --prune=true --out=release-builds"
+    "electron-build": "electron-packager . Beatronome --overwrite --asar --ignore=node_modules/ --out=release-builds",
+    "electron": "yarn dist && yarn electron-build"
   },
   "keywords": [
     "audio"
