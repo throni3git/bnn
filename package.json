@@ -1,7 +1,7 @@
 {
   "name": "beatronome",
   "homepage": ".",
-  "version": "2.0.0",
+  "version": "0.1.0",
   "description": "simple drum computer",
   "main": "start-electron.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "electron": "yarn dist && yarn electron-build"
   },
   "keywords": [
-    "audio"
+    "audio", "drum computer"
   ],
   "author": "Thomas Thron <throni3git@gmail.com>",
   "license": "ISC",
