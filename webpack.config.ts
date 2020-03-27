@@ -28,13 +28,15 @@ const config = {
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
 			title: "Beatronome",
+			template: "src/index.html",
 			favicon: "assets/images/favicon16.png"
 		}),
 		new CopyWebpackPlugin([
 			{
 				from: "assets/**/*",
 				to: "./"
-			}
+			},
+			"src/manifest.webmanifest"
 		])
 	],
 	output: {
