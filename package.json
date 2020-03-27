@@ -12,7 +12,8 @@
     "electron": "yarn dist && yarn electron-build"
   },
   "keywords": [
-    "audio", "drum computer"
+    "audio",
+    "drum computer"
   ],
   "author": "Thomas Thron <throni3git@gmail.com>",
   "license": "ISC",
