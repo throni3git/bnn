@@ -40,6 +40,7 @@ const config = {
 		])
 	],
 	output: {
+		filename: "bundle.[hash].js",
 		path: path.resolve("dist")
 	},
 	devtool: "source-map",
