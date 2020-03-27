@@ -1,8 +1,9 @@
 import * as webpack from "webpack";
 import * as webpackDevServer from "webpack-dev-server";
-import * as htmlPlugin from "html-webpack-plugin";
-import * as copyWebpackPlugin from "copy-webpack-plugin";
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import * as CopyWebpackPlugin from "copy-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import * as WorkboxPlugin from "workbox-webpack-plugin";
 import * as path from "path";
 
 const timestamp = JSON.stringify(new Date().toISOString());
@@ -24,9 +25,12 @@ const config = {
 		new webpack.DefinePlugin({
 			BUILD_TIMESTAMP: timestamp
 		}),
-		new htmlPlugin({ title: "Beatronome" }),
 		new CleanWebpackPlugin({}),
-		new copyWebpackPlugin([
+		new HtmlWebpackPlugin({
+			title: "Beatronome",
+			favicon: "assets/images/favicon16.png"
+		}),
+		new CopyWebpackPlugin([
 			{
 				from: "assets/**/*",
 				to: "./"
