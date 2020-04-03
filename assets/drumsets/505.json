@@ -1,6 +1,6 @@
 {
-  "bd": { "url": "505/bd.mp3" },
-  "sn": { "url": "505/sn.mp3" },
-  "hhc": { "url": "505/hhc.mp3" },
-  "hho": { "url": "505/hho.mp3" }
+  "bd": { "url": "505/bd.wav" },
+  "sn": { "url": "505/sn.wav" },
+  "hhc": { "url": "505/hhc.wav" },
+  "hho": { "url": "505/hho.wav" }
 }
