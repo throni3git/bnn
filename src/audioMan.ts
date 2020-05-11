@@ -31,7 +31,7 @@ export class AudioMan {
 		basePath: string
 	): Promise<void> {
 		const allDrums = Object.keys(drumset) as DrumsetKeys[];
-		const loadingPromises = allDrums.map(instrument =>
+		const loadingPromises = allDrums.map((instrument) =>
 			this.loadInstrument(drumset[instrument], basePath)
 		);
 
@@ -82,9 +82,9 @@ export class AudioMan {
 	}
 
 	private startTime: number;
-	private oldTime: number;
+	private tOld: number;
 	private handleInterval: number;
-	private vergangen: number;
+	private tPassed: number;
 
 	private debugPianoRoll: Record<string, number[]>;
 
@@ -113,7 +113,7 @@ export class AudioMan {
 
 		this.masterGainNode.gain.setValueAtTime(audioState.masterVolume, 0);
 		this.startTime = this.audioCtx.currentTime;
-		this.oldTime = this.audioCtx.currentTime - tLui;
+		this.tOld = this.audioCtx.currentTime - tLui;
 		this.currentPosition = 0;
 
 		this.loop();
@@ -168,11 +168,11 @@ export class AudioMan {
 	// https://www.html5rocks.com/en/tutorials/audio/scheduling/
 
 	private loop = () => {
-		const now = this.audioCtx.currentTime;
-		log("logLoopInterval", now);
-		this.vergangen = now - this.oldTime;
-		log("logLoopInterval", "vergangen " + this.vergangen);
-		log("logLoopInterval", "this.currentPosition " + this.currentPosition);
+		const tNow = this.audioCtx.currentTime;
+		// log("logLoopInterval", now);
+		this.tPassed = tNow - this.tOld;
+		// log("logLoopInterval", "vergangen " + this.vergangen);
+		// log("logLoopInterval", "this.currentPosition " + this.currentPosition);
 
 		const audioState = getState().audio;
 
@@ -181,19 +181,19 @@ export class AudioMan {
 		const bpm = audioState.bpm;
 		const bps = bpm / 60;
 		const tLui = LOOP_UPDATE_INTERVAL / bps;
+		const tOffset = this.tPassed - tLui;
 
-		const tDeltaNextLoop = 2 * tLui - this.vergangen;
-		const tOffset = this.vergangen - tLui;
-		log("logLoopInterval", "tDeltaNextLoop " + tDeltaNextLoop);
+		// const tDeltaNextLoop = 2 * tLui - this.tPassed;
+		// log("logLoopInterval", "tDeltaNextLoop " + tDeltaNextLoop);
 
-		let newPosition = this.currentPosition + tLui * bps;
-		if (newPosition + tLui * bps > dLoop.denominator) {
-			newPosition -= dLoop.denominator;
-			log("logLoopInterval", "newPosition RESET: " + newPosition);
+		let pNext = this.currentPosition + this.tPassed * bps;
+		if (pNext + 2*LOOP_UPDATE_INTERVAL > dLoop.denominator) {
+			pNext -= dLoop.denominator;
+			// log("logLoopInterval", "newPosition RESET: " + newPosition);
 		}
 
 		// duration of a quarter note
-		const tInterval = 1 / bps;
+		const tQuarterNote = 1 / bps;
 
 		const usedInstruments = Object.keys(dLoop.compiledMeasure);
 		for (const instrKey of usedInstruments) {
@@ -201,17 +201,20 @@ export class AudioMan {
 			const instrument = dSet[instrKey] as IDrumInstrument;
 
 			for (const onset of onsets) {
-				const delta =
-					onset.position * tInterval -
-					this.currentPosition * tInterval;
+				const tDelta =
+					onset.position * tQuarterNote -
+					this.currentPosition * tQuarterNote;
 
-				if (delta >= 0 && delta < tLui * 2 && !onset.isPlanned) {
-					const onsetTime = now + delta - tOffset;
-					this.playInstrument(instrument, onsetTime, onset.velocity);
+				const timeOnset = tNow + tDelta - tOffset;
+
+				if (tDelta >= 0 && tDelta < tLui * 2 && !onset.isPlanned) {
+					this.playInstrument(instrument, timeOnset, onset.velocity);
 					this.debugPianoRoll[instrKey].push(
-						onsetTime - this.startTime
+						timeOnset - this.startTime
 					);
 					onset.isPlanned = true;
+					log("logLoopInterval", "onsetTime " + timeOnset);
+
 					// } else if (delta >= 0 && delta < tLui * 2) {
 					// log("logLoopInterval", "already planned: ", onset);
 				}
@@ -219,17 +222,18 @@ export class AudioMan {
 				if (onset.position < this.currentPosition) {
 					onset.isPlanned = false;
 				}
-				if (delta > tLui * 2) {
+				if (tDelta > tLui * 2) {
 					onset.isPlanned = false;
 				}
 			}
+			// break;
 		}
 
-		this.currentPosition = newPosition;
+		this.currentPosition = pNext;
 
-		log("logLoopInterval", this.debugPianoRoll);
+		// log("logLoopInterval", this.debugPianoRoll);
 
-		this.oldTime = now;
+		this.tOld = tNow;
 
 		this.handleInterval = setTimeout(this.loop, tLui * 1000);
 	};

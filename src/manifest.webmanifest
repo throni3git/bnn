@@ -1,0 +1,76 @@
+{
+	"name": "Beatronome",
+	"short_name": "Beatronome",
+	"start_url": ".",
+	"display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+	"description": "Nice and easy drum computer.",
+	"icons": [
+		{
+			"src": "assets/images/favicon8.png",
+			"sizes": "8x8",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon12.png",
+			"sizes": "12x12",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon16.png",
+			"sizes": "16x16",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon24.png",
+			"sizes": "24x24",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon32.png",
+			"sizes": "32x32",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon48.png",
+			"sizes": "48x48",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon64.png",
+			"sizes": "64x64",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon72.png",
+			"sizes": "72x72",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon96.png",
+			"sizes": "96x96",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon128.png",
+			"sizes": "128x128",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon256.png",
+			"sizes": "256x256",
+			"type": "image/png"
+		},
+		{
+			"src": "assets/images/favicon512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"related_applications": [
+		{
+			"platform": "Web"
+		}
+	]
+}
