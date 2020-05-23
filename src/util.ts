@@ -28,6 +28,45 @@ export function decreaseBpm(): void {
 	setAudioState("bpm", bpm);
 }
 
+/** tap tempo and get BPM value for the last 4 taps */
+let lastTapTempo = 0;
+let tapTimings = new Array<number>();
+export function tapTempo(): void {
+	let now = Date.now();
+	const delta = now - lastTapTempo;
+	lastTapTempo = now;
+
+	// reset
+	if (delta > 2000) {
+		tapTimings = new Array<number>();
+	}
+
+	tapTimings.push(delta);
+	if (tapTimings.length < 3) {
+		return;
+	}
+
+	// cycle through delta time values, drop oldest value
+	tapTimings.shift();
+
+	// calculate mean value
+	let meanDelta = 0;
+	for (const partDelta of tapTimings) {
+		meanDelta += partDelta;
+	}
+	meanDelta /= tapTimings.length;
+	// console.log(tapTimings);
+	// console.log(meanDelta);
+
+	// update state
+	const audioState = getState().audio;
+	let bpm = Math.round((60 * 1000) / meanDelta);
+	// console.log(bpm);
+	bpm = Math.min(audioState.maxBpm, bpm);
+	bpm = Math.max(audioState.minBpm, bpm);
+	setAudioState("bpm", bpm);
+}
+
 /** toggle playback state */
 export function togglePlay(): void {
 	if (getState().audio.isPlaying) {

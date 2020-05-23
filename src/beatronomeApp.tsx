@@ -8,6 +8,7 @@ import {
 	log,
 	increaseBpm,
 	decreaseBpm,
+	tapTempo,
 	togglePlay,
 	setMasterVolume
 } from "./util";
@@ -163,6 +164,10 @@ export class BeatronomeApp extends React.Component<
 					<Button
 						caption={"Decrease " + audioState.stepBpm + " bpm"}
 						action={decreaseBpm}
+					></Button>
+					<Button
+						caption={"Tap tempo"}
+						action={tapTempo}
 					></Button>
 				</div>
 				<div>
