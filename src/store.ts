@@ -15,7 +15,9 @@ export interface IAudioState {
 	isPlaying: boolean;
 }
 
-export interface IUserInterfaceState {}
+export interface IUserInterfaceState {
+	isMobileSmall: boolean;
+}
 
 export interface IDebuggingState {
 	logDrumLoopParsing: boolean;
@@ -28,6 +30,8 @@ export interface IState {
 	debugging: IDebuggingState;
 	audio: IAudioState;
 }
+
+const isMobileSmall = screen.width < 640 && screen.height < 640;
 
 let currentState: IState = {
 	audio: {
@@ -46,7 +50,7 @@ let currentState: IState = {
 		logLoopInterval: !PRODUCTION,
 		logTapTempo: !PRODUCTION && false
 	},
-	ui: {}
+	ui: { isMobileSmall }
 };
 
 export type Subscriber = () => void;

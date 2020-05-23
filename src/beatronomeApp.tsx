@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import styled from "styled-components";
+
 import { PRODUCTION } from "./";
 import { subscribe, getState, setAudioState } from "./store";
 import { IDrumset, DrumsetKeyArray, IDrumLoop } from "./types";
@@ -17,6 +19,13 @@ import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
+
+const ContainerDiv = styled.div<{ isMobileSmall: boolean }>(
+	(props) => `
+	font-family: sans-serif;
+	// ${props.isMobileSmall}
+	`
+);
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -97,7 +106,7 @@ export class BeatronomeApp extends React.Component<
 			} else {
 				// check if an instrument is referenced
 				// e.g.: hhc......[9 6 |8 6 |9 6 |8 6 ]
-				const instrKey = DrumsetKeyArray.find(key =>
+				const instrKey = DrumsetKeyArray.find((key) =>
 					line.startsWith(key)
 				);
 				const drumLine = bracketsRegEx.exec(line);
@@ -112,7 +121,7 @@ export class BeatronomeApp extends React.Component<
 					// only take drum lines that have notes
 					const dl = drumLine[0].substring(1, drumLine[0].length - 1);
 					const singleMeters = dl.split("|");
-					if (singleMeters.some(meter => meterRegEx.test(meter))) {
+					if (singleMeters.some((meter) => meterRegEx.test(meter))) {
 						drumloop.measure[instrKey] = singleMeters;
 					}
 				}
@@ -126,27 +135,32 @@ export class BeatronomeApp extends React.Component<
 
 	public render() {
 		const audioState = getState().audio;
+		const uiState = getState().ui;
 
 		return (
-			<div>
+			<ContainerDiv isMobileSmall={uiState.isMobileSmall}>
 				<div>
 					<h1 style={{ textAlign: "center" }}>
 						BEATRONOME{PRODUCTION ? "" : " (development)"}
 					</h1>
 				</div>
 				<div>
-					<span>Volume</span>
-					<input
-						type="range"
-						value={audioState.masterVolume * 1000.0}
-						min={0}
-						max={1000}
-						onChange={e => {
-							const vol = e.target.valueAsNumber / 1000;
-							setMasterVolume(vol);
-						}}
-					></input>
-					<span>{audioState.masterVolume.toFixed(2)}</span>
+					<div>
+						<span>Volume</span>
+						<span>{audioState.masterVolume.toFixed(2)}</span>
+					</div>
+					<div>
+						<input
+							type="range"
+							value={audioState.masterVolume * 1000.0}
+							min={0}
+							max={1000}
+							onChange={(e) => {
+								const vol = e.target.valueAsNumber / 1000;
+								setMasterVolume(vol);
+							}}
+						></input>
+					</div>
 				</div>
 				<div>
 					<Button
@@ -165,23 +179,24 @@ export class BeatronomeApp extends React.Component<
 						caption={"Decrease " + audioState.stepBpm + " bpm"}
 						action={decreaseBpm}
 					></Button>
-					<Button
-						caption={"Tap tempo"}
-						action={tapTempo}
-					></Button>
+					<Button caption={"Tap tempo"} action={tapTempo}></Button>
 				</div>
 				<div>
-					<span>Tempo</span>
-					<input
-						type="range"
-						value={getState().audio.bpm}
-						min={40}
-						max={200}
-						onChange={this.changeTempo}
-					></input>
-					<span>{"" + audioState.bpm + " BPM"}</span>
+					<div>
+						<span>Tempo</span>
+						<span>{"" + audioState.bpm + " BPM"}</span>
+					</div>
+					<div>
+						<input
+							type="range"
+							value={getState().audio.bpm}
+							min={40}
+							max={200}
+							onChange={this.changeTempo}
+						></input>
+					</div>
 				</div>
-			</div>
+			</ContainerDiv>
 		);
 	}
 
