@@ -20,6 +20,7 @@ export interface IUserInterfaceState {}
 export interface IDebuggingState {
 	logDrumLoopParsing: boolean;
 	logLoopInterval: boolean;
+	logTapTempo: boolean;
 }
 
 export interface IState {
@@ -42,7 +43,8 @@ let currentState: IState = {
 	},
 	debugging: {
 		logDrumLoopParsing: !PRODUCTION && false,
-		logLoopInterval: !PRODUCTION
+		logLoopInterval: !PRODUCTION,
+		logTapTempo: !PRODUCTION && false
 	},
 	ui: {}
 };
