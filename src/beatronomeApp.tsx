@@ -27,6 +27,16 @@ const ContainerDiv = styled.div<{ isMobileSmall: boolean }>(
 	`
 );
 
+const SliderCaptionDiv = styled.div`
+	display: flex;
+	justify-content: space-between;
+	padding: 3px;
+`;
+
+const SliderDiv = styled.div`
+	display: flex;
+`;
+
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
 	IBeatronomeAppState
@@ -145,11 +155,11 @@ export class BeatronomeApp extends React.Component<
 					</h1>
 				</div>
 				<div>
-					<div>
+					<SliderCaptionDiv>
 						<span>Volume</span>
 						<span>{audioState.masterVolume.toFixed(2)}</span>
-					</div>
-					<div>
+					</SliderCaptionDiv>
+					<SliderDiv>
 						<input
 							type="range"
 							value={audioState.masterVolume * 1000.0}
@@ -159,8 +169,9 @@ export class BeatronomeApp extends React.Component<
 								const vol = e.target.valueAsNumber / 1000;
 								setMasterVolume(vol);
 							}}
+							style={{ width: "100%" }}
 						></input>
-					</div>
+					</SliderDiv>
 				</div>
 				<div>
 					<Button
@@ -182,19 +193,20 @@ export class BeatronomeApp extends React.Component<
 					<Button caption={"Tap tempo"} action={tapTempo}></Button>
 				</div>
 				<div>
-					<div>
+					<SliderCaptionDiv>
 						<span>Tempo</span>
 						<span>{"" + audioState.bpm + " BPM"}</span>
-					</div>
-					<div>
+					</SliderCaptionDiv>
+					<SliderDiv>
 						<input
 							type="range"
 							value={getState().audio.bpm}
 							min={40}
 							max={200}
 							onChange={this.changeTempo}
+							style={{ width: "100%" }}
 						></input>
-					</div>
+					</SliderDiv>
 				</div>
 			</ContainerDiv>
 		);
