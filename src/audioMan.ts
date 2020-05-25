@@ -187,7 +187,7 @@ export class AudioMan {
 		// log("logLoopInterval", "tDeltaNextLoop " + tDeltaNextLoop);
 
 		let pNext = this.currentPosition + this.tPassed * bps;
-		if (pNext + 2*LOOP_UPDATE_INTERVAL > dLoop.denominator) {
+		if (pNext + 2 * LOOP_UPDATE_INTERVAL > dLoop.denominator) {
 			pNext -= dLoop.denominator;
 			// log("logLoopInterval", "newPosition RESET: " + newPosition);
 		}
