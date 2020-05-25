@@ -33,6 +33,7 @@ import {
 } from "./util";
 import Button from "./button";
 import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
+import Matrix from "./matrix";
 
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
