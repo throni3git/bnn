@@ -25,6 +25,11 @@ export interface IOnset {
 	position: number;
 	velocity: number;
 	isPlanned: boolean;
+	subEnumerator: number;
+}
+
+export interface IDivision {
+	subDenominatorArray: number[];
 }
 
 export type IDrumLoop = {
@@ -35,5 +40,8 @@ export type IDrumLoop = {
 	};
 	compiledMeasure: {
 		[key in DrumsetKeys]?: IOnset[];
+	};
+	metaMeasure: {
+		[key in DrumsetKeys]?: IDivision[];
 	};
 };

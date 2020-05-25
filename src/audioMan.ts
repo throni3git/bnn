@@ -9,7 +9,8 @@ import {
 	IDrumset,
 	DrumsetKeys,
 	DrumsetKeyArray,
-	IOnset
+	IOnset,
+	IDivision
 } from "./types";
 import { log } from "./util";
 import { getState, setAudioState, LOOP_UPDATE_INTERVAL } from "./store";
@@ -144,9 +145,12 @@ export class AudioMan {
 				continue;
 			}
 			dLoop.compiledMeasure[instrKey] = [];
+			dLoop.metaMeasure[instrKey] = [];
 
 			for (let pIdx = 0; pIdx < dl.length; pIdx++) {
 				const part = dl[pIdx];
+
+				let maxSubDenominator = dLoop.denominator == 4 ? 4 : 2;
 
 				for (let dIdx = 0; dIdx < part.length; dIdx++) {
 					const digit = part[dIdx];
@@ -159,10 +163,21 @@ export class AudioMan {
 					const onset: IOnset = {
 						position,
 						velocity,
-						isPlanned: false
+						isPlanned: false,
+						subEnumerator: dIdx
 					};
 					dLoop.compiledMeasure[instrKey].push(onset);
+
+					if (dIdx > maxSubDenominator) {
+						maxSubDenominator = dIdx;
+					}
 				}
+
+				const subDivisions = Array.from({length:maxSubDenominator}).map((_, i) => i);
+				const division:IDivision = {
+					subDenominatorArray: subDivisions
+				};
+				dLoop.metaMeasure[instrKey].push(division);
 			}
 		}
 	}

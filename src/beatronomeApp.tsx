@@ -305,6 +305,7 @@ export class BeatronomeApp extends React.Component<
 			enumerator: 4,
 			measure: {},
 			compiledMeasure: {},
+			metaMeasure:{}
 		};
 
 		for (const line of lines) {
