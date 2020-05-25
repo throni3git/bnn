@@ -12,7 +12,7 @@ export let PRODUCTION = process.env.NODE_ENV == "production";
 
 // progressive web app service worker
 
-if ("serviceWorker" in navigator) {
+if (PRODUCTION && "serviceWorker" in navigator) {
 	window.addEventListener("load", () => {
 		navigator.serviceWorker
 			.register("service-worker.js")
