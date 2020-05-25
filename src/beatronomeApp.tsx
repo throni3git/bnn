@@ -200,9 +200,9 @@ export class BeatronomeApp extends React.Component<
 					<SliderDiv>
 						<input
 							type="range"
-							value={getState().audio.bpm}
-							min={40}
-							max={200}
+							value={audioState.bpm}
+							min={audioState.minBpm}
+							max={audioState.maxBpm}
 							onChange={this.changeTempo}
 							style={{ width: "100%" }}
 						></input>
