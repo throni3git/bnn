@@ -185,12 +185,12 @@ export class BeatronomeApp extends React.Component<
 					<Button action={() => togglePlay()}>
 						{audioState.isPlaying ? (
 							<FontAwesomeIcon
-								size="10x"
+								size="5x"
 								icon="stop-circle"
 							></FontAwesomeIcon>
 						) : (
 							<FontAwesomeIcon
-								size="10x"
+								size="5x"
 								icon="play-circle"
 							></FontAwesomeIcon>
 						)}
@@ -199,13 +199,13 @@ export class BeatronomeApp extends React.Component<
 				<ButtonRow>
 					<Button action={increaseBpm}>
 						<FontAwesomeIcon
-							size="10x"
+							size="5x"
 							icon="plus-circle"
 						></FontAwesomeIcon>
 					</Button>
 					<Button action={decreaseBpm}>
 						<FontAwesomeIcon
-							size="10x"
+							size="5x"
 							icon="minus-circle"
 						></FontAwesomeIcon>
 					</Button>
@@ -213,7 +213,7 @@ export class BeatronomeApp extends React.Component<
 				<ButtonRow>
 					<Button action={tapTempo}>
 						<FontAwesomeIcon
-							size="10x"
+							size="5x"
 							icon="drum"
 						></FontAwesomeIcon>
 					</Button>
