@@ -1,6 +1,15 @@
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+	faPlusCircle,
+	faMinusCircle,
+	faPlayCircle,
+	faStopCircle,
+	faDrum
+} from "@fortawesome/free-solid-svg-icons";
+
 import { BeatronomeApp } from "./beatronomeApp";
 
 import { registerGlobalKeyHandler } from "./keyboard";
@@ -16,14 +25,16 @@ if (PRODUCTION && "serviceWorker" in navigator) {
 	window.addEventListener("load", () => {
 		navigator.serviceWorker
 			.register("service-worker.js")
-			.then(registration => {
+			.then((registration) => {
 				console.log("SW registered: ", registration);
 			})
-			.catch(registrationError => {
+			.catch((registrationError) => {
 				console.log("SW registration failed: ", registrationError);
 			});
 	});
 }
+
+library.add(faPlusCircle, faMinusCircle, faPlayCircle, faStopCircle, faDrum);
 
 // global styles
 

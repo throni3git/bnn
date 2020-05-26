@@ -17,8 +17,8 @@ const ButtonDiv = styled.div`
 	}
 `;
 
-export const Button: React.SFC<IButtonProps> = props => (
-	<ButtonDiv onClick={props.action}>{props.caption}</ButtonDiv>
+export const Button: React.SFC<IButtonProps> = (props) => (
+	<ButtonDiv onClick={props.action}>{props.children}</ButtonDiv>
 );
 
 Button.displayName = "Button";
@@ -27,5 +27,4 @@ export default Button;
 
 export interface IButtonProps {
 	action: (event) => void;
-	caption: string;
 }

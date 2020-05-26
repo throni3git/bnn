@@ -2,6 +2,8 @@ import * as React from "react";
 
 import styled from "styled-components";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { PRODUCTION } from "./";
 import { subscribe, getState, setAudioState } from "./store";
 import { IDrumset, DrumsetKeyArray, IDrumLoop } from "./types";
@@ -35,6 +37,12 @@ const SliderCaptionDiv = styled.div`
 
 const SliderDiv = styled.div`
 	display: flex;
+`;
+
+const ButtonRow = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 `;
 
 export class BeatronomeApp extends React.Component<
@@ -173,25 +181,43 @@ export class BeatronomeApp extends React.Component<
 						></input>
 					</SliderDiv>
 				</div>
-				<div>
-					<Button
-						caption={
-							audioState.isPlaying ? "StopLoop" : "StartLoop"
-						}
-						action={() => togglePlay()}
-					></Button>
-				</div>
-				<div>
-					<Button
-						caption={"Increase " + audioState.stepBpm + " bpm"}
-						action={increaseBpm}
-					></Button>
-					<Button
-						caption={"Decrease " + audioState.stepBpm + " bpm"}
-						action={decreaseBpm}
-					></Button>
-					<Button caption={"Tap tempo"} action={tapTempo}></Button>
-				</div>
+				<ButtonRow>
+					<Button action={() => togglePlay()}>
+						{audioState.isPlaying ? (
+							<FontAwesomeIcon
+								size="10x"
+								icon="stop-circle"
+							></FontAwesomeIcon>
+						) : (
+							<FontAwesomeIcon
+								size="10x"
+								icon="play-circle"
+							></FontAwesomeIcon>
+						)}
+					</Button>
+				</ButtonRow>
+				<ButtonRow>
+					<Button action={increaseBpm}>
+						<FontAwesomeIcon
+							size="10x"
+							icon="plus-circle"
+						></FontAwesomeIcon>
+					</Button>
+					<Button action={decreaseBpm}>
+						<FontAwesomeIcon
+							size="10x"
+							icon="minus-circle"
+						></FontAwesomeIcon>
+					</Button>
+				</ButtonRow>
+				<ButtonRow>
+					<Button action={tapTempo}>
+						<FontAwesomeIcon
+							size="10x"
+							icon="drum"
+						></FontAwesomeIcon>
+					</Button>
+				</ButtonRow>
 				<div>
 					<SliderCaptionDiv>
 						<span>Tempo</span>
