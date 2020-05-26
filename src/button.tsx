@@ -4,16 +4,22 @@ import styled from "styled-components";
 import { COLORS } from "./constants";
 
 const ButtonDiv = styled.div`
-	background: ${COLORS.light};
+	background-color: ${COLORS.light};
 	border: 1px solid ${COLORS.lightBorder};
 	cursor: pointer;
-	padding: 6px;
+	padding: 12px;
 	margin: 4px;
 	text-align: center;
+	transition: background-color 0.05s linear;
 	user-select: none;
 
 	&:hover {
-		background: ${COLORS.lightHighlight};
+		background-color: ${COLORS.lightHighlight};
+	}
+
+	&:active {
+		background-color: ${COLORS.lightActive};
+		transition: background-color 0.001s linear;
 	}
 `;
 

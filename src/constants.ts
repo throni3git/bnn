@@ -3,7 +3,8 @@ export const COLORS = {
 	fc: "#444444",
 	light: "#e5e5e5",
 	lightBorder: "#dddddd",
-	lightHighlight: "#eeeeee"
+	lightHighlight: "#eeeeee",
+	lightActive: "#aaaaaa"
 };
 
 export const DIR_ASSETS = "assets/";
