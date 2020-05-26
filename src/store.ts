@@ -1,7 +1,7 @@
 import { PRODUCTION } from ".";
 import { IDrumLoop, IDrumset } from "./types";
 
-export const LOOP_UPDATE_INTERVAL = 0.08;
+export const LOOP_UPDATE_INTERVAL = 0.1;
 
 export interface IAudioState {
 	masterVolume: number;
