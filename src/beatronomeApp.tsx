@@ -214,7 +214,7 @@ export class BeatronomeApp extends React.Component<
 					<Button action={tapTempo}>
 						<FontAwesomeIcon
 							size="5x"
-							icon="drum"
+							icon="hand-point-up"
 						></FontAwesomeIcon>
 					</Button>
 				</ButtonRow>

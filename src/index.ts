@@ -7,7 +7,7 @@ import {
 	faMinusCircle,
 	faPlayCircle,
 	faStopCircle,
-	faDrum
+	faHandPointUp
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BeatronomeApp } from "./beatronomeApp";
@@ -34,7 +34,7 @@ if (PRODUCTION && "serviceWorker" in navigator) {
 	});
 }
 
-library.add(faPlusCircle, faMinusCircle, faPlayCircle, faStopCircle, faDrum);
+library.add(faPlusCircle, faMinusCircle, faPlayCircle, faStopCircle, faHandPointUp);
 
 // global styles
 
