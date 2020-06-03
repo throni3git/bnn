@@ -16,7 +16,9 @@ export interface IAudioState {
 }
 
 export interface IUserInterfaceState {
-	isMobileSmall: boolean;
+	isWidthLT640Px: boolean;
+	isHeightLT640px: boolean;
+	isLandscapeMode: boolean;
 }
 
 export interface IDebuggingState {
@@ -31,7 +33,9 @@ export interface IState {
 	audio: IAudioState;
 }
 
-const isMobileSmall = screen.width < 640 && screen.height < 640;
+const widthLT640Px = screen.width < 640;
+const heightLT640px = screen.height < 640;
+const isLandscapeMode = Math.abs(screen.orientation.angle) === 90;
 
 let currentState: IState = {
 	audio: {
@@ -50,8 +54,30 @@ let currentState: IState = {
 		logLoopInterval: !PRODUCTION,
 		logTapTempo: !PRODUCTION && false
 	},
-	ui: { isMobileSmall }
+	ui: { isWidthLT640Px: widthLT640Px, isHeightLT640px: heightLT640px, isLandscapeMode }
 };
+
+// orientation and resize handlers
+window.addEventListener("resize", (event: UIEvent) => {
+	const widthLT640Px = screen.width < 640;
+	const heightLT640px = screen.height < 640;
+	const state = getState();
+
+	if (state.ui.isWidthLT640Px != widthLT640Px) {
+		setUserInterfaceState("isWidthLT640Px", widthLT640Px);
+	}
+	if (state.ui.isHeightLT640px != heightLT640px) {
+		setUserInterfaceState("isHeightLT640px", heightLT640px);
+	}
+});
+
+window.addEventListener("orientationchange", (event: UIEvent) => {
+	if (Math.abs(screen.orientation.angle) === 90) {
+		setUserInterfaceState("isLandscapeMode", true);
+	} else {
+		setUserInterfaceState("isLandscapeMode", false);
+	}
+});
 
 export type Subscriber = () => void;
 

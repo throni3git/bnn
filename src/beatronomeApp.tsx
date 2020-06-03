@@ -156,7 +156,11 @@ export class BeatronomeApp extends React.Component<
 		const uiState = getState().ui;
 
 		return (
-			<ContainerDiv isMobileSmall={uiState.isMobileSmall}>
+			<ContainerDiv
+				isMobileSmall={
+					uiState.isWidthLT640Px || uiState.isHeightLT640px
+				}
+			>
 				<div>
 					<h1 style={{ textAlign: "center" }}>
 						BEATRONOME{PRODUCTION ? "" : " (development)"}
