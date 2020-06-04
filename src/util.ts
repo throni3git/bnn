@@ -71,11 +71,20 @@ export function tapTempo(): void {
 }
 
 /** toggle playback state */
+let timerIntervalHandle = null;
 export function togglePlay(): void {
 	if (getState().audio.isPlaying) {
 		audioManInstance.stopLoop();
+
+		clearInterval(timerIntervalHandle);
+		timerIntervalHandle = null;
 	} else {
 		audioManInstance.startLoop();
+
+		timerIntervalHandle = setInterval(
+			() => setAudioState("timer", getState().audio.timer + 1),
+			1000
+		);
 	}
 }
 

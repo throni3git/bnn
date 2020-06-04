@@ -207,7 +207,10 @@ export class BeatronomeApp extends React.Component<
 
 	public render() {
 		const audioState = getState().audio;
-		const uiState = getState().ui;
+		const timer = new Date(audioState.timer * 1000);
+		const minutes = (new Array(2).join("0") + timer.getMinutes()).slice(-2);
+		const seconds = (new Array(2).join("0") + timer.getSeconds()).slice(-2);
+		const timerString = `${minutes}:${seconds}`;
 
 		return (
 			<ContainerDiv>
@@ -287,6 +290,12 @@ export class BeatronomeApp extends React.Component<
 							style={{ width: "100%" }}
 						></input>
 					</SliderDiv>
+				</div>
+				<div>
+					<span>
+						<div>Timer</div>
+						<div>{timerString}</div>
+					</span>
 				</div>
 			</ContainerDiv>
 		);
