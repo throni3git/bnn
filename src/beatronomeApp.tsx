@@ -5,7 +5,12 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PRODUCTION } from "./";
-import { subscribe, getState, setAudioState } from "./store";
+import {
+	subscribe,
+	getState,
+	setAudioState,
+	setUserInterfaceState
+} from "./store";
 import { IDrumset, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
 import {
@@ -22,10 +27,11 @@ import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
 
-const ContainerDiv = styled.div<{ isMobileSmall: boolean }>(
+const ContainerDiv = styled.div<{ isLandscapeMode: boolean }>(
 	(props) => `
 	font-family: sans-serif;
-	// ${props.isMobileSmall}
+	// display:flex;
+	// flex-direction: ${props.isLandscapeMode ? "row" : "column"}
 	`
 );
 
@@ -68,6 +74,41 @@ export class BeatronomeApp extends React.Component<
 			this.loadDrumloop("debug.txt");
 		}
 	}
+
+	public componentDidMount() {
+		// assign handlers to window
+		window.addEventListener("resize", this.resizeHandler);
+		window.addEventListener("orientationchange", this.orientationHandler);
+
+		// initially call handlers to start correctly
+		this.resizeHandler();
+		this.orientationHandler();
+	}
+
+	/**
+	 * handlers for orientation change and resize events
+	 */
+	private resizeHandler = (event?: UIEvent) => {
+		const widthLT640Px = screen.width < 640;
+		const heightLT640px = screen.height < 640;
+		const state = getState();
+
+		if (state.ui.isWidthLT640Px != widthLT640Px) {
+			setUserInterfaceState("isWidthLT640Px", widthLT640Px);
+		}
+		if (state.ui.isHeightLT640px != heightLT640px) {
+			setUserInterfaceState("isHeightLT640px", heightLT640px);
+		}
+	};
+
+	private orientationHandler = (event?: UIEvent) => {
+		console.log(screen.orientation.angle);
+		if (Math.abs(screen.orientation.angle) === 90) {
+			setUserInterfaceState("isLandscapeMode", true);
+		} else {
+			setUserInterfaceState("isLandscapeMode", false);
+		}
+	};
 
 	/**
 	 * get overview of drumsets available
@@ -156,11 +197,7 @@ export class BeatronomeApp extends React.Component<
 		const uiState = getState().ui;
 
 		return (
-			<ContainerDiv
-				isMobileSmall={
-					uiState.isWidthLT640Px || uiState.isHeightLT640px
-				}
-			>
+			<ContainerDiv isLandscapeMode={uiState.isLandscapeMode}>
 				<div>
 					<h1 style={{ textAlign: "center" }}>
 						BEATRONOME{PRODUCTION ? "" : " (development)"}

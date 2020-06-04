@@ -33,10 +33,6 @@ export interface IState {
 	audio: IAudioState;
 }
 
-const widthLT640Px = screen.width < 640;
-const heightLT640px = screen.height < 640;
-const isLandscapeMode = Math.abs(screen.orientation.angle) === 90;
-
 let currentState: IState = {
 	audio: {
 		masterVolume: PRODUCTION ? 1 : 0.3,
@@ -54,43 +50,23 @@ let currentState: IState = {
 		logLoopInterval: !PRODUCTION,
 		logTapTempo: !PRODUCTION && false
 	},
-	ui: { isWidthLT640Px: widthLT640Px, isHeightLT640px: heightLT640px, isLandscapeMode }
+	ui: {
+		isWidthLT640Px: false,
+		isHeightLT640px: false,
+		isLandscapeMode: false
+	}
 };
-
-// orientation and resize handlers
-window.addEventListener("resize", (event: UIEvent) => {
-	const widthLT640Px = screen.width < 640;
-	const heightLT640px = screen.height < 640;
-	const state = getState();
-
-	if (state.ui.isWidthLT640Px != widthLT640Px) {
-		setUserInterfaceState("isWidthLT640Px", widthLT640Px);
-	}
-	if (state.ui.isHeightLT640px != heightLT640px) {
-		setUserInterfaceState("isHeightLT640px", heightLT640px);
-	}
-});
-
-window.addEventListener("orientationchange", (event: UIEvent) => {
-	if (Math.abs(screen.orientation.angle) === 90) {
-		setUserInterfaceState("isLandscapeMode", true);
-	} else {
-		setUserInterfaceState("isLandscapeMode", false);
-	}
-});
-
-export type Subscriber = () => void;
-
-const subscribers: Subscriber[] = [];
 
 export const getState = () => currentState;
 
+// assign State to window object
 Object.defineProperty(window, "BNState", {
 	get: () => {
 		return getState();
 	}
 });
 
+// state and sub state setters
 export const setState = <K extends keyof IState>(key: K, value: IState[K]) => {
 	currentState = {
 		...currentState,
@@ -128,6 +104,11 @@ export const setDebuggingState = <K extends keyof IDebuggingState>(
 		[key]: value
 	});
 };
+
+// Subscription functions
+export type Subscriber = () => void;
+
+const subscribers: Subscriber[] = [];
 
 export const subscribe = (cb: Subscriber) => {
 	subscribers.push(cb);
