@@ -16,9 +16,7 @@ export interface IAudioState {
 }
 
 export interface IUserInterfaceState {
-	isWidthLT640Px: boolean;
-	isHeightLT640px: boolean;
-	isLandscapeMode: boolean;
+	deviceMode: EDeviceMode;
 }
 
 export interface IDebuggingState {
@@ -31,6 +29,14 @@ export interface IState {
 	ui: IUserInterfaceState;
 	debugging: IDebuggingState;
 	audio: IAudioState;
+}
+
+export enum EDeviceMode {
+	Desktop = "Desktop",
+	SmallPortrait = "SmallPortrait", // smartphone
+	SmallLandscape = "SmallLandscape",
+	BigPortrait = "BigPortrait", // tablet
+	BigLandscape = "BigLandscape"
 }
 
 let currentState: IState = {
@@ -51,9 +57,7 @@ let currentState: IState = {
 		logTapTempo: !PRODUCTION && false
 	},
 	ui: {
-		isWidthLT640Px: false,
-		isHeightLT640px: false,
-		isLandscapeMode: false
+		deviceMode: EDeviceMode.Desktop
 	}
 };
 

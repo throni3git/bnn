@@ -9,7 +9,8 @@ import {
 	subscribe,
 	getState,
 	setAudioState,
-	setUserInterfaceState
+	setUserInterfaceState,
+	EDeviceMode
 } from "./store";
 import { IDrumset, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
@@ -27,13 +28,17 @@ import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
 
-const ContainerDiv = styled.div<{ isLandscapeMode: boolean }>(
-	(props) => `
+// const ContainerDiv = styled.div<{ isLandscapeMode: boolean }>(
+// 	(props) => `
+// 	font-family: sans-serif;
+// 	// display:flex;
+// 	// flex-direction: ${props.isLandscapeMode ? "row" : "column"}
+// 	`
+// );
+
+const ContainerDiv = styled.div`
 	font-family: sans-serif;
-	// display:flex;
-	// flex-direction: ${props.isLandscapeMode ? "row" : "column"}
-	`
-);
+`;
 
 const SliderCaptionDiv = styled.div`
 	display: flex;
@@ -77,36 +82,42 @@ export class BeatronomeApp extends React.Component<
 
 	public componentDidMount() {
 		// assign handlers to window
-		window.addEventListener("resize", this.resizeHandler);
-		window.addEventListener("orientationchange", this.orientationHandler);
+		window.addEventListener("resize", this.responsiveDesignHandler);
+		window.addEventListener(
+			"orientationchange",
+			this.responsiveDesignHandler
+		);
 
 		// initially call handlers to start correctly
-		this.resizeHandler();
-		this.orientationHandler();
+		this.responsiveDesignHandler();
 	}
 
 	/**
-	 * handlers for orientation change and resize events
+	 * handler for orientation change and resize events
 	 */
-	private resizeHandler = (event?: UIEvent) => {
-		const widthLT640Px = screen.width < 640;
-		const heightLT640px = screen.height < 640;
-		const state = getState();
+	private responsiveDesignHandler = (event?: UIEvent) => {
+		const landscapeOrientation = Math.abs(screen.orientation.angle) === 90;
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+		let newMode: EDeviceMode = null;
 
-		if (state.ui.isWidthLT640Px != widthLT640Px) {
-			setUserInterfaceState("isWidthLT640Px", widthLT640Px);
-		}
-		if (state.ui.isHeightLT640px != heightLT640px) {
-			setUserInterfaceState("isHeightLT640px", heightLT640px);
-		}
-	};
-
-	private orientationHandler = (event?: UIEvent) => {
-		console.log(screen.orientation.angle);
-		if (Math.abs(screen.orientation.angle) === 90) {
-			setUserInterfaceState("isLandscapeMode", true);
+		if (width > 1024 && height > 768) {
+			newMode = EDeviceMode.Desktop;
+		} else if (landscapeOrientation && width > 640) {
+			newMode = EDeviceMode.BigLandscape;
+		} else if (!landscapeOrientation && height > 640) {
+			newMode = EDeviceMode.BigPortrait;
+		} else if (landscapeOrientation && width <= 640) {
+			newMode = EDeviceMode.SmallLandscape;
 		} else {
-			setUserInterfaceState("isLandscapeMode", false);
+			newMode = EDeviceMode.SmallPortrait;
+		}
+
+		const uiState = getState().ui;
+
+		if (uiState.deviceMode !== newMode) {
+			console.log(newMode);
+			setUserInterfaceState("deviceMode", newMode);
 		}
 	};
 
@@ -197,7 +208,7 @@ export class BeatronomeApp extends React.Component<
 		const uiState = getState().ui;
 
 		return (
-			<ContainerDiv isLandscapeMode={uiState.isLandscapeMode}>
+			<ContainerDiv>
 				<div>
 					<h1 style={{ textAlign: "center" }}>
 						BEATRONOME{PRODUCTION ? "" : " (development)"}
