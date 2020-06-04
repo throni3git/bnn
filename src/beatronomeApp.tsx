@@ -38,6 +38,8 @@ const meterRegEx = /\d/;
 
 const ContainerDiv = styled.div`
 	font-family: sans-serif;
+	display: flex;
+	flex-direction: column;
 `;
 
 const SliderCaptionDiv = styled.div`
