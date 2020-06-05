@@ -85,6 +85,7 @@ export class AudioMan {
 	private tOld: number;
 	private handleTimeoutLoopUpdate: number;
 	private tPassed: number;
+	private handleTimeoutMeasureInCurrentTempo: number;
 
 	private debugPianoRoll: Record<string, number[]>;
 
@@ -123,7 +124,9 @@ export class AudioMan {
 
 	public stopLoop(): void {
 		this.masterGainNode.gain.setValueAtTime(0, 0);
-		clearTimeout(this.handleInterval);
+		clearTimeout(this.handleTimeoutLoopUpdate);
+		clearTimeout(this.handleTimeoutMeasureInCurrentTempo);
+		setAudioState("measuresInCurrentTempo", 0);
 		setAudioState("isPlaying", false);
 	}
 
@@ -190,6 +193,15 @@ export class AudioMan {
 		if (pNext + 2 * LOOP_UPDATE_INTERVAL > dLoop.denominator) {
 			pNext -= dLoop.denominator;
 			// log("logLoopInterval", "newPosition RESET: " + newPosition);
+
+			clearTimeout(this.handleTimeoutMeasureInCurrentTempo);
+			this.handleTimeoutMeasureInCurrentTempo = setTimeout(() => {
+				setAudioState(
+					"measuresInCurrentTempo",
+					getState().audio.measuresInCurrentTempo + 1
+				);
+			}, (-pNext / bps) * 1000);
+			// TODO 2020-06-05 wenn kurz vor taktende ein tempowechsel erfolgt, kommt der inkrement zu schnell
 		}
 
 		// duration of a quarter note

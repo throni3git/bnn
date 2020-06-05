@@ -14,6 +14,7 @@ export interface IAudioState {
 	availableDrumsets: string[];
 	isPlaying: boolean;
 	timer: number;
+	measuresInCurrentTempo: number;
 }
 
 export interface IUserInterfaceState {
@@ -51,7 +52,8 @@ let currentState: IState = {
 		drumset: null,
 		availableDrumsets: [],
 		isPlaying: false,
-		timer: 0
+		timer: 0,
+		measuresInCurrentTempo: 0
 	},
 	debugging: {
 		logDrumLoopParsing: !PRODUCTION && false,

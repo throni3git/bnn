@@ -294,6 +294,10 @@ export class BeatronomeApp extends React.Component<
 						<div>Timer</div>
 						<div>{timerString}</div>
 					</span>
+					<span>
+						<div>Measures in current tempo</div>
+						<div>{audioState.measuresInCurrentTempo}</div>
+					</span>
 				</div>
 			</ContainerDiv>
 		);
@@ -306,6 +310,7 @@ export class BeatronomeApp extends React.Component<
 		const bpm = e.target.valueAsNumber;
 		console.log(bpm);
 
+		setAudioState("measuresInCurrentTempo", 0);
 		setAudioState("bpm", bpm);
 	};
 }

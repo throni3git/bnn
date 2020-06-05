@@ -15,7 +15,11 @@ export function increaseBpm(): void {
 		audioState.maxBpm,
 		audioState.bpm + audioState.stepBpm
 	);
-	setAudioState("bpm", bpm);
+
+	if (bpm !== audioState.bpm) {
+		setAudioState("measuresInCurrentTempo", 0);
+		setAudioState("bpm", bpm);
+	}
 }
 
 /** decrease tempo by x bpm */
@@ -25,7 +29,11 @@ export function decreaseBpm(): void {
 		audioState.minBpm,
 		audioState.bpm - audioState.stepBpm
 	);
-	setAudioState("bpm", bpm);
+
+	if (bpm !== audioState.bpm) {
+		setAudioState("measuresInCurrentTempo", 0);
+		setAudioState("bpm", bpm);
+	}
 }
 
 /** tap tempo and get BPM value for the last 3 taps */
@@ -67,6 +75,7 @@ export function tapTempo(): void {
 	log("logTapTempo", "bpm", bpm);
 	console.groupEnd();
 
+	setAudioState("measuresInCurrentTempo", 0);
 	setAudioState("bpm", bpm);
 }
 
