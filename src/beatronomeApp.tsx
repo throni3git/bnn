@@ -40,6 +40,8 @@ const ContainerDiv = styled.div`
 	font-family: sans-serif;
 	display: flex;
 	flex-direction: column;
+	flex: 1;
+	justify-content: space-evenly;
 `;
 
 const SliderCaptionDiv = styled.div`
@@ -52,9 +54,21 @@ const SliderDiv = styled.div`
 	display: flex;
 `;
 
-const ButtonRow = styled.div`
+const Row = styled.div`
 	display: flex;
 	flex-direction: row;
+	/* justify-content: center; */
+	justify-content: space-evenly;
+`;
+
+const Heading = styled.div`
+	justify-content: center;
+`;
+
+const Column = styled.div`
+	display: flex;
+	flex: 1;
+	flex-direction: column;
 	justify-content: center;
 `;
 
@@ -213,93 +227,110 @@ export class BeatronomeApp extends React.Component<
 		const timerString = `${minutes}:${seconds}`;
 
 		return (
-			<ContainerDiv>
-				<div>
+			<>
+				<Heading>
 					<h1 style={{ textAlign: "center" }}>BEATRONOME</h1>
-				</div>
-				<div>
-					<SliderCaptionDiv>
-						<span>Volume</span>
-						<span>{audioState.masterVolume.toFixed(2)}</span>
-					</SliderCaptionDiv>
-					<SliderDiv>
-						<input
-							type="range"
-							value={audioState.masterVolume * 1000.0}
-							min={0}
-							max={1000}
-							onChange={(e) => {
-								const vol = e.target.valueAsNumber / 1000;
-								setMasterVolume(vol);
-							}}
-							style={{ width: "100%" }}
-						></input>
-					</SliderDiv>
-				</div>
-				<ButtonRow>
-					<Button action={() => togglePlay()}>
-						{audioState.isPlaying ? (
-							<FontAwesomeIcon
-								size="3x"
-								icon="stop-circle"
-							></FontAwesomeIcon>
-						) : (
-							<FontAwesomeIcon
-								size="3x"
-								icon="play-circle"
-							></FontAwesomeIcon>
-						)}
-					</Button>
-				</ButtonRow>
-				<ButtonRow>
-					<Button action={increaseBpm}>
-						<FontAwesomeIcon
-							size="3x"
-							icon="plus-circle"
-						></FontAwesomeIcon>
-					</Button>
-					<Button action={decreaseBpm}>
-						<FontAwesomeIcon
-							size="3x"
-							icon="minus-circle"
-						></FontAwesomeIcon>
-					</Button>
-				</ButtonRow>
-				<ButtonRow>
-					<Button action={tapTempo}>
-						<FontAwesomeIcon
-							size="3x"
-							icon="hand-point-up"
-						></FontAwesomeIcon>
-					</Button>
-				</ButtonRow>
-				<div>
-					<SliderCaptionDiv>
-						<span>Tempo</span>
-						<span>{"" + audioState.bpm + " BPM"}</span>
-					</SliderCaptionDiv>
-					<SliderDiv>
-						<input
-							type="range"
-							value={audioState.bpm}
-							min={audioState.minBpm}
-							max={audioState.maxBpm}
-							onChange={this.changeTempo}
-							style={{ width: "100%" }}
-						></input>
-					</SliderDiv>
-				</div>
-				<div>
-					<span>
-						<div>Timer</div>
-						<div>{timerString}</div>
-					</span>
-					<span>
-						<div>Measures in current tempo</div>
-						<div>{audioState.measuresInCurrentTempo}</div>
-					</span>
-				</div>
-			</ContainerDiv>
+				</Heading>
+				<ContainerDiv>
+					<Row>
+						<Column>
+							<SliderCaptionDiv>
+								<span>Volume</span>
+								<span>
+									{audioState.masterVolume.toFixed(2)}
+								</span>
+							</SliderCaptionDiv>
+							<SliderDiv>
+								<input
+									type="range"
+									value={audioState.masterVolume * 1000.0}
+									min={0}
+									max={1000}
+									onChange={(e) => {
+										const vol =
+											e.target.valueAsNumber / 1000;
+										setMasterVolume(vol);
+									}}
+									style={{ width: "100%" }}
+								></input>
+							</SliderDiv>
+						</Column>
+					</Row>
+					<Row>
+						<Column>
+							<Button action={() => togglePlay()}>
+								{audioState.isPlaying ? (
+									<FontAwesomeIcon
+										size="3x"
+										icon="stop-circle"
+									></FontAwesomeIcon>
+								) : (
+									<FontAwesomeIcon
+										size="3x"
+										icon="play-circle"
+									></FontAwesomeIcon>
+								)}
+							</Button>
+						</Column>
+					</Row>
+					<Row>
+						<Column>
+							<Button action={increaseBpm}>
+								<FontAwesomeIcon
+									size="3x"
+									icon="plus-circle"
+								></FontAwesomeIcon>
+							</Button>
+						</Column>
+						<Column>
+							<Button action={decreaseBpm}>
+								<FontAwesomeIcon
+									size="3x"
+									icon="minus-circle"
+								></FontAwesomeIcon>
+							</Button>
+						</Column>
+					</Row>
+					<Row>
+						<Column>
+							<Button action={tapTempo}>
+								<FontAwesomeIcon
+									size="3x"
+									icon="hand-point-up"
+								></FontAwesomeIcon>
+							</Button>
+						</Column>
+					</Row>
+					<Row>
+						<Column>
+							<SliderCaptionDiv>
+								<span>Tempo</span>
+								<span>{"" + audioState.bpm + " BPM"}</span>
+							</SliderCaptionDiv>
+							<SliderDiv>
+								<input
+									type="range"
+									value={audioState.bpm}
+									min={audioState.minBpm}
+									max={audioState.maxBpm}
+									onChange={this.changeTempo}
+									style={{ width: "100%" }}
+								></input>
+							</SliderDiv>
+						</Column>
+					</Row>
+					<Row>
+						<Column>
+							<div>Timer</div>
+							<div>{timerString}</div>
+						</Column>
+						<Column>
+							<div>Measures in current tempo</div>
+							<div>{audioState.measuresInCurrentTempo}</div>
+						</Column>
+					</Row>
+				</ContainerDiv>
+			</>
 		);
 	}
 

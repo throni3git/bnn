@@ -54,6 +54,8 @@ const appMount = document.createElement("div");
 appMount.style.width = "100%";
 appMount.style.height = "100%";
 appMount.style.overflow = "hidden";
+appMount.style.display ="flex";
+appMount.style.flexDirection= "column";
 
 body.appendChild(appMount);
 
