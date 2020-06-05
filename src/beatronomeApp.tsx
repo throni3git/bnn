@@ -215,9 +215,7 @@ export class BeatronomeApp extends React.Component<
 		return (
 			<ContainerDiv>
 				<div>
-					<h1 style={{ textAlign: "center" }}>
-						BEATRONOME
-					</h1>
+					<h1 style={{ textAlign: "center" }}>BEATRONOME</h1>
 				</div>
 				<div>
 					<SliderCaptionDiv>
@@ -305,7 +303,6 @@ export class BeatronomeApp extends React.Component<
 	 * callback setting up state for new tempo
 	 */
 	private changeTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const now = Date.now();
 		const bpm = e.target.valueAsNumber;
 		console.log(bpm);
 

@@ -83,7 +83,7 @@ export class AudioMan {
 
 	private startTime: number;
 	private tOld: number;
-	private handleInterval: number;
+	private handleTimeoutLoopUpdate: number;
 	private tPassed: number;
 
 	private debugPianoRoll: Record<string, number[]>;
@@ -235,7 +235,7 @@ export class AudioMan {
 
 		this.tOld = tNow;
 
-		this.handleInterval = setTimeout(this.loop, tLui * 1000);
+		this.handleTimeoutLoopUpdate = setTimeout(this.loop, tLui * 1000);
 	};
 }
 
