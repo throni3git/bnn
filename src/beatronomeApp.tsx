@@ -216,7 +216,7 @@ export class BeatronomeApp extends React.Component<
 			<ContainerDiv>
 				<div>
 					<h1 style={{ textAlign: "center" }}>
-						BEATRONOME{PRODUCTION ? "" : " (development)"}
+						BEATRONOME
 					</h1>
 				</div>
 				<div>
@@ -242,12 +242,12 @@ export class BeatronomeApp extends React.Component<
 					<Button action={() => togglePlay()}>
 						{audioState.isPlaying ? (
 							<FontAwesomeIcon
-								size="5x"
+								size="3x"
 								icon="stop-circle"
 							></FontAwesomeIcon>
 						) : (
 							<FontAwesomeIcon
-								size="5x"
+								size="3x"
 								icon="play-circle"
 							></FontAwesomeIcon>
 						)}
@@ -256,13 +256,13 @@ export class BeatronomeApp extends React.Component<
 				<ButtonRow>
 					<Button action={increaseBpm}>
 						<FontAwesomeIcon
-							size="5x"
+							size="3x"
 							icon="plus-circle"
 						></FontAwesomeIcon>
 					</Button>
 					<Button action={decreaseBpm}>
 						<FontAwesomeIcon
-							size="5x"
+							size="3x"
 							icon="minus-circle"
 						></FontAwesomeIcon>
 					</Button>
@@ -270,7 +270,7 @@ export class BeatronomeApp extends React.Component<
 				<ButtonRow>
 					<Button action={tapTempo}>
 						<FontAwesomeIcon
-							size="5x"
+							size="3x"
 							icon="hand-point-up"
 						></FontAwesomeIcon>
 					</Button>

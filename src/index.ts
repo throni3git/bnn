@@ -48,7 +48,7 @@ body.style.margin = "0";
 body.style.width = "100%";
 body.style.height = "100%";
 body.style.fontFamily = "sans-serif";
-body.style.fontSize = "0.8em";
+body.style.fontSize = "1em";
 
 const appMount = document.createElement("div");
 appMount.style.width = "100%";
