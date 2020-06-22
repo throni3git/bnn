@@ -34,7 +34,13 @@ if (PRODUCTION && "serviceWorker" in navigator) {
 	});
 }
 
-library.add(faPlusCircle, faMinusCircle, faPlayCircle, faStopCircle, faHandPointUp);
+library.add(
+	faPlusCircle,
+	faMinusCircle,
+	faPlayCircle,
+	faStopCircle,
+	faHandPointUp
+);
 
 // global styles
 
@@ -53,9 +59,8 @@ body.style.fontSize = "1em";
 const appMount = document.createElement("div");
 appMount.style.width = "100%";
 appMount.style.height = "100%";
-appMount.style.overflow = "hidden";
-appMount.style.display ="flex";
-appMount.style.flexDirection= "column";
+appMount.style.display = "flex";
+appMount.style.justifyContent = "center";
 
 body.appendChild(appMount);
 

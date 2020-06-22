@@ -36,6 +36,16 @@ const meterRegEx = /\d/;
 // 	`
 // );
 
+const AllDiv = styled.div`
+	display: flex;
+	overflow: hidden;
+	flex-direction: column;
+	max-height: 800px;
+	max-width: 800px;
+	width: 100%;
+	height: 100%;
+`;
+
 const ContainerDiv = styled.div`
 	font-family: sans-serif;
 	display: flex;
@@ -231,7 +241,7 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		return (
-			<>
+			<AllDiv>
 				<Heading>
 					<h1 style={{ textAlign: "center" }}>BEATRONOME</h1>
 				</Heading>
@@ -334,7 +344,7 @@ export class BeatronomeApp extends React.Component<
 						</Column>
 					</Row>
 				</ContainerDiv>
-			</>
+			</AllDiv>
 		);
 	}
 
