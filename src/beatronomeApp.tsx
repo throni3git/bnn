@@ -72,7 +72,11 @@ const Row = styled.div`
 `;
 
 const Heading = styled.div`
+	font-size: 1.2em;
+	font-weight: bold;
 	justify-content: center;
+	text-align: center;
+	padding: 12px;
 `;
 
 const Column = styled.div`
@@ -244,9 +248,7 @@ export class BeatronomeApp extends React.Component<
 
 		return (
 			<AllDiv>
-				<Heading>
-					<h1 style={{ textAlign: "center" }}>BEATRONOME</h1>
-				</Heading>
+				<Heading>BEATRONOME</Heading>
 				<ContainerDiv>
 					<Row>
 						<Column>
