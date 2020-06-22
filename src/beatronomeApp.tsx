@@ -225,6 +225,10 @@ export class BeatronomeApp extends React.Component<
 		const minutes = (new Array(2).join("0") + timer.getMinutes()).slice(-2);
 		const seconds = (new Array(2).join("0") + timer.getSeconds()).slice(-2);
 		const timerString = `${minutes}:${seconds}`;
+		const measuresInCurrentTempo = Math.max(
+			audioState.measuresInCurrentTempo,
+			0
+		);
 
 		return (
 			<>
@@ -326,7 +330,7 @@ export class BeatronomeApp extends React.Component<
 						</Column>
 						<Column>
 							<div>Measures in current tempo</div>
-							<div>{audioState.measuresInCurrentTempo}</div>
+							<div>{measuresInCurrentTempo}</div>
 						</Column>
 					</Row>
 				</ContainerDiv>
@@ -341,7 +345,7 @@ export class BeatronomeApp extends React.Component<
 		const bpm = e.target.valueAsNumber;
 		console.log(bpm);
 
-		setAudioState("measuresInCurrentTempo", 0);
+		setAudioState("measuresInCurrentTempo", -1);
 		setAudioState("bpm", bpm);
 	};
 }

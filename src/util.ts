@@ -17,7 +17,7 @@ export function increaseBpm(): void {
 	);
 
 	if (bpm !== audioState.bpm) {
-		setAudioState("measuresInCurrentTempo", 0);
+		setAudioState("measuresInCurrentTempo", -1);
 		setAudioState("bpm", bpm);
 	}
 }
@@ -31,7 +31,7 @@ export function decreaseBpm(): void {
 	);
 
 	if (bpm !== audioState.bpm) {
-		setAudioState("measuresInCurrentTempo", 0);
+		setAudioState("measuresInCurrentTempo", -1);
 		setAudioState("bpm", bpm);
 	}
 }
@@ -75,7 +75,7 @@ export function tapTempo(): void {
 	log("logTapTempo", "bpm", bpm);
 	console.groupEnd();
 
-	setAudioState("measuresInCurrentTempo", 0);
+	setAudioState("measuresInCurrentTempo", -1);
 	setAudioState("bpm", bpm);
 }
 
