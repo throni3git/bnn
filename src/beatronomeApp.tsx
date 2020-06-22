@@ -240,6 +240,8 @@ export class BeatronomeApp extends React.Component<
 			0
 		);
 
+		const iconSize = "2x";
+
 		return (
 			<AllDiv>
 				<Heading>
@@ -275,12 +277,12 @@ export class BeatronomeApp extends React.Component<
 							<Button action={() => togglePlay()}>
 								{audioState.isPlaying ? (
 									<FontAwesomeIcon
-										size="3x"
+										size={iconSize}
 										icon="stop-circle"
 									></FontAwesomeIcon>
 								) : (
 									<FontAwesomeIcon
-										size="3x"
+										size={iconSize}
 										icon="play-circle"
 									></FontAwesomeIcon>
 								)}
@@ -291,7 +293,7 @@ export class BeatronomeApp extends React.Component<
 						<Column>
 							<Button action={increaseBpm}>
 								<FontAwesomeIcon
-									size="3x"
+									size={iconSize}
 									icon="plus-circle"
 								></FontAwesomeIcon>
 							</Button>
@@ -299,7 +301,7 @@ export class BeatronomeApp extends React.Component<
 						<Column>
 							<Button action={decreaseBpm}>
 								<FontAwesomeIcon
-									size="3x"
+									size={iconSize}
 									icon="minus-circle"
 								></FontAwesomeIcon>
 							</Button>
@@ -309,7 +311,7 @@ export class BeatronomeApp extends React.Component<
 						<Column>
 							<Button action={tapTempo}>
 								<FontAwesomeIcon
-									size="3x"
+									size={iconSize}
 									icon="hand-point-up"
 								></FontAwesomeIcon>
 							</Button>
