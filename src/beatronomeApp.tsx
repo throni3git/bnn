@@ -276,23 +276,6 @@ export class BeatronomeApp extends React.Component<
 					</Row>
 					<Row>
 						<Column>
-							<Button action={() => togglePlay()}>
-								{audioState.isPlaying ? (
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="stop-circle"
-									></FontAwesomeIcon>
-								) : (
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="play-circle"
-									></FontAwesomeIcon>
-								)}
-							</Button>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
 							<Button action={increaseBpm}>
 								<FontAwesomeIcon
 									size={iconSize}
@@ -322,8 +305,7 @@ export class BeatronomeApp extends React.Component<
 					<Row>
 						<Column>
 							<SliderCaptionDiv>
-								<span>Tempo</span>
-								<span>{"" + audioState.bpm + " BPM"}</span>
+								{audioState.bpm + " BPM"}
 							</SliderCaptionDiv>
 							<SliderDiv>
 								<input
@@ -338,13 +320,24 @@ export class BeatronomeApp extends React.Component<
 						</Column>
 					</Row>
 					<Row>
+						<Column>Timer: {timerString}</Column>
 						<Column>
-							<div>Timer</div>
-							<div>{timerString}</div>
+							<Button action={() => togglePlay()}>
+								{audioState.isPlaying ? (
+									<FontAwesomeIcon
+										size={iconSize}
+										icon="stop-circle"
+									></FontAwesomeIcon>
+								) : (
+									<FontAwesomeIcon
+										size={iconSize}
+										icon="play-circle"
+									></FontAwesomeIcon>
+								)}
+							</Button>
 						</Column>
 						<Column>
-							<div>Measures in current tempo</div>
-							<div>{measuresInCurrentTempo}</div>
+							{measuresInCurrentTempo} measures in current tempo
 						</Column>
 					</Row>
 				</ContainerDiv>
