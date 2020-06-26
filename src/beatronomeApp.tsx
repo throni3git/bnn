@@ -86,6 +86,12 @@ const Column = styled.div`
 	justify-content: center;
 `;
 
+const RangeTrack = styled.div`
+	height: 20px;
+	width: 100%;
+	background-color: ${COLORS.light};
+`;
+
 const RangeThumb = styled.div`
 	height: 20px;
 	width: 20px;
@@ -277,17 +283,9 @@ export class BeatronomeApp extends React.Component<
 										setMasterVolume(vol);
 									}}
 									renderTrack={({ props, children }) => (
-										<div
-											{...props}
-											style={{
-												...props.style,
-												height: "6px",
-												width: "100%",
-												backgroundColor: COLORS.light
-											}}
-										>
+										<RangeTrack {...props}>
 											{children}
-										</div>
+										</RangeTrack>
 									)}
 									renderThumb={() => <RangeThumb />}
 								></Range>
@@ -334,17 +332,9 @@ export class BeatronomeApp extends React.Component<
 									max={audioState.maxBpm}
 									onChange={this.changeTempo}
 									renderTrack={({ props, children }) => (
-										<div
-											{...props}
-											style={{
-												...props.style,
-												height: "6px",
-												width: "100%",
-												backgroundColor: COLORS.light
-											}}
-										>
+										<RangeTrack {...props}>
 											{children}
-										</div>
+										</RangeTrack>
 									)}
 									renderThumb={() => <RangeThumb />}
 								></Range>
