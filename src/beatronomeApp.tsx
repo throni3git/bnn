@@ -328,14 +328,26 @@ export class BeatronomeApp extends React.Component<
 								{audioState.bpm + " BPM"}
 							</SliderCaptionDiv>
 							<SliderDiv>
-								<input
-									type="range"
-									value={audioState.bpm}
+								<Range
+									values={[audioState.bpm]}
 									min={audioState.minBpm}
 									max={audioState.maxBpm}
 									onChange={this.changeTempo}
-									style={{ width: "100%" }}
-								></input>
+									renderTrack={({ props, children }) => (
+										<div
+											{...props}
+											style={{
+												...props.style,
+												height: "6px",
+												width: "100%",
+												backgroundColor: COLORS.light
+											}}
+										>
+											{children}
+										</div>
+									)}
+									renderThumb={() => <RangeThumb />}
+								></Range>
 							</SliderDiv>
 						</Column>
 					</Row>
@@ -368,8 +380,8 @@ export class BeatronomeApp extends React.Component<
 	/**
 	 * callback setting up state for new tempo
 	 */
-	private changeTempo = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const bpm = e.target.valueAsNumber;
+	private changeTempo = (values: number[]) => {
+		const bpm = values[0];
 		console.log(bpm);
 
 		setAudioState("measuresInCurrentTempo", -1);
