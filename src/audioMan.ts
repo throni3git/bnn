@@ -37,12 +37,11 @@ export class AudioMan {
 
 		await Promise.all(loadingPromises);
 
-		for (const instrumentName of allDrums) {
-			const instrument = drumset[instrumentName];
-			console.log(instrument);
-			// this.loopInstrument(instrument);
-			this.playInstrument(instrument, this.audioCtx.currentTime, 1);
-		}
+		// for (const instrumentName of allDrums) {
+		// 	const instrument = drumset[instrumentName];
+		// 	console.log(instrument);
+		// 	this.playInstrument(instrument, this.audioCtx.currentTime, 1);
+		// }
 
 		setAudioState("drumset", drumset);
 	}
