@@ -9,7 +9,7 @@ const LIGHT_THEME = {
 
 const DARK_THEME = {
 	bg: "hsl(172, 0%, 10%)",
-	fc: "hsl(172, 57%, 35%)",
+	fc: "hsl(172, 57%, 40%)",
 	light: "hsl(172, 57%, 10%)",
 	lightBorder: "hsl(172, 57%, 15%)",
 	lightHighlight: "hsl(172, 57%, 20%)",
