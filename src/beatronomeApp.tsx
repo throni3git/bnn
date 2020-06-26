@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import styled from "styled-components";
-
+import { Range } from "react-range";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PRODUCTION } from "./";
@@ -23,7 +23,7 @@ import {
 	setMasterVolume
 } from "./util";
 import Button from "./button";
-import { DIR_DRUMSETS, DIR_LOOPS } from "./constants";
+import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
 
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
@@ -84,6 +84,15 @@ const Column = styled.div`
 	flex: 1;
 	flex-direction: column;
 	justify-content: center;
+`;
+
+const RangeThumb = styled.div`
+	height: 20px;
+	width: 20px;
+	background-color: ${COLORS.fc};
+	&:focus {
+		outline: none;
+	}
 `;
 
 export class BeatronomeApp extends React.Component<
@@ -259,18 +268,29 @@ export class BeatronomeApp extends React.Component<
 								</span>
 							</SliderCaptionDiv>
 							<SliderDiv>
-								<input
-									type="range"
-									value={audioState.masterVolume * 1000.0}
+								<Range
+									values={[audioState.masterVolume * 1000.0]}
 									min={0}
 									max={1000}
-									onChange={(e) => {
-										const vol =
-											e.target.valueAsNumber / 1000;
+									onChange={(values) => {
+										const vol = values[0] / 1000;
 										setMasterVolume(vol);
 									}}
-									style={{ width: "100%" }}
-								></input>
+									renderTrack={({ props, children }) => (
+										<div
+											{...props}
+											style={{
+												...props.style,
+												height: "6px",
+												width: "100%",
+												backgroundColor: COLORS.light
+											}}
+										>
+											{children}
+										</div>
+									)}
+									renderThumb={() => <RangeThumb />}
+								></Range>
 							</SliderDiv>
 						</Column>
 					</Row>
