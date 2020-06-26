@@ -13,6 +13,7 @@ import {
 import { BeatronomeApp } from "./beatronomeApp";
 
 import { registerGlobalKeyHandler } from "./keyboard";
+import { COLORS } from "./constants";
 
 declare var BUILD_TIMESTAMP: string;
 console.log("Beatronome " + BUILD_TIMESTAMP);
@@ -55,6 +56,8 @@ body.style.width = "100%";
 body.style.height = "100%";
 body.style.fontFamily = "sans-serif";
 body.style.fontSize = "1em";
+body.style.backgroundColor = COLORS.bg;
+body.style.color = COLORS.fc;
 
 const appMount = document.createElement("div");
 appMount.style.width = "100%";
