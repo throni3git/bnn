@@ -29,14 +29,6 @@ import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
 
-// const ContainerDiv = styled.div<{ isLandscapeMode: boolean }>(
-// 	(props) => `
-// 	font-family: sans-serif;
-// 	// display:flex;
-// 	// flex-direction: ${props.isLandscapeMode ? "row" : "column"}
-// 	`
-// );
-
 const AllDiv = styled.div`
 	display: flex;
 	overflow: hidden;
@@ -47,37 +39,37 @@ const AllDiv = styled.div`
 	height: 100%;
 `;
 
+const Heading = styled.div`
+	font-size: 2em;
+	font-weight: bold;
+	justify-content: center;
+	text-align: center;
+	padding-top: 10px;
+`;
+
 const ContainerDiv = styled.div`
-	font-family: sans-serif;
 	display: flex;
 	flex-direction: column;
 	flex: 1;
 	justify-content: space-evenly;
+	padding: 10px;
 `;
 
 const SliderCaptionDiv = styled.div`
 	display: flex;
-	justify-content: space-between;
-	padding: 3px;
+	justify-content: center;
+	/* padding: 3px; */
 `;
 
 const SliderDiv = styled.div`
 	display: flex;
+	margin: 4px;
 `;
 
 const Row = styled.div`
 	display: flex;
 	flex-direction: row;
-	/* justify-content: center; */
 	justify-content: space-evenly;
-`;
-
-const Heading = styled.div`
-	font-size: 1.2em;
-	font-weight: bold;
-	justify-content: center;
-	text-align: center;
-	padding: 12px;
 `;
 
 const Column = styled.div`
@@ -289,10 +281,9 @@ export class BeatronomeApp extends React.Component<
 					<Row>
 						<Column>
 							<SliderCaptionDiv>
-								<span>Volume</span>
-								<span>
-									{audioState.masterVolume.toFixed(2)}
-								</span>
+								{`Volume ${(
+									audioState.masterVolume * 100
+								).toFixed()}%`}
 							</SliderCaptionDiv>
 							<SliderDiv>
 								<Range
@@ -344,7 +335,9 @@ export class BeatronomeApp extends React.Component<
 					<Row>
 						<Column>
 							<SliderCaptionDiv>
-								{audioState.bpm + " BPM"}
+								<CenteredLarge>
+									{audioState.bpm + " BPM"}
+								</CenteredLarge>
 							</SliderCaptionDiv>
 							<SliderDiv>
 								<Range
