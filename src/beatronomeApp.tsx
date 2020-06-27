@@ -44,7 +44,7 @@ const Heading = styled.div`
 	font-weight: bold;
 	justify-content: center;
 	text-align: center;
-	padding-top: 10px;
+	padding-top: 8px;
 `;
 
 const ContainerDiv = styled.div`
@@ -52,29 +52,55 @@ const ContainerDiv = styled.div`
 	flex-direction: column;
 	flex: 1;
 	justify-content: space-evenly;
-	padding: 10px;
+	padding: 8px;
 `;
 
+// TODO löschen
 const SliderCaptionDiv = styled.div`
 	display: flex;
 	justify-content: center;
 	/* padding: 3px; */
 `;
 
-const SliderDiv = styled.div`
+const SliderRow = styled.div`
 	display: flex;
-	margin: 4px;
+	padding: 10px;
+`;
+
+const FlexRow = styled.div`
+	/* border: 1px dotted red; */
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
 `;
 
 const Row = styled.div`
+	/* border: 1px dotted red; */
 	display: flex;
+	/* flex: 1; */
 	flex-direction: row;
 	justify-content: space-evenly;
 `;
 
+const FixedRow = styled.div`
+	/* border: 1px dotted darkred; */
+	/* min-height: 40px; */
+	display: flex;
+`;
+
 const Column = styled.div`
+	/* border: 1px dotted green; */
 	display: flex;
 	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+`;
+
+const FixedColumn = styled.div`
+	/* border: 1px dotted darkgreen; */
+	display: flex;
+	width: 62px;
 	flex-direction: column;
 	justify-content: center;
 `;
@@ -84,6 +110,7 @@ const RangeTrackHorizontal = styled.div`
 	border: 1px solid ${COLORS.lightBorder};
 	height: 20px;
 	width: 100%;
+	margin: auto;
 `;
 
 const RangeTrackVertical = styled.div`
@@ -91,6 +118,7 @@ const RangeTrackVertical = styled.div`
 	border: 1px solid ${COLORS.lightBorder};
 	height: 100%;
 	width: 20px;
+	margin: auto;
 `;
 
 const RangeThumb = styled.div`
@@ -289,14 +317,17 @@ export class BeatronomeApp extends React.Component<
 			<AllDiv>
 				<Heading>BEATRONOME</Heading>
 				<ContainerDiv>
+					<FlexRow>
+						<CenteredSmall>
+							FANCY MATRIX WITH DRUM PATTERN
+						</CenteredSmall>
+					</FlexRow>
 					<Row>
-						<Column>
-							<SliderCaptionDiv>
-								{`Volume ${(
-									audioState.masterVolume * 100
-								).toFixed()}%`}
-							</SliderCaptionDiv>
-							<SliderDiv>
+						<FixedColumn>
+							<Row>
+								<CenteredSmall>Volume</CenteredSmall>
+							</Row>
+							<FlexRow style={{ padding: "10px" }}>
 								<Range
 									values={[audioState.masterVolume * 1000.0]}
 									min={0}
@@ -313,61 +344,57 @@ export class BeatronomeApp extends React.Component<
 									)}
 									renderThumb={() => <RangeThumb key={1} />}
 								></Range>
-							</SliderDiv>
-						</Column>
-					</Row>
-					<Row>
+							</FlexRow>
+						</FixedColumn>
 						<Column>
-							<Button action={increaseBpm}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="plus-circle"
-								></FontAwesomeIcon>
-							</Button>
-						</Column>
-						<Column>
-							<Button action={decreaseBpm}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="minus-circle"
-								></FontAwesomeIcon>
-							</Button>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
-							<Button action={tapTempo}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="hand-point-up"
-								></FontAwesomeIcon>
-							</Button>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
-							<SliderCaptionDiv>
+							<Row>
+								<Button action={tapTempo}>
+									<FontAwesomeIcon
+										size={iconSize}
+										icon="hand-point-up"
+									></FontAwesomeIcon>
+								</Button>
+							</Row>
+							<FlexRow>
 								<CenteredLarge>
 									{audioState.bpm + " BPM"}
 								</CenteredLarge>
-							</SliderCaptionDiv>
-							<SliderDiv>
-								<Range
-									values={[audioState.bpm]}
-									min={audioState.minBpm}
-									max={audioState.maxBpm}
-									onChange={this.changeTempo}
-									renderTrack={({ props, children }) => (
-										<RangeTrackHorizontal {...props}>
-											{children}
-										</RangeTrackHorizontal>
-									)}
-									renderThumb={() => <RangeThumb key={1} />}
-								></Range>
-							</SliderDiv>
+							</FlexRow>
 						</Column>
+						<FixedColumn>
+							<Row>
+								<Button action={increaseBpm}>
+									<FontAwesomeIcon
+										size={iconSize}
+										icon="plus-circle"
+									></FontAwesomeIcon>
+								</Button>
+							</Row>
+							<Row>
+								<Button action={decreaseBpm}>
+									<FontAwesomeIcon
+										size={iconSize}
+										icon="minus-circle"
+									></FontAwesomeIcon>
+								</Button>
+							</Row>
+						</FixedColumn>
 					</Row>
-					<Row>
+					<SliderRow>
+						<Range
+							values={[audioState.bpm]}
+							min={audioState.minBpm}
+							max={audioState.maxBpm}
+							onChange={this.changeTempo}
+							renderTrack={({ props, children }) => (
+								<RangeTrackHorizontal {...props}>
+									{children}
+								</RangeTrackHorizontal>
+							)}
+							renderThumb={() => <RangeThumb key={1} />}
+						></Range>
+					</SliderRow>
+					<FixedRow>
 						<Column>
 							<ResetButton
 								isDisabled={
@@ -380,7 +407,7 @@ export class BeatronomeApp extends React.Component<
 							<CenteredSmall>Timer</CenteredSmall>
 							<CenteredLarge>{timerString}</CenteredLarge>
 						</Column>
-						<Column>
+						<FixedColumn>
 							<Button action={() => togglePlay()}>
 								{audioState.isPlaying ? (
 									<FontAwesomeIcon
@@ -394,14 +421,14 @@ export class BeatronomeApp extends React.Component<
 									></FontAwesomeIcon>
 								)}
 							</Button>
-						</Column>
+						</FixedColumn>
 						<Column>
 							<CenteredSmall># in tempo</CenteredSmall>
 							<CenteredLarge>
 								{measuresInCurrentTempo}
 							</CenteredLarge>
 						</Column>
-					</Row>
+					</FixedRow>
 				</ContainerDiv>
 			</AllDiv>
 		);

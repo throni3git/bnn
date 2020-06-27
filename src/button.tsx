@@ -8,6 +8,8 @@ const ButtonDiv = styled.div`
 	border: 1px solid ${COLORS.lightBorder};
 	cursor: pointer;
 	padding: 10px;
+	width: 32px;
+	height: 32px;
 	margin: 4px;
 	text-align: center;
 	transition: background-color 0.05s linear;
