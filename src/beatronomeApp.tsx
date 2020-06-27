@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import styled from "styled-components";
-import { Range } from "react-range";
+import { Range, Direction } from "react-range";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 declare var IS_PRODUCTION: boolean;
@@ -79,11 +79,18 @@ const Column = styled.div`
 	justify-content: center;
 `;
 
-const RangeTrack = styled.div`
+const RangeTrackHorizontal = styled.div`
 	background-color: ${COLORS.light};
 	border: 1px solid ${COLORS.lightBorder};
 	height: 20px;
 	width: 100%;
+`;
+
+const RangeTrackVertical = styled.div`
+	background-color: ${COLORS.light};
+	border: 1px solid ${COLORS.lightBorder};
+	height: 100%;
+	width: 20px;
 `;
 
 const RangeThumb = styled.div`
@@ -294,14 +301,15 @@ export class BeatronomeApp extends React.Component<
 									values={[audioState.masterVolume * 1000.0]}
 									min={0}
 									max={1000}
+									direction={Direction.Up}
 									onChange={(values) => {
 										const vol = values[0] / 1000;
 										setMasterVolume(vol);
 									}}
 									renderTrack={({ props, children }) => (
-										<RangeTrack {...props}>
+										<RangeTrackVertical {...props}>
 											{children}
-										</RangeTrack>
+										</RangeTrackVertical>
 									)}
 									renderThumb={() => <RangeThumb key={1} />}
 								></Range>
@@ -350,9 +358,9 @@ export class BeatronomeApp extends React.Component<
 									max={audioState.maxBpm}
 									onChange={this.changeTempo}
 									renderTrack={({ props, children }) => (
-										<RangeTrack {...props}>
+										<RangeTrackHorizontal {...props}>
 											{children}
-										</RangeTrack>
+										</RangeTrackHorizontal>
 									)}
 									renderThumb={() => <RangeThumb key={1} />}
 								></Range>
