@@ -87,9 +87,10 @@ const Column = styled.div`
 `;
 
 const RangeTrack = styled.div`
+	background-color: ${COLORS.light};
+	border: 1px solid ${COLORS.lightBorder};
 	height: 20px;
 	width: 100%;
-	background-color: ${COLORS.light};
 `;
 
 const RangeThumb = styled.div`
