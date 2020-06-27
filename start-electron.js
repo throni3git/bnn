@@ -13,7 +13,8 @@ function createWindow() {
 		minWidth: 360,
 		webPreferences: {
 			nodeIntegration: true
-		}
+		},
+		backgroundColor: "#1a1a1a" // hexadezimal von hsl(172, 0%, 10%) vom dark theme
 	});
 
 	win.loadFile("dist/index.html");
