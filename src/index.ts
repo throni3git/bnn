@@ -7,7 +7,8 @@ import {
 	faMinusCircle,
 	faPlayCircle,
 	faStopCircle,
-	faHandPointUp
+	faHandPointUp,
+	faUndo
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BeatronomeApp } from "./beatronomeApp";
@@ -40,7 +41,8 @@ library.add(
 	faMinusCircle,
 	faPlayCircle,
 	faStopCircle,
-	faHandPointUp
+	faHandPointUp,
+	faUndo
 );
 
 // global styles

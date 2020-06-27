@@ -20,7 +20,8 @@ import {
 	decreaseBpm,
 	tapTempo,
 	togglePlay,
-	setMasterVolume
+	setMasterVolume,
+	resetTimerIfStopped
 } from "./util";
 import Button from "./button";
 import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
@@ -101,6 +102,25 @@ const RangeThumb = styled.div`
 		outline: none;
 	}
 `;
+
+const CenteredSmall = styled.div`
+	font-size: 0.7em;
+	text-align: center;
+`;
+
+const CenteredLarge = styled.div`
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+`;
+
+const ResetButton = styled.div<{ isDisabled: boolean }>(
+	(props) => `
+	position:absolute;
+	cursor:pointer;
+	color: ${props.isDisabled ? COLORS.light : COLORS.fc};
+`
+);
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -343,7 +363,18 @@ export class BeatronomeApp extends React.Component<
 						</Column>
 					</Row>
 					<Row>
-						<Column>Timer: {timerString}</Column>
+						<Column>
+							<ResetButton
+								isDisabled={
+									audioState.isPlaying || audioState.timer < 3
+								}
+								onClick={() => resetTimerIfStopped()}
+							>
+								<FontAwesomeIcon icon="undo"></FontAwesomeIcon>
+							</ResetButton>
+							<CenteredSmall>Timer</CenteredSmall>
+							<CenteredLarge>{timerString}</CenteredLarge>
+						</Column>
 						<Column>
 							<Button action={() => togglePlay()}>
 								{audioState.isPlaying ? (
@@ -360,7 +391,10 @@ export class BeatronomeApp extends React.Component<
 							</Button>
 						</Column>
 						<Column>
-							{measuresInCurrentTempo} measures in current tempo
+							<CenteredSmall># in tempo</CenteredSmall>
+							<CenteredLarge>
+								{measuresInCurrentTempo}
+							</CenteredLarge>
 						</Column>
 					</Row>
 				</ContainerDiv>

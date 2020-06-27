@@ -116,3 +116,11 @@ export function decreaseVolume(): void {
 	vol = Math.max(vol - 0.05, 0.0);
 	setMasterVolume(vol);
 }
+
+/** reset timer and measures in tempo */
+export function resetTimerIfStopped(): void {
+	if (!getState().audio.isPlaying) {
+		setAudioState("timer", 0);
+		setAudioState("measuresInCurrentTempo", 0);
+	}
+}
