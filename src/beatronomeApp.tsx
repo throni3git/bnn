@@ -313,6 +313,97 @@ export class BeatronomeApp extends React.Component<
 
 		const iconSize = "2x";
 
+		const groupTempoChange: JSX.Element = (
+			<FixedColumn>
+				<Row>
+					<Button action={increaseBpm}>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon="plus-circle"
+						></FontAwesomeIcon>
+					</Button>
+				</Row>
+				<Row>
+					<Button action={decreaseBpm}>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon="minus-circle"
+						></FontAwesomeIcon>
+					</Button>
+				</Row>
+			</FixedColumn>
+		);
+
+		const sliderVolume: JSX.Element = (
+			<Range
+				values={[audioState.masterVolume * 1000.0]}
+				min={0}
+				max={1000}
+				direction={Direction.Up}
+				onChange={(values) => {
+					const vol = values[0] / 1000;
+					setMasterVolume(vol);
+				}}
+				renderTrack={({ props, children }) => (
+					<RangeTrackVertical {...props}>
+						{children}
+					</RangeTrackVertical>
+				)}
+				renderThumb={() => <RangeThumb key={1} />}
+			></Range>
+		);
+
+		const sliderTempo: JSX.Element = (
+			<Range
+				values={[audioState.bpm]}
+				min={audioState.minBpm}
+				max={audioState.maxBpm}
+				onChange={this.changeTempo}
+				renderTrack={({ props, children }) => (
+					<RangeTrackHorizontal {...props}>
+						{children}
+					</RangeTrackHorizontal>
+				)}
+				renderThumb={() => <RangeThumb key={1} />}
+			></Range>
+		);
+
+		const groupPlayTimer: JSX.Element = (
+			<FixedRow>
+				<Column>
+					<ResetButton
+						isDisabled={
+							audioState.isPlaying || audioState.timer < 3
+						}
+						onClick={() => resetTimerIfStopped()}
+					>
+						<FontAwesomeIcon icon="undo"></FontAwesomeIcon>
+					</ResetButton>
+					<CenteredSmall>Timer</CenteredSmall>
+					<CenteredLarge>{timerString}</CenteredLarge>
+				</Column>
+				<FixedColumn>
+					<Button action={() => togglePlay()}>
+						{audioState.isPlaying ? (
+							<FontAwesomeIcon
+								size={iconSize}
+								icon="stop-circle"
+							></FontAwesomeIcon>
+						) : (
+							<FontAwesomeIcon
+								size={iconSize}
+								icon="play-circle"
+							></FontAwesomeIcon>
+						)}
+					</Button>
+				</FixedColumn>
+				<Column>
+					<CenteredSmall># in tempo</CenteredSmall>
+					<CenteredLarge>{measuresInCurrentTempo}</CenteredLarge>
+				</Column>
+			</FixedRow>
+		);
+
 		return (
 			<AllDiv>
 				<Heading>BEATRONOME</Heading>
@@ -328,22 +419,7 @@ export class BeatronomeApp extends React.Component<
 								<CenteredSmall>Volume</CenteredSmall>
 							</Row>
 							<FlexRow style={{ padding: "10px" }}>
-								<Range
-									values={[audioState.masterVolume * 1000.0]}
-									min={0}
-									max={1000}
-									direction={Direction.Up}
-									onChange={(values) => {
-										const vol = values[0] / 1000;
-										setMasterVolume(vol);
-									}}
-									renderTrack={({ props, children }) => (
-										<RangeTrackVertical {...props}>
-											{children}
-										</RangeTrackVertical>
-									)}
-									renderThumb={() => <RangeThumb key={1} />}
-								></Range>
+								{sliderVolume}
 							</FlexRow>
 						</FixedColumn>
 						<Column>
@@ -361,74 +437,10 @@ export class BeatronomeApp extends React.Component<
 								</CenteredLarge>
 							</FlexRow>
 						</Column>
-						<FixedColumn>
-							<Row>
-								<Button action={increaseBpm}>
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="plus-circle"
-									></FontAwesomeIcon>
-								</Button>
-							</Row>
-							<Row>
-								<Button action={decreaseBpm}>
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="minus-circle"
-									></FontAwesomeIcon>
-								</Button>
-							</Row>
-						</FixedColumn>
+						{groupTempoChange}
 					</Row>
-					<SliderRow>
-						<Range
-							values={[audioState.bpm]}
-							min={audioState.minBpm}
-							max={audioState.maxBpm}
-							onChange={this.changeTempo}
-							renderTrack={({ props, children }) => (
-								<RangeTrackHorizontal {...props}>
-									{children}
-								</RangeTrackHorizontal>
-							)}
-							renderThumb={() => <RangeThumb key={1} />}
-						></Range>
-					</SliderRow>
-					<FixedRow>
-						<Column>
-							<ResetButton
-								isDisabled={
-									audioState.isPlaying || audioState.timer < 3
-								}
-								onClick={() => resetTimerIfStopped()}
-							>
-								<FontAwesomeIcon icon="undo"></FontAwesomeIcon>
-							</ResetButton>
-							<CenteredSmall>Timer</CenteredSmall>
-							<CenteredLarge>{timerString}</CenteredLarge>
-						</Column>
-						<FixedColumn>
-							<Button action={() => togglePlay()}>
-								{audioState.isPlaying ? (
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="stop-circle"
-									></FontAwesomeIcon>
-								) : (
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="play-circle"
-									></FontAwesomeIcon>
-								)}
-							</Button>
-						</FixedColumn>
-						<Column>
-							<CenteredSmall># in tempo</CenteredSmall>
-							<CenteredLarge>
-								{measuresInCurrentTempo}
-							</CenteredLarge>
-						</Column>
-					</FixedRow>
+					<SliderRow>{sliderTempo}</SliderRow>
+					{groupPlayTimer}
 				</ContainerDiv>
 			</AllDiv>
 		);
