@@ -25,6 +25,7 @@ export interface IDebuggingState {
 	logDrumLoopParsing: boolean;
 	logLoopInterval: boolean;
 	logTapTempo: boolean;
+	logDeviceOrientation: boolean;
 }
 
 export interface IState {
@@ -58,7 +59,8 @@ let currentState: IState = {
 	debugging: {
 		logDrumLoopParsing: !IS_PRODUCTION && false,
 		logLoopInterval: !IS_PRODUCTION,
-		logTapTempo: !IS_PRODUCTION && false
+		logTapTempo: !IS_PRODUCTION && false,
+		logDeviceOrientation: !IS_PRODUCTION
 	},
 	ui: {
 		deviceMode: EDeviceMode.Desktop

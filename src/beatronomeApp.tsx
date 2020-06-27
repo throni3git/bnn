@@ -174,7 +174,11 @@ export class BeatronomeApp extends React.Component<
 		const uiState = getState().ui;
 
 		if (uiState.deviceMode !== newMode) {
-			console.log(newMode);
+			if (getState().debugging.logDeviceOrientation) {
+				console.log(
+					newMode + " (angle " + screen.orientation.angle + ")"
+				);
+			}
 			setUserInterfaceState("deviceMode", newMode);
 		}
 	};
