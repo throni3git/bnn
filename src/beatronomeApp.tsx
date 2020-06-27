@@ -287,7 +287,7 @@ export class BeatronomeApp extends React.Component<
 											{children}
 										</RangeTrack>
 									)}
-									renderThumb={() => <RangeThumb />}
+									renderThumb={() => <RangeThumb key={1} />}
 								></Range>
 							</SliderDiv>
 						</Column>
@@ -336,7 +336,7 @@ export class BeatronomeApp extends React.Component<
 											{children}
 										</RangeTrack>
 									)}
-									renderThumb={() => <RangeThumb />}
+									renderThumb={() => <RangeThumb key={1} />}
 								></Range>
 							</SliderDiv>
 						</Column>
