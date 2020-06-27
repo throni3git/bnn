@@ -19,11 +19,11 @@ import { COLORS } from "./constants";
 declare var BUILD_TIMESTAMP: string;
 console.log("Beatronome " + BUILD_TIMESTAMP);
 
-export let PRODUCTION = process.env.NODE_ENV == "production";
+declare var IS_PRODUCTION: boolean;
 
 // progressive web app service worker
 
-if (PRODUCTION && "serviceWorker" in navigator) {
+if (IS_PRODUCTION && "serviceWorker" in navigator) {
 	window.addEventListener("load", () => {
 		navigator.serviceWorker
 			.register("service-worker.js")

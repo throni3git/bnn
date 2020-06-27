@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Range } from "react-range";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { PRODUCTION } from "./";
+declare var IS_PRODUCTION: boolean;
 import {
 	subscribe,
 	getState,
@@ -131,7 +131,7 @@ export class BeatronomeApp extends React.Component<
 
 		this.loadDrumset(getState().audio.availableDrumsets[0]);
 
-		if (PRODUCTION) {
+		if (IS_PRODUCTION) {
 			this.loadDrumloop("straight44.txt");
 		} else {
 			this.loadDrumloop("debug.txt");

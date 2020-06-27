@@ -32,7 +32,8 @@ const config = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			BUILD_TIMESTAMP: timestamp
+			BUILD_TIMESTAMP: timestamp,
+			IS_PRODUCTION: true
 		}),
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({

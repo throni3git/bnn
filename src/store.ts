@@ -1,4 +1,4 @@
-import { PRODUCTION } from ".";
+declare var IS_PRODUCTION: boolean;
 import { IDrumLoop, IDrumset } from "./types";
 
 export const LOOP_UPDATE_INTERVAL = 0.1;
@@ -43,7 +43,7 @@ export enum EDeviceMode {
 
 let currentState: IState = {
 	audio: {
-		masterVolume: PRODUCTION ? 1 : 0.3,
+		masterVolume: IS_PRODUCTION ? 1 : 0.3,
 		drumLoop: null,
 		bpm: 60,
 		maxBpm: 200,
@@ -56,9 +56,9 @@ let currentState: IState = {
 		measuresInCurrentTempo: 0
 	},
 	debugging: {
-		logDrumLoopParsing: !PRODUCTION && false,
-		logLoopInterval: !PRODUCTION,
-		logTapTempo: !PRODUCTION && false
+		logDrumLoopParsing: !IS_PRODUCTION && false,
+		logLoopInterval: !IS_PRODUCTION,
+		logTapTempo: !IS_PRODUCTION && false
 	},
 	ui: {
 		deviceMode: EDeviceMode.Desktop
