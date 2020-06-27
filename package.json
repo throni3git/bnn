@@ -5,7 +5,7 @@
   "description": "simple drum computer",
   "main": "start-electron.js",
   "scripts": {
-    "start": "webpack-dev-server --mode=development --watch",
+    "start": "webpack-dev-server --mode=development --watch --config=webpack.config.dev.ts",
     "dist": "webpack --mode=production -p",
     "electron-run": "electron ./start-electron.js",
     "electron-build": "electron-packager . Beatronome --overwrite --asar --ignore=node_modules/ --out=release-builds",

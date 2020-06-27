@@ -32,7 +32,8 @@ const config = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			BUILD_TIMESTAMP: timestamp
+			BUILD_TIMESTAMP: timestamp,
+			IS_PRODUCTION: false
 		}),
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
@@ -58,7 +59,11 @@ const config = {
 	output: {
 		filename: "bundle.[hash].js",
 		path: path.resolve("dist")
-	}
+	},
+	devtool: "source-map",
+	devServer: {
+		port: 3000
+	} as webpackDevServer.Configuration
 };
 
 module.exports = config;
