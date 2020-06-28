@@ -381,7 +381,10 @@ export class BeatronomeApp extends React.Component<
 					<CenteredLarge>{timerString}</CenteredLarge>
 				</Column>
 				<FixedColumn>
-					<Button action={() => resetTimerIfStopped()}>
+					<Button
+						action={() => resetTimerIfStopped()}
+						disabled={audioState.isPlaying || audioState.timer < 3}
+					>
 						<FontAwesomeIcon
 							size={iconSize}
 							icon="undo"
