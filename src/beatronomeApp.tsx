@@ -377,17 +377,17 @@ export class BeatronomeApp extends React.Component<
 		const groupPlayTimer: JSX.Element = (
 			<FixedRow>
 				<Column>
-					<ResetButton
-						isDisabled={
-							audioState.isPlaying || audioState.timer < 3
-						}
-						onClick={() => resetTimerIfStopped()}
-					>
-						<FontAwesomeIcon icon="undo"></FontAwesomeIcon>
-					</ResetButton>
 					<CenteredSmall>Timer</CenteredSmall>
 					<CenteredLarge>{timerString}</CenteredLarge>
 				</Column>
+				<FixedColumn>
+					<Button action={() => resetTimerIfStopped()}>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon="undo"
+						></FontAwesomeIcon>
+					</Button>
+				</FixedColumn>
 				<FixedColumn>
 					<Button action={() => togglePlay()}>
 						{audioState.isPlaying ? (
