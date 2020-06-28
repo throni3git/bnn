@@ -1,8 +1,14 @@
 import * as React from "react";
 
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { Range, Direction } from "react-range";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const GlobalStyle = createGlobalStyle`
+	*, *:before, *:after {
+		box-sizing: border-box;
+	}
+`;
 
 declare var IS_PRODUCTION: boolean;
 import {
@@ -100,7 +106,7 @@ const Column = styled.div`
 const FixedColumn = styled.div`
 	/* border: 1px dotted darkgreen; */
 	display: flex;
-	width: 62px;
+	width: 60px;
 	flex-direction: column;
 	justify-content: center;
 `;
@@ -406,6 +412,7 @@ export class BeatronomeApp extends React.Component<
 
 		return (
 			<AllDiv>
+				<GlobalStyle></GlobalStyle>
 				<Heading>BEATRONOME</Heading>
 				<ContainerDiv>
 					<FlexRow>
