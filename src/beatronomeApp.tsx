@@ -68,8 +68,9 @@ const SliderCaptionDiv = styled.div`
 	/* padding: 3px; */
 `;
 
-const SliderRow = styled.div`
+const RowSlider = styled.div`
 	display: flex;
+	flex: 1;
 	padding: 10px;
 `;
 
@@ -77,7 +78,7 @@ const FlexRow = styled.div`
 	/* border: 1px dotted red; */
 	display: flex;
 	flex: 1;
-	flex-direction: column;
+	flex-direction: row;
 	justify-content: center;
 `;
 
@@ -318,8 +319,9 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		const iconSize = "2x";
+		const dm = getState().ui.deviceMode;
 
-		const groupTempoChange: JSX.Element = (
+		const columnTempoChange: JSX.Element = (
 			<FixedColumn>
 				<Row>
 					<Button action={increaseBpm}>
@@ -340,23 +342,30 @@ export class BeatronomeApp extends React.Component<
 			</FixedColumn>
 		);
 
-		const sliderVolume: JSX.Element = (
-			<Range
-				values={[audioState.masterVolume * 1000.0]}
-				min={0}
-				max={1000}
-				direction={Direction.Up}
-				onChange={(values) => {
-					const vol = values[0] / 1000;
-					setMasterVolume(vol);
-				}}
-				renderTrack={({ props, children }) => (
-					<RangeTrackVertical {...props}>
-						{children}
-					</RangeTrackVertical>
-				)}
-				renderThumb={() => <RangeThumb key={1} />}
-			></Range>
+		const columnVolumeSlider: JSX.Element = (
+			<FixedColumn>
+				<Row>
+					<CenteredSmall>Volume</CenteredSmall>
+				</Row>
+				<FlexRow style={{ padding: "10px" }}>
+					<Range
+						values={[audioState.masterVolume * 1000.0]}
+						min={0}
+						max={1000}
+						direction={Direction.Up}
+						onChange={(values) => {
+							const vol = values[0] / 1000;
+							setMasterVolume(vol);
+						}}
+						renderTrack={({ props, children }) => (
+							<RangeTrackVertical {...props}>
+								{children}
+							</RangeTrackVertical>
+						)}
+						renderThumb={() => <RangeThumb key={1} />}
+					></Range>
+				</FlexRow>
+			</FixedColumn>
 		);
 
 		const sliderTempo: JSX.Element = (
@@ -374,7 +383,7 @@ export class BeatronomeApp extends React.Component<
 			></Range>
 		);
 
-		const groupPlayTimer: JSX.Element = (
+		const rowPlayTimer: JSX.Element = (
 			<FixedRow>
 				<Column>
 					<CenteredSmall>Timer</CenteredSmall>
@@ -413,25 +422,19 @@ export class BeatronomeApp extends React.Component<
 			</FixedRow>
 		);
 
-		return (
-			<AllDiv>
-				<GlobalStyle></GlobalStyle>
-				<Heading>BEATRONOME</Heading>
+		let groupContainer: JSX.Element;
+		if (dm === EDeviceMode.SmallPortrait) {
+			groupContainer = (
 				<ContainerDiv>
 					<FlexRow>
-						<CenteredSmall>
-							FANCY MATRIX WITH DRUM PATTERN
-						</CenteredSmall>
+						<Column>
+							<CenteredSmall>
+								FANCY MATRIX WITH DRUM PATTERN
+							</CenteredSmall>
+						</Column>
 					</FlexRow>
 					<Row>
-						<FixedColumn>
-							<Row>
-								<CenteredSmall>Volume</CenteredSmall>
-							</Row>
-							<FlexRow style={{ padding: "10px" }}>
-								{sliderVolume}
-							</FlexRow>
-						</FixedColumn>
+						{columnVolumeSlider}
 						<Column>
 							<Row>
 								<Button action={tapTempo}>
@@ -442,16 +445,63 @@ export class BeatronomeApp extends React.Component<
 								</Button>
 							</Row>
 							<FlexRow>
+								<Column>
+									<CenteredLarge>
+										{audioState.bpm + " BPM"}
+									</CenteredLarge>
+								</Column>
+							</FlexRow>
+						</Column>
+						{columnTempoChange}
+					</Row>
+					<Row>
+						<RowSlider>{sliderTempo}</RowSlider>
+					</Row>
+					{rowPlayTimer}
+				</ContainerDiv>
+			);
+		}
+
+		if (dm === EDeviceMode.SmallLandscape) {
+			groupContainer = (
+				<ContainerDiv>
+					<FlexRow>
+						{columnVolumeSlider}
+						<Column>
+							<CenteredSmall>
+								FANCY MATRIX WITH DRUM PATTERN
+							</CenteredSmall>
+						</Column>
+						{columnTempoChange}
+					</FlexRow>
+					<Row>
+						<FixedRow>
+							<Button action={tapTempo}>
+								<FontAwesomeIcon
+									size={iconSize}
+									icon="hand-point-up"
+								></FontAwesomeIcon>
+							</Button>
+						</FixedRow>
+						<Column>{sliderTempo}</Column>
+						<FixedRow>
+							<Column>
 								<CenteredLarge>
 									{audioState.bpm + " BPM"}
 								</CenteredLarge>
-							</FlexRow>
-						</Column>
-						{groupTempoChange}
+							</Column>
+						</FixedRow>
 					</Row>
-					<SliderRow>{sliderTempo}</SliderRow>
-					{groupPlayTimer}
+					{rowPlayTimer}
 				</ContainerDiv>
+			);
+		}
+
+		return (
+			<AllDiv>
+				<GlobalStyle></GlobalStyle>
+				<Heading>BEATRONOME</Heading>
+				{groupContainer}
 			</AllDiv>
 		);
 	}
