@@ -440,6 +440,8 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		let groupContainer: JSX.Element;
+
+		// smartphone portrait mode
 		if (deviceMode === EDeviceMode.SmallPortrait) {
 			groupContainer = (
 				<>
@@ -460,8 +462,8 @@ export class BeatronomeApp extends React.Component<
 			);
 		}
 
-		// if (deviceMode === EDeviceMode.SmallLandscape) {
-		else {
+		// smartphone landscape mode
+		else if (deviceMode === EDeviceMode.SmallLandscape) {
 			groupContainer = (
 				<>
 					<FlexRow>
@@ -477,6 +479,34 @@ export class BeatronomeApp extends React.Component<
 						<FixedColumn>{columnSmallTempoDisplay}</FixedColumn>
 					</Row>
 					{rowPlayTimer}
+				</>
+			);
+		}
+
+		// tablet portrait mode
+		else if (deviceMode === EDeviceMode.BigPortrait) {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>
+								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<Column>
+									{/* <FlexRow> */}
+									{columnLargeTempoDisplay}
+									{/* </FlexRow> */}
+								</Column>
+								<FixedColumn></FixedColumn>
+							</Row>
+							<Row>
+								<SliderPadding>{sliderTempo}</SliderPadding>
+							</Row>
+							{rowPlayTimer}
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
 				</>
 			);
 		}
