@@ -148,14 +148,6 @@ const CenteredLarge = styled.div`
 	text-align: center;
 `;
 
-const ResetButton = styled.div<{ isDisabled: boolean }>(
-	(props) => `
-	position:absolute;
-	cursor:pointer;
-	color: ${props.isDisabled ? COLORS.light : COLORS.fc};
-`
-);
-
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
 	IBeatronomeAppState
@@ -319,10 +311,10 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		const iconSize = "2x";
-		const dm = getState().ui.deviceMode;
+		const deviceMode = getState().ui.deviceMode;
 
-		const columnTempoChange: JSX.Element = (
-			<FixedColumn>
+		const groupTempoChange: JSX.Element = (
+			<>
 				<Row>
 					<Button action={increaseBpm}>
 						<FontAwesomeIcon
@@ -339,11 +331,11 @@ export class BeatronomeApp extends React.Component<
 						></FontAwesomeIcon>
 					</Button>
 				</Row>
-			</FixedColumn>
+			</>
 		);
 
-		const columnVolumeSlider: JSX.Element = (
-			<FixedColumn>
+		const groupVolumeSlider: JSX.Element = (
+			<>
 				<Row>
 					<CenteredSmall>Volume</CenteredSmall>
 				</Row>
@@ -365,7 +357,7 @@ export class BeatronomeApp extends React.Component<
 						renderThumb={() => <RangeThumb key={1} />}
 					></Range>
 				</FlexRow>
-			</FixedColumn>
+			</>
 		);
 
 		const sliderTempo: JSX.Element = (
@@ -402,17 +394,14 @@ export class BeatronomeApp extends React.Component<
 				</FixedColumn>
 				<FixedColumn>
 					<Button action={() => togglePlay()}>
-						{audioState.isPlaying ? (
-							<FontAwesomeIcon
-								size={iconSize}
-								icon="stop-circle"
-							></FontAwesomeIcon>
-						) : (
-							<FontAwesomeIcon
-								size={iconSize}
-								icon="play-circle"
-							></FontAwesomeIcon>
-						)}
+						<FontAwesomeIcon
+							size={iconSize}
+							icon={
+								audioState.isPlaying
+									? "stop-circle"
+									: "play-circle"
+							}
+						></FontAwesomeIcon>
 					</Button>
 				</FixedColumn>
 				<Column>
@@ -422,86 +411,72 @@ export class BeatronomeApp extends React.Component<
 			</FixedRow>
 		);
 
+		const columnMatrix = (
+			<Column>
+				<CenteredSmall>Fancy matrix with drum pattern</CenteredSmall>
+			</Column>
+		);
+
+		const columnTempoDisplay = (
+			<Column>
+				<CenteredLarge>{audioState.bpm + " BPM"}</CenteredLarge>
+			</Column>
+		);
+
+		const buttonTapTempo = (
+			<Button action={tapTempo}>
+				<FontAwesomeIcon
+					size={iconSize}
+					icon="hand-point-up"
+				></FontAwesomeIcon>
+			</Button>
+		);
+
 		let groupContainer: JSX.Element;
-		if (dm === EDeviceMode.SmallPortrait) {
+		if (deviceMode === EDeviceMode.SmallPortrait) {
 			groupContainer = (
-				<ContainerDiv>
-					<FlexRow>
-						<Column>
-							<CenteredSmall>
-								FANCY MATRIX WITH DRUM PATTERN
-							</CenteredSmall>
-						</Column>
-					</FlexRow>
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
 					<Row>
-						{columnVolumeSlider}
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
 						<Column>
-							<Row>
-								<Button action={tapTempo}>
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="hand-point-up"
-									></FontAwesomeIcon>
-								</Button>
-							</Row>
-							<FlexRow>
-								<Column>
-									<CenteredLarge>
-										{audioState.bpm + " BPM"}
-									</CenteredLarge>
-								</Column>
-							</FlexRow>
+							<Row>{buttonTapTempo}</Row>
+							<FlexRow>{columnTempoDisplay}</FlexRow>
 						</Column>
-						{columnTempoChange}
+						<FixedColumn>{groupTempoChange}</FixedColumn>
 					</Row>
 					<Row>
 						<RowSlider>{sliderTempo}</RowSlider>
 					</Row>
 					{rowPlayTimer}
-				</ContainerDiv>
+				</>
 			);
 		}
 
-		if (dm === EDeviceMode.SmallLandscape) {
+		// if (deviceMode === EDeviceMode.SmallLandscape) {
+		else {
 			groupContainer = (
-				<ContainerDiv>
+				<>
 					<FlexRow>
-						{columnVolumeSlider}
-						<Column>
-							<CenteredSmall>
-								FANCY MATRIX WITH DRUM PATTERN
-							</CenteredSmall>
-						</Column>
-						{columnTempoChange}
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						{columnMatrix}
+						<FixedColumn>{groupTempoChange}</FixedColumn>
 					</FlexRow>
 					<Row>
-						<FixedRow>
-							<Button action={tapTempo}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="hand-point-up"
-								></FontAwesomeIcon>
-							</Button>
-						</FixedRow>
+						<FixedRow>{buttonTapTempo}</FixedRow>
 						<Column>{sliderTempo}</Column>
-						<FixedRow>
-							<Column>
-								<CenteredLarge>
-									{audioState.bpm + " BPM"}
-								</CenteredLarge>
-							</Column>
-						</FixedRow>
+						<FixedRow>{columnTempoDisplay}</FixedRow>
 					</Row>
 					{rowPlayTimer}
-				</ContainerDiv>
+				</>
 			);
 		}
 
 		return (
 			<AllDiv>
 				<GlobalStyle></GlobalStyle>
-				<Heading>BEATRONOME</Heading>
-				{groupContainer}
+				<Heading>Beatronome</Heading>
+				<ContainerDiv>{groupContainer}</ContainerDiv>
 			</AllDiv>
 		);
 	}
