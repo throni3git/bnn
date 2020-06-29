@@ -68,7 +68,7 @@ const SliderCaptionDiv = styled.div`
 	/* padding: 3px; */
 `;
 
-const RowSlider = styled.div`
+const SliderPadding = styled.div`
 	display: flex;
 	flex: 1;
 	padding: 10px;
@@ -339,7 +339,7 @@ export class BeatronomeApp extends React.Component<
 				<Row>
 					<CenteredSmall>Volume</CenteredSmall>
 				</Row>
-				<FlexRow style={{ padding: "10px" }}>
+				<SliderPadding>
 					<Range
 						values={[audioState.masterVolume * 1000.0]}
 						min={0}
@@ -356,7 +356,7 @@ export class BeatronomeApp extends React.Component<
 						)}
 						renderThumb={() => <RangeThumb key={1} />}
 					></Range>
-				</FlexRow>
+				</SliderPadding>
 			</>
 		);
 
@@ -417,10 +417,17 @@ export class BeatronomeApp extends React.Component<
 			</Column>
 		);
 
-		const columnTempoDisplay = (
+		const columnLargeTempoDisplay = (
 			<Column>
 				<CenteredLarge>{audioState.bpm + " BPM"}</CenteredLarge>
 			</Column>
+		);
+
+		const columnSmallTempoDisplay = (
+			<>
+				<CenteredSmall>BPM</CenteredSmall>
+				<CenteredLarge>{audioState.bpm}</CenteredLarge>
+			</>
 		);
 
 		const buttonTapTempo = (
@@ -441,12 +448,12 @@ export class BeatronomeApp extends React.Component<
 						<FixedColumn>{groupVolumeSlider}</FixedColumn>
 						<Column>
 							<Row>{buttonTapTempo}</Row>
-							<FlexRow>{columnTempoDisplay}</FlexRow>
+							<FlexRow>{columnLargeTempoDisplay}</FlexRow>
 						</Column>
 						<FixedColumn>{groupTempoChange}</FixedColumn>
 					</Row>
 					<Row>
-						<RowSlider>{sliderTempo}</RowSlider>
+						<SliderPadding>{sliderTempo}</SliderPadding>
 					</Row>
 					{rowPlayTimer}
 				</>
@@ -463,9 +470,11 @@ export class BeatronomeApp extends React.Component<
 						<FixedColumn>{groupTempoChange}</FixedColumn>
 					</FlexRow>
 					<Row>
-						<FixedRow>{buttonTapTempo}</FixedRow>
-						<Column>{sliderTempo}</Column>
-						<FixedRow>{columnTempoDisplay}</FixedRow>
+						<FixedColumn>{buttonTapTempo}</FixedColumn>
+						<Column>
+							<SliderPadding>{sliderTempo}</SliderPadding>
+						</Column>
+						<FixedColumn>{columnSmallTempoDisplay}</FixedColumn>
 					</Row>
 					{rowPlayTimer}
 				</>
