@@ -35,7 +35,8 @@ import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
 
-const AllDiv = styled.div`
+const AllDiv = styled.div<{ isDesktop: boolean }>(
+	(props) => `
 	display: flex;
 	overflow: hidden;
 	flex-direction: column;
@@ -43,7 +44,10 @@ const AllDiv = styled.div`
 	max-width: 1024px;
 	width: 100%;
 	height: 100%;
-`;
+	margin: ${props.isDesktop ? "auto" : null};
+	border: ${props.isDesktop ? "1px solid " + COLORS.lightBorder : null};
+`
+);
 
 const Heading = styled.div`
 	font-size: 2em;
@@ -493,11 +497,7 @@ export class BeatronomeApp extends React.Component<
 						<Column>
 							<Row>
 								<FixedColumn>{buttonTapTempo}</FixedColumn>
-								<Column>
-									{/* <FlexRow> */}
-									{columnLargeTempoDisplay}
-									{/* </FlexRow> */}
-								</Column>
+								<Column>{columnLargeTempoDisplay}</Column>
 								<FixedColumn></FixedColumn>
 							</Row>
 							<Row>
@@ -521,11 +521,31 @@ export class BeatronomeApp extends React.Component<
 						<Column>
 							<Row>
 								<FixedColumn>{buttonTapTempo}</FixedColumn>
-								<Column>
-									{/* <FlexRow> */}
-									{columnLargeTempoDisplay}
-									{/* </FlexRow> */}
-								</Column>
+								<Column>{columnLargeTempoDisplay}</Column>
+								<FixedColumn></FixedColumn>
+							</Row>
+							<Row>
+								<SliderPadding>{sliderTempo}</SliderPadding>
+							</Row>
+							{rowPlayTimer}
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
+				</>
+			);
+		}
+
+		// desktop mode
+		else {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>
+								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<Column>{columnLargeTempoDisplay}</Column>
 								<FixedColumn></FixedColumn>
 							</Row>
 							<Row>
@@ -540,7 +560,7 @@ export class BeatronomeApp extends React.Component<
 		}
 
 		return (
-			<AllDiv>
+			<AllDiv isDesktop={deviceMode === EDeviceMode.Desktop}>
 				<GlobalStyle></GlobalStyle>
 				<Heading>Beatronome</Heading>
 				<ContainerDiv>{groupContainer}</ContainerDiv>
