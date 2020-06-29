@@ -39,8 +39,8 @@ const AllDiv = styled.div`
 	display: flex;
 	overflow: hidden;
 	flex-direction: column;
-	max-height: 800px;
-	max-width: 800px;
+	max-height: 1024px;
+	max-width: 1024px;
 	width: 100%;
 	height: 100%;
 `;
