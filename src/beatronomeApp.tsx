@@ -511,6 +511,34 @@ export class BeatronomeApp extends React.Component<
 			);
 		}
 
+		// tablet landscape mode
+		else if (deviceMode === EDeviceMode.BigLandscape) {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>
+								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<Column>
+									{/* <FlexRow> */}
+									{columnLargeTempoDisplay}
+									{/* </FlexRow> */}
+								</Column>
+								<FixedColumn></FixedColumn>
+							</Row>
+							<Row>
+								<SliderPadding>{sliderTempo}</SliderPadding>
+							</Row>
+							{rowPlayTimer}
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
+				</>
+			);
+		}
+
 		return (
 			<AllDiv>
 				<GlobalStyle></GlobalStyle>
