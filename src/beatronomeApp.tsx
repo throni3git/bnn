@@ -117,19 +117,38 @@ const FixedColumn = styled.div`
 `;
 
 const RangeTrackHorizontal = styled.div`
-	background-color: ${COLORS.light};
-	border: 1px solid ${COLORS.lightBorder};
 	height: 20px;
-	width: 100%;
+	width: calc(100% - 20px);
 	margin: auto;
+	position: relative;
+
+	&::before {
+		content: "";
+		background-color: ${COLORS.light};
+		border: 1px solid ${COLORS.lightBorder};
+		display: block;
+		width: calc(100% + 20px);
+		height: 20px;
+		transform: translateX(-10px);
+		position: absolute;
+	}
 `;
 
 const RangeTrackVertical = styled.div`
-	background-color: ${COLORS.light};
-	border: 1px solid ${COLORS.lightBorder};
-	height: 100%;
+	height: calc(100% - 20px);
 	width: 20px;
 	margin: auto;
+
+	&::before {
+		content: "";
+		background-color: ${COLORS.light};
+		border: 1px solid ${COLORS.lightBorder};
+		display: block;
+		width: 20px;
+		height: calc(100% + 20px);
+		transform: translateY(-10px);
+		position: absolute;
+	}
 `;
 
 const RangeThumb = styled.div`
