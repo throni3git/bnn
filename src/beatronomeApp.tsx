@@ -203,7 +203,7 @@ export class BeatronomeApp extends React.Component<
 			newMode = EDeviceMode.BigLandscape;
 		} else if (!landscapeOrientation && height > 640) {
 			newMode = EDeviceMode.BigPortrait;
-		} else if (landscapeOrientation && width <= 640) {
+		} else if (landscapeOrientation) {
 			newMode = EDeviceMode.SmallLandscape;
 		} else {
 			newMode = EDeviceMode.SmallPortrait;
