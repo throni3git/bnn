@@ -212,7 +212,8 @@ export class BeatronomeApp extends React.Component<
 	 * handler for orientation change and resize events
 	 */
 	private responsiveDesignHandler = (event?: UIEvent) => {
-		const landscapeOrientation = Math.abs(orientation.angle) === 90;
+		const absAngle = Math.abs(orientation.angle);
+		const landscapeOrientation = absAngle === 90 || absAngle === 270;
 		const width = window.innerWidth;
 		const height = window.innerHeight;
 		let newMode: EDeviceMode = null;
