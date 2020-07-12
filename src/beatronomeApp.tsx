@@ -1,8 +1,15 @@
 import * as React from "react";
+import { orientation } from "o9n";
 
-import styled from "styled-components";
-import { Range } from "react-range";
+import styled, { createGlobalStyle } from "styled-components";
+import { Range, Direction } from "react-range";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const GlobalStyle = createGlobalStyle`
+	*, *:before, *:after {
+		box-sizing: border-box;
+	}
+`;
 
 declare var IS_PRODUCTION: boolean;
 import {
@@ -29,22 +36,26 @@ import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
 
-const AllDiv = styled.div`
+const AllDiv = styled.div<{ isDesktop: boolean }>(
+	(props) => `
 	display: flex;
 	overflow: hidden;
 	flex-direction: column;
-	max-height: 800px;
-	max-width: 800px;
+	max-height: 1024px;
+	max-width: 1024px;
 	width: 100%;
 	height: 100%;
-`;
+	margin: ${props.isDesktop ? "auto" : null};
+	border: ${props.isDesktop ? "1px solid " + COLORS.lightBorder : null};
+`
+);
 
 const Heading = styled.div`
 	font-size: 2em;
 	font-weight: bold;
 	justify-content: center;
 	text-align: center;
-	padding-top: 10px;
+	padding-top: 8px;
 `;
 
 const ContainerDiv = styled.div`
@@ -52,38 +63,93 @@ const ContainerDiv = styled.div`
 	flex-direction: column;
 	flex: 1;
 	justify-content: space-evenly;
-	padding: 10px;
+	padding: 8px;
 `;
 
+// TODO löschen
 const SliderCaptionDiv = styled.div`
 	display: flex;
 	justify-content: center;
 	/* padding: 3px; */
 `;
 
-const SliderDiv = styled.div`
+const SliderPadding = styled.div`
 	display: flex;
-	margin: 4px;
+	flex: 1;
+	padding: 10px;
+`;
+
+const FlexRow = styled.div`
+	/* border: 1px dotted red; */
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	justify-content: center;
 `;
 
 const Row = styled.div`
+	/* border: 1px dotted red; */
 	display: flex;
+	/* flex: 1; */
 	flex-direction: row;
 	justify-content: space-evenly;
 `;
 
+const FixedRow = styled.div`
+	/* border: 1px dotted darkred; */
+	/* min-height: 40px; */
+	display: flex;
+`;
+
 const Column = styled.div`
+	/* border: 1px dotted green; */
 	display: flex;
 	flex: 1;
 	flex-direction: column;
 	justify-content: center;
 `;
 
-const RangeTrack = styled.div`
-	background-color: ${COLORS.light};
-	border: 1px solid ${COLORS.lightBorder};
+const FixedColumn = styled.div`
+	/* border: 1px dotted darkgreen; */
+	display: flex;
+	width: 60px;
+	flex-direction: column;
+	justify-content: center;
+`;
+
+const RangeTrackHorizontal = styled.div`
 	height: 20px;
-	width: 100%;
+	width: calc(100% - 20px);
+	margin: auto;
+	position: relative;
+
+	&::before {
+		content: "";
+		background-color: ${COLORS.light};
+		border: 1px solid ${COLORS.lightBorder};
+		display: block;
+		width: calc(100% + 20px);
+		height: 20px;
+		transform: translateX(-10px);
+		position: absolute;
+	}
+`;
+
+const RangeTrackVertical = styled.div`
+	height: calc(100% - 20px);
+	width: 20px;
+	margin: auto;
+
+	&::before {
+		content: "";
+		background-color: ${COLORS.light};
+		border: 1px solid ${COLORS.lightBorder};
+		display: block;
+		width: 20px;
+		height: calc(100% + 20px);
+		transform: translateY(-10px);
+		position: absolute;
+	}
 `;
 
 const RangeThumb = styled.div`
@@ -105,14 +171,6 @@ const CenteredLarge = styled.div`
 	font-weight: bold;
 	text-align: center;
 `;
-
-const ResetButton = styled.div<{ isDisabled: boolean }>(
-	(props) => `
-	position:absolute;
-	cursor:pointer;
-	color: ${props.isDisabled ? COLORS.light : COLORS.fc};
-`
-);
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -154,18 +212,19 @@ export class BeatronomeApp extends React.Component<
 	 * handler for orientation change and resize events
 	 */
 	private responsiveDesignHandler = (event?: UIEvent) => {
-		const landscapeOrientation = Math.abs(screen.orientation.angle) === 90;
+		const absAngle = Math.abs(orientation.angle);
+		const landscapeOrientation = absAngle === 90 || absAngle === 270;
 		const width = window.innerWidth;
 		const height = window.innerHeight;
 		let newMode: EDeviceMode = null;
 
 		if (width > 1024 && height > 768) {
 			newMode = EDeviceMode.Desktop;
-		} else if (landscapeOrientation && width > 640) {
+		} else if (landscapeOrientation && height > 640) {
 			newMode = EDeviceMode.BigLandscape;
-		} else if (!landscapeOrientation && height > 640) {
+		} else if (!landscapeOrientation && width > 640) {
 			newMode = EDeviceMode.BigPortrait;
-		} else if (landscapeOrientation && width <= 640) {
+		} else if (landscapeOrientation) {
 			newMode = EDeviceMode.SmallLandscape;
 		} else {
 			newMode = EDeviceMode.SmallPortrait;
@@ -277,124 +336,255 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		const iconSize = "2x";
+		const deviceMode = getState().ui.deviceMode;
+
+		const groupTempoChange: JSX.Element = (
+			<>
+				<Row>
+					<Button action={increaseBpm}>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon="plus-circle"
+						></FontAwesomeIcon>
+					</Button>
+				</Row>
+				<Row>
+					<Button action={decreaseBpm}>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon="minus-circle"
+						></FontAwesomeIcon>
+					</Button>
+				</Row>
+			</>
+		);
+
+		const groupVolumeSlider: JSX.Element = (
+			<>
+				<Row>
+					<CenteredSmall>Volume</CenteredSmall>
+				</Row>
+				<SliderPadding>
+					<Range
+						values={[audioState.masterVolume * 1000.0]}
+						min={0}
+						max={1000}
+						direction={Direction.Up}
+						onChange={(values) => {
+							const vol = values[0] / 1000;
+							setMasterVolume(vol);
+						}}
+						renderTrack={({ props, children }) => (
+							<RangeTrackVertical {...props}>
+								{children}
+							</RangeTrackVertical>
+						)}
+						renderThumb={() => <RangeThumb key={1} />}
+					></Range>
+				</SliderPadding>
+			</>
+		);
+
+		const sliderTempo: JSX.Element = (
+			<Range
+				values={[audioState.bpm]}
+				min={audioState.minBpm}
+				max={audioState.maxBpm}
+				onChange={this.changeTempo}
+				renderTrack={({ props, children }) => (
+					<RangeTrackHorizontal {...props}>
+						{children}
+					</RangeTrackHorizontal>
+				)}
+				renderThumb={() => <RangeThumb key={1} />}
+			></Range>
+		);
+
+		const rowPlayTimer: JSX.Element = (
+			<FixedRow>
+				<Column>
+					<CenteredSmall>Timer</CenteredSmall>
+					<CenteredLarge>{timerString}</CenteredLarge>
+				</Column>
+				<FixedColumn>
+					<Button
+						action={() => resetTimerIfStopped()}
+						disabled={audioState.isPlaying || audioState.timer < 3}
+					>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon="undo"
+						></FontAwesomeIcon>
+					</Button>
+				</FixedColumn>
+				<FixedColumn>
+					<Button action={() => togglePlay()}>
+						<FontAwesomeIcon
+							size={iconSize}
+							icon={
+								audioState.isPlaying
+									? "stop-circle"
+									: "play-circle"
+							}
+						></FontAwesomeIcon>
+					</Button>
+				</FixedColumn>
+				<Column>
+					<CenteredSmall># in tempo</CenteredSmall>
+					<CenteredLarge>{measuresInCurrentTempo}</CenteredLarge>
+				</Column>
+			</FixedRow>
+		);
+
+		const columnMatrix = (
+			<Column>
+				<CenteredSmall>Fancy matrix with drum pattern</CenteredSmall>
+			</Column>
+		);
+
+		const columnLargeTempoDisplay = (
+			<Column>
+				<CenteredLarge>{audioState.bpm + " BPM"}</CenteredLarge>
+			</Column>
+		);
+
+		const columnSmallTempoDisplay = (
+			<FixedColumn>
+				<CenteredSmall>BPM</CenteredSmall>
+				<CenteredLarge>{audioState.bpm}</CenteredLarge>
+			</FixedColumn>
+		);
+
+		const buttonTapTempo = (
+			<Button action={tapTempo}>
+				<FontAwesomeIcon
+					size={iconSize}
+					icon="hand-point-up"
+				></FontAwesomeIcon>
+			</Button>
+		);
+
+		let groupContainer: JSX.Element;
+
+		// smartphone portrait mode
+		if (deviceMode === EDeviceMode.SmallPortrait) {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>{buttonTapTempo}</Row>
+							<FlexRow>{columnSmallTempoDisplay}</FlexRow>
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
+					<Row>
+						<SliderPadding>{sliderTempo}</SliderPadding>
+					</Row>
+					{rowPlayTimer}
+				</>
+			);
+		}
+
+		// smartphone landscape mode
+		else if (deviceMode === EDeviceMode.SmallLandscape) {
+			groupContainer = (
+				<>
+					<FlexRow>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						{columnMatrix}
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</FlexRow>
+					<Row>
+						<FixedColumn>{buttonTapTempo}</FixedColumn>
+						<Column>
+							<SliderPadding>{sliderTempo}</SliderPadding>
+						</Column>
+						{columnSmallTempoDisplay}
+					</Row>
+					{rowPlayTimer}
+				</>
+			);
+		}
+
+		// tablet portrait mode
+		else if (deviceMode === EDeviceMode.BigPortrait) {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>
+								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<Column>{columnLargeTempoDisplay}</Column>
+								<FixedColumn></FixedColumn>
+							</Row>
+							<Row>
+								<SliderPadding>{sliderTempo}</SliderPadding>
+							</Row>
+							{rowPlayTimer}
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
+				</>
+			);
+		}
+
+		// tablet landscape mode
+		else if (deviceMode === EDeviceMode.BigLandscape) {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>
+								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<Column>{columnLargeTempoDisplay}</Column>
+								<FixedColumn></FixedColumn>
+							</Row>
+							<Row>
+								<SliderPadding>{sliderTempo}</SliderPadding>
+							</Row>
+							{rowPlayTimer}
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
+				</>
+			);
+		}
+
+		// desktop mode
+		else {
+			groupContainer = (
+				<>
+					<FlexRow>{columnMatrix}</FlexRow>
+					<Row>
+						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<Column>
+							<Row>
+								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<Column>{columnLargeTempoDisplay}</Column>
+								<FixedColumn></FixedColumn>
+							</Row>
+							<Row>
+								<SliderPadding>{sliderTempo}</SliderPadding>
+							</Row>
+							{rowPlayTimer}
+						</Column>
+						<FixedColumn>{groupTempoChange}</FixedColumn>
+					</Row>
+				</>
+			);
+		}
 
 		return (
-			<AllDiv>
-				<Heading>BEATRONOME</Heading>
-				<ContainerDiv>
-					<Row>
-						<Column>
-							<SliderCaptionDiv>
-								{`Volume ${(
-									audioState.masterVolume * 100
-								).toFixed()}%`}
-							</SliderCaptionDiv>
-							<SliderDiv>
-								<Range
-									values={[audioState.masterVolume * 1000.0]}
-									min={0}
-									max={1000}
-									onChange={(values) => {
-										const vol = values[0] / 1000;
-										setMasterVolume(vol);
-									}}
-									renderTrack={({ props, children }) => (
-										<RangeTrack {...props}>
-											{children}
-										</RangeTrack>
-									)}
-									renderThumb={() => <RangeThumb key={1} />}
-								></Range>
-							</SliderDiv>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
-							<Button action={increaseBpm}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="plus-circle"
-								></FontAwesomeIcon>
-							</Button>
-						</Column>
-						<Column>
-							<Button action={decreaseBpm}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="minus-circle"
-								></FontAwesomeIcon>
-							</Button>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
-							<Button action={tapTempo}>
-								<FontAwesomeIcon
-									size={iconSize}
-									icon="hand-point-up"
-								></FontAwesomeIcon>
-							</Button>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
-							<SliderCaptionDiv>
-								<CenteredLarge>
-									{audioState.bpm + " BPM"}
-								</CenteredLarge>
-							</SliderCaptionDiv>
-							<SliderDiv>
-								<Range
-									values={[audioState.bpm]}
-									min={audioState.minBpm}
-									max={audioState.maxBpm}
-									onChange={this.changeTempo}
-									renderTrack={({ props, children }) => (
-										<RangeTrack {...props}>
-											{children}
-										</RangeTrack>
-									)}
-									renderThumb={() => <RangeThumb key={1} />}
-								></Range>
-							</SliderDiv>
-						</Column>
-					</Row>
-					<Row>
-						<Column>
-							<ResetButton
-								isDisabled={
-									audioState.isPlaying || audioState.timer < 3
-								}
-								onClick={() => resetTimerIfStopped()}
-							>
-								<FontAwesomeIcon icon="undo"></FontAwesomeIcon>
-							</ResetButton>
-							<CenteredSmall>Timer</CenteredSmall>
-							<CenteredLarge>{timerString}</CenteredLarge>
-						</Column>
-						<Column>
-							<Button action={() => togglePlay()}>
-								{audioState.isPlaying ? (
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="stop-circle"
-									></FontAwesomeIcon>
-								) : (
-									<FontAwesomeIcon
-										size={iconSize}
-										icon="play-circle"
-									></FontAwesomeIcon>
-								)}
-							</Button>
-						</Column>
-						<Column>
-							<CenteredSmall># in tempo</CenteredSmall>
-							<CenteredLarge>
-								{measuresInCurrentTempo}
-							</CenteredLarge>
-						</Column>
-					</Row>
-				</ContainerDiv>
+			<AllDiv isDesktop={deviceMode === EDeviceMode.Desktop}>
+				<GlobalStyle></GlobalStyle>
+				<Heading>Beatronome</Heading>
+				<ContainerDiv>{groupContainer}</ContainerDiv>
 			</AllDiv>
 		);
 	}

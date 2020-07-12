@@ -9,9 +9,12 @@ function createWindow() {
 	win = new BrowserWindow({
 		width: 800,
 		height: 600,
+		minHeight: 640,
+		minWidth: 360,
 		webPreferences: {
 			nodeIntegration: true
-		}
+		},
+		backgroundColor: "#1a1a1a" // hexadezimal von hsl(172, 0%, 10%) vom dark theme
 	});
 
 	win.loadFile("dist/index.html");

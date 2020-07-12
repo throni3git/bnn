@@ -8,8 +8,10 @@
     "start": "webpack-dev-server --mode=development --watch --config=webpack.config.dev.ts",
     "dist": "webpack --mode=production -p",
     "electron-run": "electron ./start-electron.js",
-    "electron-build": "electron-packager . Beatronome --overwrite --asar --ignore=node_modules/ --out=release-builds",
-    "electron": "yarn dist && yarn electron-build"
+    "electron-linux": "electron-packager . Beatronome --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
+    "electron-win": "electron-packager . Beatronome --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
+    "electron-mac": "electron-packager . Beatronome --overwrite --arch=x64 --icon=assets/images/favicon64.png --asar --prune=true --ignore=node_modules/ --out=release-builds",
+    "electron-all": "yarn electron-build-linux && yarn electron-build-win && yarn electron-build-mac"
   },
   "keywords": [
     "audio",
@@ -44,6 +46,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/react-fontawesome": "^0.1.9",
+    "o9n": "^2.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-range": "^1.6.7",
