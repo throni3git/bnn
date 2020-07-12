@@ -1,4 +1,5 @@
 import * as React from "react";
+import { orientation } from "o9n";
 
 import styled, { createGlobalStyle } from "styled-components";
 import { Range, Direction } from "react-range";
@@ -211,7 +212,7 @@ export class BeatronomeApp extends React.Component<
 	 * handler for orientation change and resize events
 	 */
 	private responsiveDesignHandler = (event?: UIEvent) => {
-		const landscapeOrientation = Math.abs(screen.orientation.angle) === 90;
+		const landscapeOrientation = Math.abs(orientation.angle) === 90;
 		const width = window.innerWidth;
 		const height = window.innerHeight;
 		let newMode: EDeviceMode = null;

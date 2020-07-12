@@ -4600,6 +4600,11 @@ nth-check@~1.0.1:
   dependencies:
     boolbase "~1.0.0"
 
+o9n@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/o9n/-/o9n-2.1.0.tgz#e4566cf95e5abefdd10dd2c2bc304f2d8ebf243c"
+  integrity sha512-Kvf4kB/XBctZwXKwjAmlPVhCqRywMFXl+o0dvhIc04A5gjWdTiQWYgy75vGXPRBxa9TrkWK6rhgtE+o4GnZTYQ==
+
 object-assign@^4.0.1, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
