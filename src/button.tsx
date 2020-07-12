@@ -1,17 +1,29 @@
 import * as React from "react";
 
 import styled from "styled-components";
-import { COLORS } from "./constants";
 
-const ButtonDiv = styled.div<{ isDisabled?: boolean }>(
+import { COLORS } from "./constants";
+import { EDeviceMode, getState } from "./store";
+
+const ButtonDiv = styled.div<{ isDisabled?: boolean; deviceMode: EDeviceMode }>(
 	(props) => `
 	background-color: ${COLORS.light};
 	border: 1px solid ${COLORS.lightBorder};
 	opacity: ${props.isDisabled ? 0.5 : 1}
 	cursor: pointer;
 	/* padding: 10px; */
-	width: 52px;
-	height: 52px;
+	width: ${
+		props.deviceMode === EDeviceMode.SmallPortrait ||
+		props.deviceMode === EDeviceMode.SmallLandscape
+			? "42px"
+			: "52px"
+	};
+	height: ${
+		props.deviceMode === EDeviceMode.SmallPortrait ||
+		props.deviceMode === EDeviceMode.SmallLandscape
+			? "42px"
+			: "52px"
+	};
 	margin: 4px;
 	text-align: center;
 	transition: background-color 0.05s linear;
@@ -44,6 +56,7 @@ export const Button: React.SFC<IButtonProps> = (props) => (
 			}
 		}}
 		isDisabled={props.disabled}
+		deviceMode={getState().ui.deviceMode}
 	>
 		<ButtonInnerDiv>{props.children}</ButtonInnerDiv>
 	</ButtonDiv>

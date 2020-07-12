@@ -36,7 +36,7 @@ import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
 
-const AllDiv = styled.div<{ isDesktop: boolean }>(
+const AllDiv = styled.div<{ deviceMode: EDeviceMode }>(
 	(props) => `
 	display: flex;
 	overflow: hidden;
@@ -45,8 +45,18 @@ const AllDiv = styled.div<{ isDesktop: boolean }>(
 	max-width: 1024px;
 	width: 100%;
 	height: 100%;
-	margin: ${props.isDesktop ? "auto" : null};
-	border: ${props.isDesktop ? "1px solid " + COLORS.lightBorder : null};
+	font-size: ${
+		props.deviceMode === EDeviceMode.SmallPortrait ||
+		props.deviceMode === EDeviceMode.SmallLandscape
+			? "0.8em"
+			: null
+	}
+	margin: ${props.deviceMode === EDeviceMode.Desktop ? "auto" : null};
+	border: ${
+		props.deviceMode === EDeviceMode.Desktop
+			? "1px solid " + COLORS.lightBorder
+			: null
+	};
 `
 );
 
@@ -590,7 +600,7 @@ export class BeatronomeApp extends React.Component<
 		}
 
 		return (
-			<AllDiv isDesktop={deviceMode === EDeviceMode.Desktop}>
+			<AllDiv deviceMode={deviceMode}>
 				<GlobalStyle></GlobalStyle>
 				<Heading>Beatronome</Heading>
 				<ContainerDiv>{groupContainer}</ContainerDiv>
