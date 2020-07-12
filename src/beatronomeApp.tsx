@@ -449,10 +449,10 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		const columnSmallTempoDisplay = (
-			<>
+			<FixedColumn>
 				<CenteredSmall>BPM</CenteredSmall>
 				<CenteredLarge>{audioState.bpm}</CenteredLarge>
-			</>
+			</FixedColumn>
 		);
 
 		const buttonTapTempo = (
@@ -475,7 +475,7 @@ export class BeatronomeApp extends React.Component<
 						<FixedColumn>{groupVolumeSlider}</FixedColumn>
 						<Column>
 							<Row>{buttonTapTempo}</Row>
-							<FlexRow>{columnLargeTempoDisplay}</FlexRow>
+							<FlexRow>{columnSmallTempoDisplay}</FlexRow>
 						</Column>
 						<FixedColumn>{groupTempoChange}</FixedColumn>
 					</Row>
@@ -501,7 +501,7 @@ export class BeatronomeApp extends React.Component<
 						<Column>
 							<SliderPadding>{sliderTempo}</SliderPadding>
 						</Column>
-						<FixedColumn>{columnSmallTempoDisplay}</FixedColumn>
+						{columnSmallTempoDisplay}
 					</Row>
 					{rowPlayTimer}
 				</>
