@@ -8,7 +8,7 @@ import { EDeviceMode, getState } from "./store";
 const ButtonDiv = styled.div<{ isDisabled?: boolean; deviceMode: EDeviceMode }>(
 	(props) => `
 	background-color: ${COLORS.light};
-	border: 1px solid ${COLORS.lightBorder};
+	border: 2px solid ${COLORS.lightBorder};
 	opacity: ${props.isDisabled ? 0.5 : 1}
 	cursor: pointer;
 	/* padding: 10px; */

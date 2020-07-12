@@ -54,7 +54,7 @@ const AllDiv = styled.div<{ deviceMode: EDeviceMode }>(
 	margin: ${props.deviceMode === EDeviceMode.Desktop ? "auto" : null};
 	border: ${
 		props.deviceMode === EDeviceMode.Desktop
-			? "1px solid " + COLORS.lightBorder
+			? "2px solid " + COLORS.lightBorder
 			: null
 	};
 `
@@ -65,7 +65,7 @@ const Heading = styled.div`
 	font-weight: bold;
 	justify-content: center;
 	text-align: center;
-	padding-top: 8px;
+	padding-top: 4px;
 `;
 
 const ContainerDiv = styled.div`
@@ -73,7 +73,7 @@ const ContainerDiv = styled.div`
 	flex-direction: column;
 	flex: 1;
 	justify-content: space-evenly;
-	padding: 8px;
+	padding: 4px;
 `;
 
 // TODO löschen
@@ -136,7 +136,7 @@ const RangeTrackHorizontal = styled.div`
 	&::before {
 		content: "";
 		background-color: ${COLORS.light};
-		border: 1px solid ${COLORS.lightBorder};
+		border: 2px solid ${COLORS.lightBorder};
 		display: block;
 		width: calc(100% + 20px);
 		height: 20px;
@@ -153,7 +153,7 @@ const RangeTrackVertical = styled.div`
 	&::before {
 		content: "";
 		background-color: ${COLORS.light};
-		border: 1px solid ${COLORS.lightBorder};
+		border: 2px solid ${COLORS.lightBorder};
 		display: block;
 		width: 20px;
 		height: calc(100% + 20px);
