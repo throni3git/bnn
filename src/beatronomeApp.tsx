@@ -119,13 +119,20 @@ const Column = styled.div`
 	justify-content: center;
 `;
 
-const FixedColumn = styled.div`
+const FixedColumn = styled.div<{ deviceMode: EDeviceMode }>(
+	(props) => `
 	/* border: 1px dotted darkgreen; */
 	display: flex;
-	width: 60px;
+	width: ${
+		props.deviceMode === EDeviceMode.SmallLandscape ||
+		props.deviceMode === EDeviceMode.SmallPortrait
+			? "50px"
+			: "60px"
+	};
 	flex-direction: column;
 	justify-content: center;
-`;
+`
+);
 
 const RangeTrackHorizontal = styled.div`
 	height: 20px;
@@ -425,7 +432,7 @@ export class BeatronomeApp extends React.Component<
 					<CenteredSmall>Timer</CenteredSmall>
 					<CenteredLarge>{timerString}</CenteredLarge>
 				</Column>
-				<FixedColumn>
+				<FixedColumn deviceMode={deviceMode}>
 					<Button
 						action={() => resetTimerIfStopped()}
 						disabled={audioState.isPlaying || audioState.timer < 3}
@@ -436,7 +443,7 @@ export class BeatronomeApp extends React.Component<
 						></FontAwesomeIcon>
 					</Button>
 				</FixedColumn>
-				<FixedColumn>
+				<FixedColumn deviceMode={deviceMode}>
 					<Button action={() => togglePlay()}>
 						<FontAwesomeIcon
 							size={iconSize}
@@ -468,7 +475,7 @@ export class BeatronomeApp extends React.Component<
 		);
 
 		const columnSmallTempoDisplay = (
-			<FixedColumn>
+			<FixedColumn deviceMode={deviceMode}>
 				<CenteredSmall>BPM</CenteredSmall>
 				<CenteredLarge>{audioState.bpm}</CenteredLarge>
 			</FixedColumn>
@@ -491,12 +498,16 @@ export class BeatronomeApp extends React.Component<
 				<>
 					<FlexRow>{columnMatrix}</FlexRow>
 					<Row>
-						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupVolumeSlider}
+						</FixedColumn>
 						<Column>
 							<Row>{buttonTapTempo}</Row>
 							<FlexRow>{columnSmallTempoDisplay}</FlexRow>
 						</Column>
-						<FixedColumn>{groupTempoChange}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupTempoChange}
+						</FixedColumn>
 					</Row>
 					<Row>
 						<SliderPadding>{sliderTempo}</SliderPadding>
@@ -511,12 +522,18 @@ export class BeatronomeApp extends React.Component<
 			groupContainer = (
 				<>
 					<FlexRow>
-						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupVolumeSlider}
+						</FixedColumn>
 						{columnMatrix}
-						<FixedColumn>{groupTempoChange}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupTempoChange}
+						</FixedColumn>
 					</FlexRow>
 					<Row>
-						<FixedColumn>{buttonTapTempo}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{buttonTapTempo}
+						</FixedColumn>
 						<Column>
 							<SliderPadding>{sliderTempo}</SliderPadding>
 						</Column>
@@ -533,19 +550,27 @@ export class BeatronomeApp extends React.Component<
 				<>
 					<FlexRow>{columnMatrix}</FlexRow>
 					<Row>
-						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupVolumeSlider}
+						</FixedColumn>
 						<Column>
 							<Row>
-								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonTapTempo}
+								</FixedColumn>
 								<Column>{columnLargeTempoDisplay}</Column>
-								<FixedColumn></FixedColumn>
+								<FixedColumn
+									deviceMode={deviceMode}
+								></FixedColumn>
 							</Row>
 							<Row>
 								<SliderPadding>{sliderTempo}</SliderPadding>
 							</Row>
 							{rowPlayTimer}
 						</Column>
-						<FixedColumn>{groupTempoChange}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupTempoChange}
+						</FixedColumn>
 					</Row>
 				</>
 			);
@@ -557,19 +582,27 @@ export class BeatronomeApp extends React.Component<
 				<>
 					<FlexRow>{columnMatrix}</FlexRow>
 					<Row>
-						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupVolumeSlider}
+						</FixedColumn>
 						<Column>
 							<Row>
-								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonTapTempo}
+								</FixedColumn>
 								<Column>{columnLargeTempoDisplay}</Column>
-								<FixedColumn></FixedColumn>
+								<FixedColumn
+									deviceMode={deviceMode}
+								></FixedColumn>
 							</Row>
 							<Row>
 								<SliderPadding>{sliderTempo}</SliderPadding>
 							</Row>
 							{rowPlayTimer}
 						</Column>
-						<FixedColumn>{groupTempoChange}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupTempoChange}
+						</FixedColumn>
 					</Row>
 				</>
 			);
@@ -581,19 +614,27 @@ export class BeatronomeApp extends React.Component<
 				<>
 					<FlexRow>{columnMatrix}</FlexRow>
 					<Row>
-						<FixedColumn>{groupVolumeSlider}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupVolumeSlider}
+						</FixedColumn>
 						<Column>
 							<Row>
-								<FixedColumn>{buttonTapTempo}</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonTapTempo}
+								</FixedColumn>
 								<Column>{columnLargeTempoDisplay}</Column>
-								<FixedColumn></FixedColumn>
+								<FixedColumn
+									deviceMode={deviceMode}
+								></FixedColumn>
 							</Row>
 							<Row>
 								<SliderPadding>{sliderTempo}</SliderPadding>
 							</Row>
 							{rowPlayTimer}
 						</Column>
-						<FixedColumn>{groupTempoChange}</FixedColumn>
+						<FixedColumn deviceMode={deviceMode}>
+							{groupTempoChange}
+						</FixedColumn>
 					</Row>
 				</>
 			);
