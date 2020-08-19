@@ -33,7 +33,7 @@ const Onset = styled.span`
 `;
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
-	constructor(props: Matrix["props"]) {
+	constructor(props: IMatrixProps) {
 		super(props);
 	}
 

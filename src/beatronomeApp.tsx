@@ -198,7 +198,7 @@ export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
 	IBeatronomeAppState
 > {
-	constructor(props: BeatronomeApp["props"]) {
+	constructor(props: IBeatronomeAppProps) {
 		super(props);
 
 		subscribe(() => this.setState({}));
