@@ -470,7 +470,7 @@ export class BeatronomeApp extends React.Component<
 
 		const columnMatrix = (
 			<Column>
-				<CenteredSmall>Fancy matrix with drum pattern</CenteredSmall>
+				<Matrix></Matrix>
 			</Column>
 		);
 
