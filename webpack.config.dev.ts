@@ -62,7 +62,8 @@ const config = {
 	},
 	devtool: "source-map",
 	devServer: {
-		port: 3000
+		port: 3000,
+		stats: "errors-warnings"
 	} as webpackDevServer.Configuration
 };
 
