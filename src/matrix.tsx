@@ -7,13 +7,18 @@ import { IDivision } from "./types";
 
 const Container = styled.div`
 	background: limegreen;
+	height: 100%;
+	width: 100%;
 	padding: 5px;
+	display: flex;
+	flex-direction: column;
 `;
 
 const Row = styled.div`
-	background: mediumaquamarine;
+	background: yellow;
 	padding: 5px;
 	display: flex;
+	flex: 1;
 	justify-content: space-around;
 `;
 
@@ -27,9 +32,10 @@ const Division = styled.span`
 
 const Onset = styled.span`
 	background: green;
-	padding: 5px;
+	margin: 4px;
 	width: 100%;
 	text-align: center;
+	border-radius: 3px;
 `;
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
@@ -52,10 +58,19 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 					<Row key={rowIdx}>
 						{metaMeasure[instrumentKey].map(
 							(division: IDivision, divisionIdx: number) => (
-								<Division>
+								<Division key={divisionIdx}>
 									{division.subDenominatorArray.map(
-										(zahl) => (
-											<Onset>{zahl}</Onset>
+										(subDenominator, subDenominatorIdx) => (
+											<Onset
+												key={subDenominatorIdx}
+												onClick={() =>
+													console.log(
+														`${rowIdx} ${divisionIdx} ${subDenominatorIdx}`
+													)
+												}
+											>
+												{subDenominator}
+											</Onset>
 										)
 									)}
 								</Division>
