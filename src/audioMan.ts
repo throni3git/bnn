@@ -132,7 +132,7 @@ export class AudioMan {
 
 	private currentPosition: number;
 
-	private compile(): void {
+	public compile(): void {
 		const audioState = getState().audio;
 
 		const dLoop = audioState.drumLoop;
@@ -180,6 +180,8 @@ export class AudioMan {
 				dLoop.metaMeasure[instrKey].push(division);
 			}
 		}
+
+		setAudioState("drumLoop",dLoop)
 	}
 
 	// https://www.html5rocks.com/en/tutorials/audio/scheduling/

@@ -43,6 +43,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		super(props);
 	}
 
+	public componentDidMount() {
+		subscribe(() => this.setState({}));
+	}
+
 	public render(): JSX.Element {
 		const audioState = getState().audio;
 		if (audioState.drumLoop == null) {

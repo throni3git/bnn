@@ -209,13 +209,13 @@ export class BeatronomeApp extends React.Component<
 	private async initialize(): Promise<void> {
 		await this.loadDrumsetIndex();
 
-		this.loadDrumset(getState().audio.availableDrumsets[0]);
+		await this.loadDrumset(getState().audio.availableDrumsets[0]);
 
+		let fnDrumloop = "debug.txt";
 		if (IS_PRODUCTION) {
-			this.loadDrumloop("straight44.txt");
-		} else {
-			this.loadDrumloop("debug.txt");
+			fnDrumloop = "straight44.txt";
 		}
+		await this.loadDrumloop(fnDrumloop);
 	}
 
 	public componentDidMount() {
@@ -290,7 +290,7 @@ export class BeatronomeApp extends React.Component<
 	private async loadDrumset(name: string): Promise<void> {
 		const rawJson = await fetch(DIR_DRUMSETS + name);
 		const drumset = (await rawJson.json()) as IDrumset;
-		audioManInstance.loadDrumset(drumset, DIR_DRUMSETS);
+		await audioManInstance.loadDrumset(drumset, DIR_DRUMSETS);
 	}
 
 	/**
@@ -306,7 +306,7 @@ export class BeatronomeApp extends React.Component<
 			enumerator: 4,
 			measure: {},
 			compiledMeasure: {},
-			metaMeasure:{}
+			metaMeasure: {},
 		};
 
 		for (const line of lines) {
@@ -354,6 +354,7 @@ export class BeatronomeApp extends React.Component<
 		log("logDrumLoopParsing", drumloop);
 
 		setAudioState("drumLoop", drumloop);
+		audioManInstance.compile();
 	}
 
 	public render() {
