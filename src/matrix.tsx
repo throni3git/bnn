@@ -51,11 +51,15 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	}
 
 	public componentDidMount() {
-		subscribe(() => this.setState({}));
+		subscribe(() => {
+			console.log("trara");
+			this.setState({});
+		});
 	}
 
 	public render(): JSX.Element {
 		const audioState = getState().audio;
+		const hlState = getState().ui.highlightOnsets;
 		if (audioState.drumLoop == null) {
 			return null;
 		}
@@ -76,12 +80,18 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 												key={subDenominatorIdx}
 												onClick={() =>
 													console.log(
-														`${rowIdx} ${divisionIdx} ${subDenominatorIdx}`
+														`${instrumentKey} ${divisionIdx} ${subDenominatorIdx}`
 													)
 												}
 											>
 												<OnsetInner>
-													{subDenominator}
+													{hlState[instrumentKey]
+														.position ==
+														divisionIdx &&
+														hlState[instrumentKey]
+															.subEnumerator ==
+															subDenominator &&
+														subDenominator}
 												</OnsetInner>
 											</Onset>
 										)

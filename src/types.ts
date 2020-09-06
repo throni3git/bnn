@@ -14,7 +14,7 @@ export const DrumsetKeyArray = <const>[
 	"tomHi",
 	"tomMidHi",
 	"tomMidLo",
-	"tomLo"
+	"tomLo",
 ];
 
 export type DrumsetKeys = typeof DrumsetKeyArray[number];
@@ -45,3 +45,9 @@ export type IDrumLoop = {
 		[key in DrumsetKeys]?: IDivision[];
 	};
 };
+
+export interface IOnsetUIUpdate {
+	position: number;
+	subEnumerator: number;
+	enabled: boolean;
+}

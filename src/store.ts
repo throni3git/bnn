@@ -1,5 +1,12 @@
 declare var IS_PRODUCTION: boolean;
-import { IDrumLoop, IDrumset } from "./types";
+
+import {
+	IDrumLoop,
+	IDrumset,
+	DrumsetKeys,
+	IOnsetUIUpdate,
+	DrumsetKeyArray,
+} from "./types";
 
 export const LOOP_UPDATE_INTERVAL = 0.1;
 
@@ -19,6 +26,7 @@ export interface IAudioState {
 
 export interface IUserInterfaceState {
 	deviceMode: EDeviceMode;
+	highlightOnsets: Record<DrumsetKeys, IOnsetUIUpdate>;
 }
 
 export interface IDebuggingState {
@@ -39,7 +47,7 @@ export enum EDeviceMode {
 	SmallPortrait = "SmallPortrait", // smartphone
 	SmallLandscape = "SmallLandscape",
 	BigPortrait = "BigPortrait", // tablet
-	BigLandscape = "BigLandscape"
+	BigLandscape = "BigLandscape",
 }
 
 let currentState: IState = {
@@ -54,17 +62,27 @@ let currentState: IState = {
 		availableDrumsets: [],
 		isPlaying: false,
 		timer: 0,
-		measuresInCurrentTempo: 0
+		measuresInCurrentTempo: 0,
 	},
 	debugging: {
 		logDrumLoopParsing: !IS_PRODUCTION && false,
 		logLoopInterval: !IS_PRODUCTION,
 		logTapTempo: !IS_PRODUCTION && false,
-		logDeviceOrientation: !IS_PRODUCTION
+		logDeviceOrientation: !IS_PRODUCTION,
 	},
 	ui: {
-		deviceMode: EDeviceMode.Desktop
-	}
+		deviceMode: EDeviceMode.Desktop,
+		highlightOnsets: { // eleganter gehts shcon noch
+			bd: { enabled: false, position: 0, subEnumerator: 0 },
+			hho: { enabled: false, position: 0, subEnumerator: 0 },
+			hhc: { enabled: false, position: 0, subEnumerator: 0 },
+			sn: { enabled: false, position: 0, subEnumerator: 0 },
+			tomHi: { enabled: false, position: 0, subEnumerator: 0 },
+			tomMidHi: { enabled: false, position: 0, subEnumerator: 0 },
+			tomMidLo: { enabled: false, position: 0, subEnumerator: 0 },
+			tomLo: { enabled: false, position: 0, subEnumerator: 0 },
+		},
+	},
 };
 
 export const getState = () => currentState;
@@ -73,14 +91,14 @@ export const getState = () => currentState;
 Object.defineProperty(window, "BNState", {
 	get: () => {
 		return getState();
-	}
+	},
 });
 
 // state and sub state setters
 export const setState = <K extends keyof IState>(key: K, value: IState[K]) => {
 	currentState = {
 		...currentState,
-		[key]: value
+		[key]: value,
 	};
 	update();
 };
@@ -91,7 +109,7 @@ export const setAudioState = <K extends keyof IAudioState>(
 ) => {
 	setState("audio", {
 		...currentState.audio,
-		[key]: value
+		[key]: value,
 	});
 };
 
@@ -101,7 +119,7 @@ export const setUserInterfaceState = <K extends keyof IUserInterfaceState>(
 ) => {
 	setState("ui", {
 		...currentState.ui,
-		[key]: value
+		[key]: value,
 	});
 };
 
@@ -111,7 +129,7 @@ export const setDebuggingState = <K extends keyof IDebuggingState>(
 ) => {
 	setState("debugging", {
 		...currentState.debugging,
-		[key]: value
+		[key]: value,
 	});
 };
 

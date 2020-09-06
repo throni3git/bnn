@@ -1,7 +1,7 @@
 import {
 	AudioContext,
 	IGainNode,
-	IAudioContext
+	IAudioContext,
 } from "standardized-audio-context";
 
 import {
@@ -10,10 +10,16 @@ import {
 	DrumsetKeys,
 	DrumsetKeyArray,
 	IOnset,
-	IDivision
+	IDivision,
+	IOnsetUIUpdate,
 } from "./types";
 import { log } from "./util";
-import { getState, setAudioState, LOOP_UPDATE_INTERVAL } from "./store";
+import {
+	getState,
+	setAudioState,
+	LOOP_UPDATE_INTERVAL,
+	setUserInterfaceState,
+} from "./store";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
@@ -164,7 +170,7 @@ export class AudioMan {
 						position,
 						velocity,
 						isPlanned: false,
-						subEnumerator: dIdx
+						subEnumerator: dIdx,
 					};
 					dLoop.compiledMeasure[instrKey].push(onset);
 
@@ -173,15 +179,17 @@ export class AudioMan {
 					}
 				}
 
-				const subDivisions = Array.from({length:maxSubDenominator}).map((_, i) => i);
-				const division:IDivision = {
-					subDenominatorArray: subDivisions
+				const subDivisions = Array.from({
+					length: maxSubDenominator,
+				}).map((_, i) => i);
+				const division: IDivision = {
+					subDenominatorArray: subDivisions,
 				};
 				dLoop.metaMeasure[instrKey].push(division);
 			}
 		}
 
-		setAudioState("drumLoop",dLoop)
+		setAudioState("drumLoop", dLoop);
 	}
 
 	// https://www.html5rocks.com/en/tutorials/audio/scheduling/
@@ -245,6 +253,23 @@ export class AudioMan {
 
 					// } else if (delta >= 0 && delta < tLui * 2) {
 					// log("logLoopInterval", "already planned: ", onset);
+
+					const now = Date.now();
+					const delta = tDelta - tOffset * 1000 - now;
+					console.log((tDelta - tOffset) * 1000, now, delta);
+					setTimeout(() => {
+						console.log("RUN ausgeführt");
+						const uiUpdate: IOnsetUIUpdate = {
+							enabled: true,
+							position: Math.floor(onset.position),
+							subEnumerator: onset.subEnumerator,
+						};
+						const oldHighlighted = getState().ui.highlightOnsets;
+						setUserInterfaceState("highlightOnsets", {
+							...oldHighlighted,
+							[instrKey]: uiUpdate,
+						});
+					}, (tDelta - tOffset) * 1000);
 				}
 
 				if (onset.position < this.currentPosition) {
