@@ -19,6 +19,7 @@ const Row = styled.div`
 	padding: 5px;
 	display: flex;
 	flex: 1;
+	max-height: 10%;
 	justify-content: space-around;
 `;
 
@@ -36,6 +37,12 @@ const Onset = styled.span`
 	width: 100%;
 	text-align: center;
 	border-radius: 3px;
+	display: flex;
+	align-items: center;
+`;
+
+const OnsetInner = styled.div`
+	flex: 1;
 `;
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
@@ -73,7 +80,9 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 													)
 												}
 											>
-												{subDenominator}
+												<OnsetInner>
+													{subDenominator}
+												</OnsetInner>
 											</Onset>
 										)
 									)}
