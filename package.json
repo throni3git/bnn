@@ -1,12 +1,14 @@
 {
   "name": "beatronome",
-  "homepage": ".",
+  "homepage": "https://throni3git.github.io/bnn",
   "version": "0.1.0",
   "description": "simple drum computer",
   "main": "start-electron.js",
   "scripts": {
     "start": "webpack-dev-server --mode=development --watch --config=webpack.config.dev.ts",
     "dist": "webpack --mode=production -p",
+    "predeploy":"yarn run dist",
+    "deploy":"gh-pages -d dist",
     "electron-run": "electron ./start-electron.js",
     "electron-linux": "electron-packager . Beatronome --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-win": "electron-packager . Beatronome --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
@@ -32,6 +34,7 @@
     "copy-webpack-plugin": "^5.0.3",
     "electron": "^7.1.8",
     "electron-packager": "^14.1.1",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
     "ts-loader": "^6.0.2",
     "ts-node": "^8.2.0",
