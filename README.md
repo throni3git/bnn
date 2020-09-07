@@ -1,10 +1,10 @@
 # beatronome
 
-beatronome is an programmable drum computer for the practicing musician. Within seconds beatronome lets you adjust the drum pattern, increase tempo and keep track of time passing by.
+beatronome is a programmable drum computer for the practicing musician. Within seconds beatronome lets you adjust the drum pattern, increase tempo and keep track of time passing by.
 
 ## Build
 
-This project uses (yarn)[https://yarnpkg.com/] to manage dependencies. To install the necessary ones, run `yarn`.
+This project uses [yarn](https://yarnpkg.com/) to manage dependencies. To install the necessary ones, run `yarn`.
 
 ### Web
 
@@ -12,8 +12,8 @@ The development mode can be run with `yarn start`, providing a server at `http:/
 
 ### Desktop
 
-With (electron)[https://www.electronjs.org] you can build a standalone application for desktop computers. To biuld an executable run `yarn electron`.
+With [electron](https://www.electronjs.org) you can build a standalone application for desktop computers. To biuld an executable run `yarn electron`.
 
 ### Mobile
 
-We use (react native)[https://reactnative.dev/] to build apps for mobile devices. The setup process is provided (here)[https://reactnative.dev/docs/environment-setup].
+We use [react native](https://reactnative.dev/) to build apps for mobile devices. The setup process is provided [here](https://reactnative.dev/docs/environment-setup).
