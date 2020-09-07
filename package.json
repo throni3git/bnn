@@ -7,8 +7,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode=development --watch --config=webpack.config.dev.ts",
     "dist": "webpack --mode=production -p",
-    "predeploy":"yarn run dist",
-    "deploy":"gh-pages -d dist",
+    "predeploy": "yarn run dist",
+    "deploy": "gh-pages -d dist",
     "electron-run": "electron ./start-electron.js",
     "electron-linux": "electron-packager . Beatronome --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-win": "electron-packager . Beatronome --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
