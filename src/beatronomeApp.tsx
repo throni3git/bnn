@@ -163,7 +163,7 @@ export class BeatronomeApp extends React.Component<
 		const drumloop: IDrumLoop = {
 			denominator: 4,
 			enumerator: 4,
-			measure: {},
+			textMeasures: {},
 			compiledMeasure: {},
 			metaMeasure: {},
 		};
@@ -204,7 +204,7 @@ export class BeatronomeApp extends React.Component<
 					const dl = drumLine[0].substring(1, drumLine[0].length - 1);
 					const singleMeters = dl.split("|");
 					if (singleMeters.some((meter) => meterRegEx.test(meter))) {
-						drumloop.measure[instrKey] = singleMeters;
+						drumloop.textMeasures[instrKey] = singleMeters;
 					}
 				}
 			}

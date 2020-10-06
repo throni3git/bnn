@@ -35,7 +35,7 @@ export interface IDivision {
 export type IDrumLoop = {
 	denominator: number;
 	enumerator: number;
-	measure: {
+	textMeasures: {
 		[key in DrumsetKeys]?: string[];
 	};
 	compiledMeasure: {

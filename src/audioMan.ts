@@ -106,7 +106,7 @@ export class AudioMan {
 
 		this.debugPianoRoll = {};
 		for (const instrKey of DrumsetKeyArray) {
-			const dl = dLoop.measure[instrKey];
+			const dl = dLoop.textMeasures[instrKey];
 			const instrument = dSet[instrKey];
 			if (!dl || !instrument) {
 				continue;
@@ -141,22 +141,22 @@ export class AudioMan {
 	public compile(): void {
 		const audioState = getState().audio;
 
-		const dLoop = audioState.drumLoop;
-		const dSet = audioState.drumset;
+		const drumLoop = audioState.drumLoop;
+		const drumSet = audioState.drumset;
 
 		for (const instrKey of DrumsetKeyArray) {
-			const dl = dLoop.measure[instrKey];
-			const instrument = dSet[instrKey];
+			const dl = drumLoop.textMeasures[instrKey];
+			const instrument = drumSet[instrKey];
 			if (!dl || !instrument) {
 				continue;
 			}
-			dLoop.compiledMeasure[instrKey] = [];
-			dLoop.metaMeasure[instrKey] = [];
+			drumLoop.compiledMeasure[instrKey] = [];
+			drumLoop.metaMeasure[instrKey] = [];
 
 			for (let pIdx = 0; pIdx < dl.length; pIdx++) {
 				const part = dl[pIdx];
 
-				let maxSubDenominator = dLoop.denominator == 4 ? 4 : 2;
+				let maxSubDenominator = drumLoop.denominator == 4 ? 4 : 2;
 
 				for (let dIdx = 0; dIdx < part.length; dIdx++) {
 					const digit = part[dIdx];
@@ -172,7 +172,7 @@ export class AudioMan {
 						isPlanned: false,
 						subEnumerator: dIdx,
 					};
-					dLoop.compiledMeasure[instrKey].push(onset);
+					drumLoop.compiledMeasure[instrKey].push(onset);
 
 					if (dIdx > maxSubDenominator) {
 						maxSubDenominator = dIdx;
@@ -185,11 +185,11 @@ export class AudioMan {
 				const division: IDivision = {
 					subDenominatorArray: subDivisions,
 				};
-				dLoop.metaMeasure[instrKey].push(division);
+				drumLoop.metaMeasure[instrKey].push(division);
 			}
 		}
 
-		setAudioState("drumLoop", dLoop);
+		setAudioState("drumLoop", drumLoop);
 	}
 
 	// https://www.html5rocks.com/en/tutorials/audio/scheduling/
