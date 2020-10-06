@@ -52,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
 
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
+const spaceRegEx = /\ /g;
 const rawMeterRegEx = /[\ \d]/;
 
 export class BeatronomeApp extends React.Component<
@@ -211,7 +212,10 @@ export class BeatronomeApp extends React.Component<
 						rawMeterRegEx.test(meter)
 					);
 					if (hasOnsets && isValid) {
-						drumloop.textMeasures[instrKey] = singleMeters;
+						const cleanSingleMeters = singleMeters.map((meter) =>
+							meter.replace(spaceRegEx, "0")
+						);
+						drumloop.textMeasures[instrKey] = cleanSingleMeters;
 					} else if (hasOnsets && !isValid) {
 						console.log(`ES IST WAS SCHIEF GEGANGEN ${dl}`);
 					}
