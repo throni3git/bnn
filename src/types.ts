@@ -28,21 +28,18 @@ export interface IOnset {
 	subEnumerator: number;
 }
 
-export interface IDivision {
-	subDenominatorArray: number[];
+export interface IBeat {
+	onsets: IOnset[];
 }
 
 export type IDrumLoop = {
 	denominator: number;
 	enumerator: number;
-	textMeasures: {
+	textBeats: {
 		[key in DrumsetKeys]?: string[];
 	};
-	compiledMeasure: {
-		[key in DrumsetKeys]?: IOnset[];
-	};
-	metaMeasure: {
-		[key in DrumsetKeys]?: IDivision[];
+	compiledBeats: {
+		[key in DrumsetKeys]?: IBeat[];
 	};
 };
 

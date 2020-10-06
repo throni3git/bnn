@@ -3,7 +3,7 @@ import * as React from "react";
 import { subscribe, getState, setAudioState } from "./store";
 
 import styled from "styled-components";
-import { IDivision } from "./types";
+import { IBeat } from "./types";
 
 const Container = styled.div`
 	background: limegreen;
@@ -19,12 +19,12 @@ const Row = styled.div`
 	padding: 5px;
 	display: flex;
 	flex: 1;
-	max-height: 10%;
+	/* max-height: 10%; */
 	justify-content: space-around;
 `;
 
 const Division = styled.span`
-	background: violet;
+	background: darkviolet;
 	padding: 5px;
 	width: 100%;
 	display: flex;
@@ -32,7 +32,7 @@ const Division = styled.span`
 `;
 
 const Onset = styled.span`
-	background: green;
+	background: darkgreen;
 	margin: 4px;
 	width: 100%;
 	text-align: center;
@@ -63,39 +63,50 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		if (audioState.drumLoop == null) {
 			return null;
 		}
-		const compiledMeasure = audioState.drumLoop.compiledMeasure;
-		const metaMeasure = audioState.drumLoop.metaMeasure;
+		const compiledMeasure = audioState.drumLoop.compiledBeats;
 		const instrumentKeys = Object.keys(compiledMeasure);
+
+		if (!compiledMeasure) {
+			return null;
+		}
 
 		return (
 			<Container>
 				{instrumentKeys.map((instrumentKey, rowIdx: number) => (
 					<Row key={rowIdx}>
-						{metaMeasure[instrumentKey].map(
-							(division: IDivision, divisionIdx: number) => (
-								<Division key={divisionIdx}>
-									{division.subDenominatorArray.map(
-										(subDenominator, subDenominatorIdx) => (
-											<Onset
-												key={subDenominatorIdx}
-												onClick={() =>
-													console.log(
-														`${instrumentKey} ${divisionIdx} ${subDenominatorIdx}`
-													)
-												}
-											>
-												<OnsetInner>
-													{hlState[instrumentKey]
-														.position ==
-														divisionIdx &&
+						{compiledMeasure[instrumentKey].map(
+							(beat: IBeat, beatIdx: number) => (
+								<Division key={beatIdx}>
+									{beat.onsets.map((onset, onsetIdx) => (
+										<Onset
+											key={onsetIdx}
+											onClick={() =>
+												console.log(
+													`${instrumentKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`
+												)
+											}
+										>
+											<OnsetInner
+												style={{
+													fontWeight:
+														onset.velocity * 1000,
+													color:
+														hlState[instrumentKey]
+															.position ==
+															beatIdx &&
 														hlState[instrumentKey]
 															.subEnumerator ==
-															subDenominator &&
-														subDenominator}
-												</OnsetInner>
-											</Onset>
-										)
-									)}
+															onsetIdx
+															? "red"
+															: "white",
+												}}
+											>
+												{`${beatIdx} ${onsetIdx} ${
+													onset.velocity * 9
+												}`}
+											</OnsetInner>
+										</Onset>
+									))}
 								</Division>
 							)
 						)}

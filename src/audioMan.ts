@@ -10,7 +10,7 @@ import {
 	DrumsetKeys,
 	DrumsetKeyArray,
 	IOnset,
-	IDivision,
+	IBeat,
 	IOnsetUIUpdate,
 } from "./types";
 import { log } from "./util";
@@ -106,7 +106,7 @@ export class AudioMan {
 
 		this.debugPianoRoll = {};
 		for (const instrKey of DrumsetKeyArray) {
-			const dl = dLoop.textMeasures[instrKey];
+			const dl = dLoop.textBeats[instrKey];
 			const instrument = dSet[instrKey];
 			if (!dl || !instrument) {
 				continue;
@@ -145,47 +145,34 @@ export class AudioMan {
 		const drumSet = audioState.drumset;
 
 		for (const instrKey of DrumsetKeyArray) {
-			const dl = drumLoop.textMeasures[instrKey];
+			const dl = drumLoop.textBeats[instrKey];
 			const instrument = drumSet[instrKey];
 			if (!dl || !instrument) {
 				continue;
 			}
-			drumLoop.compiledMeasure[instrKey] = [];
-			drumLoop.metaMeasure[instrKey] = [];
+			drumLoop.compiledBeats[instrKey] = [];
 
-			for (let pIdx = 0; pIdx < dl.length; pIdx++) {
-				const part = dl[pIdx];
+			for (let beatIdx = 0; beatIdx < dl.length; beatIdx++) {
+				const beat = dl[beatIdx];
+				const compiledBeat: IBeat = { onsets: [] };
+				drumLoop.compiledBeats[instrKey].push(compiledBeat);
 
-				let maxSubDenominator = drumLoop.denominator == 4 ? 4 : 2;
-
-				for (let dIdx = 0; dIdx < part.length; dIdx++) {
-					const digit = part[dIdx];
+				for (let digitIdx = 0; digitIdx < beat.length; digitIdx++) {
+					const digit = beat[digitIdx];
 					const velocity = parseInt(digit, 10) / 9;
 					if (isNaN(velocity)) {
 						continue;
 					}
 
-					const position = pIdx + dIdx / part.length;
+					const position = beatIdx + digitIdx / beat.length;
 					const onset: IOnset = {
 						position,
 						velocity,
 						isPlanned: false,
-						subEnumerator: dIdx,
+						subEnumerator: digitIdx,
 					};
-					drumLoop.compiledMeasure[instrKey].push(onset);
-
-					if (dIdx > maxSubDenominator) {
-						maxSubDenominator = dIdx;
-					}
+					compiledBeat.onsets.push(onset);
 				}
-
-				const subDivisions = Array.from({
-					length: maxSubDenominator,
-				}).map((_, i) => i);
-				const division: IDivision = {
-					subDenominatorArray: subDivisions,
-				};
-				drumLoop.metaMeasure[instrKey].push(division);
 			}
 		}
 
@@ -231,55 +218,64 @@ export class AudioMan {
 		// duration of a quarter note
 		const tQuarterNote = 1 / bps;
 
-		const usedInstruments = Object.keys(dLoop.compiledMeasure);
+		const usedInstruments = Object.keys(dLoop.compiledBeats);
 		for (const instrKey of usedInstruments) {
-			const onsets = dLoop.compiledMeasure[instrKey] as IOnset[];
-			const instrument = dSet[instrKey] as IDrumInstrument;
+			const beats: IBeat[] = dLoop.compiledBeats[instrKey];
+			const instrument: IDrumInstrument = dSet[instrKey];
 
-			for (const onset of onsets) {
-				const tDelta =
-					onset.position * tQuarterNote -
-					this.currentPosition * tQuarterNote;
+			for (const beat of beats) {
+				for (const onset of beat.onsets) {
+					if (onset.velocity === 0) {
+						continue;
+					}
+					const tDelta =
+						onset.position * tQuarterNote -
+						this.currentPosition * tQuarterNote;
 
-				const timeOnset = tNow + tDelta - tOffset;
+					const timeOnset = tNow + tDelta - tOffset;
 
-				if (tDelta >= 0 && tDelta < tLui * 2 && !onset.isPlanned) {
-					this.playInstrument(instrument, timeOnset, onset.velocity);
-					this.debugPianoRoll[instrKey].push(
-						timeOnset - this.startTime
-					);
-					onset.isPlanned = true;
-					log("logLoopInterval", "onsetTime " + timeOnset);
+					if (tDelta >= 0 && tDelta < tLui * 2 && !onset.isPlanned) {
+						this.playInstrument(
+							instrument,
+							timeOnset,
+							onset.velocity
+						);
+						this.debugPianoRoll[instrKey].push(
+							timeOnset - this.startTime
+						);
+						onset.isPlanned = true;
+						log("logLoopInterval", "onsetTime " + timeOnset);
 
-					// } else if (delta >= 0 && delta < tLui * 2) {
-					// log("logLoopInterval", "already planned: ", onset);
+						// } else if (delta >= 0 && delta < tLui * 2) {
+						// log("logLoopInterval", "already planned: ", onset);
 
-					const now = Date.now();
-					const delta = tDelta - tOffset * 1000 - now;
-					console.log((tDelta - tOffset) * 1000, now, delta);
-					setTimeout(() => {
-						console.log("RUN ausgeführt");
-						const uiUpdate: IOnsetUIUpdate = {
-							enabled: true,
-							position: Math.floor(onset.position),
-							subEnumerator: onset.subEnumerator,
-						};
-						const oldHighlighted = getState().ui.highlightOnsets;
-						setUserInterfaceState("highlightOnsets", {
-							...oldHighlighted,
-							[instrKey]: uiUpdate,
-						});
-					}, (tDelta - tOffset) * 1000);
-				}
+						const now = Date.now();
+						const delta = tDelta - tOffset * 1000 - now;
+						console.log((tDelta - tOffset) * 1000, now, delta);
+						setTimeout(() => {
+							console.log("RUN ausgeführt");
+							const uiUpdate: IOnsetUIUpdate = {
+								enabled: true,
+								position: Math.floor(onset.position),
+								subEnumerator: onset.subEnumerator,
+							};
+							const oldHighlighted = getState().ui
+								.highlightOnsets;
+							setUserInterfaceState("highlightOnsets", {
+								...oldHighlighted,
+								[instrKey]: uiUpdate,
+							});
+						}, (tDelta - tOffset) * 1000);
+					}
 
-				if (onset.position < this.currentPosition) {
-					onset.isPlanned = false;
-				}
-				if (tDelta > tLui * 2) {
-					onset.isPlanned = false;
+					if (onset.position < this.currentPosition) {
+						onset.isPlanned = false;
+					}
+					if (tDelta > tLui * 2) {
+						onset.isPlanned = false;
+					}
 				}
 			}
-			// break;
 		}
 
 		this.currentPosition = pNext;

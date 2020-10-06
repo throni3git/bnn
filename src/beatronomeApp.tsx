@@ -165,9 +165,8 @@ export class BeatronomeApp extends React.Component<
 		const drumloop: IDrumLoop = {
 			denominator: 4,
 			enumerator: 4,
-			textMeasures: {},
-			compiledMeasure: {},
-			metaMeasure: {},
+			textBeats: {},
+			compiledBeats: {},
 		};
 
 		for (const line of lines) {
@@ -215,7 +214,7 @@ export class BeatronomeApp extends React.Component<
 						const cleanSingleMeters = singleMeters.map((meter) =>
 							meter.replace(spaceRegEx, "0")
 						);
-						drumloop.textMeasures[instrKey] = cleanSingleMeters;
+						drumloop.textBeats[instrKey] = cleanSingleMeters;
 					} else if (hasOnsets && !isValid) {
 						console.log(`ES IST WAS SCHIEF GEGANGEN ${dl}`);
 					}
