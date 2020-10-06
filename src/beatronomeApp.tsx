@@ -52,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
 
 const bracketsRegEx = /\[[^\]]*\]/;
 const meterRegEx = /\d/;
+const rawMeterRegEx = /[\ \d]/;
 
 export class BeatronomeApp extends React.Component<
 	IBeatronomeAppProps,
@@ -203,8 +204,16 @@ export class BeatronomeApp extends React.Component<
 					// only take drum lines that have notes
 					const dl = drumLine[0].substring(1, drumLine[0].length - 1);
 					const singleMeters = dl.split("|");
-					if (singleMeters.some((meter) => meterRegEx.test(meter))) {
+					const hasOnsets = singleMeters.some((meter) =>
+						meterRegEx.test(meter)
+					);
+					const isValid = singleMeters.every((meter) =>
+						rawMeterRegEx.test(meter)
+					);
+					if (hasOnsets && isValid) {
 						drumloop.textMeasures[instrKey] = singleMeters;
+					} else if (hasOnsets && !isValid) {
+						console.log(`ES IST WAS SCHIEF GEGANGEN ${dl}`);
 					}
 				}
 			}
