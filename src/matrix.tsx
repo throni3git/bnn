@@ -3,7 +3,7 @@ import * as React from "react";
 import { subscribe, getState, setAudioState } from "./store";
 
 import styled from "styled-components";
-import { IBeat } from "./types";
+import { IBeat, DrumsetKeys, IOnset } from "./types";
 
 const Container = styled.div`
 	background: limegreen;
@@ -59,7 +59,6 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 
 	public render(): JSX.Element {
 		const audioState = getState().audio;
-		const hlState = getState().ui.highlightOnsets;
 		if (audioState.drumLoop == null) {
 			return null;
 		}
@@ -77,42 +76,53 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 						{compiledMeasure[instrumentKey].map(
 							(beat: IBeat, beatIdx: number) => (
 								<Division key={beatIdx}>
-									{beat.onsets.map((onset, onsetIdx) => (
-										<Onset
-											key={onsetIdx}
-											onClick={() =>
-												console.log(
-													`${instrumentKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`
-												)
-											}
-										>
-											<OnsetInner
-												style={{
-													fontWeight:
-														onset.velocity * 1000,
-													color:
-														hlState[instrumentKey]
-															.position ==
-															beatIdx &&
-														hlState[instrumentKey]
-															.subEnumerator ==
-															onsetIdx
-															? "red"
-															: "white",
-												}}
-											>
-												{`${beatIdx} ${onsetIdx} ${
-													onset.velocity * 9
-												}`}
-											</OnsetInner>
-										</Onset>
-									))}
+									{beat.onsets.map((onset, onsetIdx) =>
+										this.getOnsetElement(
+											instrumentKey as any,
+											beatIdx,
+											onsetIdx,
+											onset
+										)
+									)}
 								</Division>
 							)
 						)}
 					</Row>
 				))}
 			</Container>
+		);
+	}
+
+	private getOnsetElement(
+		instrumentKey: Partial<DrumsetKeys>,
+		beatIdx: number,
+		onsetIdx: number,
+		onset: IOnset
+	): JSX.Element {
+		const hlState = getState().ui.highlightOnsets;
+
+		return (
+			<Onset
+				key={onsetIdx}
+				onClick={() =>
+					console.log(
+						`${instrumentKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`
+					)
+				}
+			>
+				<OnsetInner
+					style={{
+						fontWeight: onset.velocity * 1000,
+						color:
+							hlState[instrumentKey].position == beatIdx &&
+							hlState[instrumentKey].subEnumerator == onsetIdx
+								? "red"
+								: "white",
+					}}
+				>
+					{`${beatIdx} ${onsetIdx} ${onset.velocity * 9}`}
+				</OnsetInner>
+			</Onset>
 		);
 	}
 }
