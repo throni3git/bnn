@@ -36,9 +36,11 @@ const Onset = styled.span`
 	margin: 4px;
 	width: 100%;
 	text-align: center;
-	border-radius: 3px;
 	display: flex;
 	align-items: center;
+	transition: border 1s;
+	border-width: 2px;
+	border-style: solid;
 `;
 
 const OnsetInner = styled.div`
@@ -50,12 +52,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		super(props);
 	}
 
-	public componentDidMount() {
-		subscribe(() => {
-			console.log("trara");
-			this.setState({});
-		});
-	}
+	// public componentDidMount() {
+	// subscribe(() => {
+	// 	console.log("trara");
+	// 	this.setState({});
+	// });
+	// }
 
 	public render(): JSX.Element {
 		const audioState = getState().audio;
@@ -100,26 +102,28 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		onset: IOnset
 	): JSX.Element {
 		const hlState = getState().ui.highlightOnsets;
+		const isActive =
+			hlState[instrumentKey].position == beatIdx &&
+			hlState[instrumentKey].subEnumerator == onsetIdx;
 
 		return (
 			<Onset
 				key={onsetIdx}
+				style={{
+					borderColor: isActive ? "lightgreen" : "darkgreen",
+					transitionTimingFunction: isActive
+						? "step-start"
+						: "linear",
+					fontWeight: onset.velocity * 1000,
+					color: isActive ? "red" : "white",
+				}}
 				onClick={() =>
 					console.log(
 						`${instrumentKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`
 					)
 				}
 			>
-				<OnsetInner
-					style={{
-						fontWeight: onset.velocity * 1000,
-						color:
-							hlState[instrumentKey].position == beatIdx &&
-							hlState[instrumentKey].subEnumerator == onsetIdx
-								? "red"
-								: "white",
-					}}
-				>
+				<OnsetInner>
 					{`${beatIdx} ${onsetIdx} ${onset.velocity * 9}`}
 				</OnsetInner>
 			</Onset>
