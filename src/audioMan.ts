@@ -249,11 +249,7 @@ export class AudioMan {
 						// } else if (delta >= 0 && delta < tLui * 2) {
 						// log("logLoopInterval", "already planned: ", onset);
 
-						const now = Date.now();
-						const delta = tDelta - tOffset * 1000 - now;
-						console.log((tDelta - tOffset) * 1000, now, delta);
 						setTimeout(() => {
-							console.log("RUN ausgeführt");
 							const uiUpdate: IOnsetUIUpdate = {
 								enabled: true,
 								position: Math.floor(onset.position),
