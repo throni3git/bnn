@@ -76,7 +76,7 @@ export class BeatronomeApp extends React.Component<
 		if (IS_PRODUCTION) {
 			fnDrumloop = "straight44.txt";
 		}
-		await this.loadDrumloop(fnDrumloop);
+		await this.loadDrumloopFromURL(fnDrumloop);
 	}
 
 	public componentDidMount() {
@@ -158,16 +158,26 @@ export class BeatronomeApp extends React.Component<
 	 * parse drumloop from text file
 	 * @param url
 	 */
-	private async loadDrumloop(name: string): Promise<void> {
-		const rawText = await fetch(DIR_LOOPS + name);
+	private async loadDrumloopFromURL(filename: string): Promise<void> {
+		const rawText = await fetch(DIR_LOOPS + filename);
 		const text = await rawText.text();
-		const lines = text.split("\n");
+		setAudioState("rawDrumLoopText", text);
+		this.parseDrumloop();
+	}
+
+	/**
+	 * parse drumloop from text file
+	 * @param url
+	 */
+	private parseDrumloop(): void {
 		const drumloop: IDrumLoop = {
 			denominator: 4,
 			enumerator: 4,
 			textBeats: {},
 			compiledBeats: {},
 		};
+		const text = getState().audio.rawDrumLoopText;
+		const lines = text.split("\n");
 
 		for (const line of lines) {
 			log("logDrumLoopParsing", line);

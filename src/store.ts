@@ -13,6 +13,7 @@ export const LOOP_UPDATE_INTERVAL = 0.1;
 export interface IAudioState {
 	masterVolume: number;
 	drumLoop: IDrumLoop;
+	rawDrumLoopText: string;
 	drumset: IDrumset;
 	bpm: number;
 	maxBpm: number;
@@ -63,6 +64,7 @@ let currentState: IState = {
 		isPlaying: false,
 		timer: 0,
 		measuresInCurrentTempo: 0,
+		rawDrumLoopText: "",
 	},
 	debugging: {
 		logDrumLoopParsing: !IS_PRODUCTION && false,
@@ -72,7 +74,8 @@ let currentState: IState = {
 	},
 	ui: {
 		deviceMode: EDeviceMode.Desktop,
-		highlightOnsets: { // eleganter gehts shcon noch
+		highlightOnsets: {
+			// eleganter gehts shcon noch
 			bd: { enabled: false, position: 0, subEnumerator: 0 },
 			hho: { enabled: false, position: 0, subEnumerator: 0 },
 			hhc: { enabled: false, position: 0, subEnumerator: 0 },
