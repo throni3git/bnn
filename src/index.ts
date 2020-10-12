@@ -17,9 +17,8 @@ import { registerGlobalKeyHandler } from "./keyboard";
 import { COLORS } from "./constants";
 
 declare var BUILD_TIMESTAMP: string;
-console.log("Beatronome " + BUILD_TIMESTAMP + (IS_PRODUCTION ? "" : " DEBUG"));
-
 declare var IS_PRODUCTION: boolean;
+console.log("Beatronome " + BUILD_TIMESTAMP + (IS_PRODUCTION ? "" : " DEBUG"));
 
 // progressive web app service worker
 
