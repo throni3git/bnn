@@ -96,15 +96,15 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	}
 
 	private getOnsetElement(
-		instrumentKey: Partial<DrumsetKeys>,
+		instrKey: Partial<DrumsetKeys>,
 		beatIdx: number,
 		onsetIdx: number,
 		onset: IOnset
 	): JSX.Element {
 		const hlState = getState().ui.highlightOnsets;
 		const isActive =
-			hlState[instrumentKey].position == beatIdx &&
-			hlState[instrumentKey].subEnumerator == onsetIdx;
+			hlState[instrKey].position == beatIdx &&
+			hlState[instrKey].subEnumerator == onsetIdx;
 
 		return (
 			<Onset
@@ -117,11 +117,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 					fontWeight: onset.velocity * 1000,
 					color: isActive ? "red" : "white",
 				}}
-				onClick={() =>
-					console.log(
-						`${instrumentKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`
-					)
-				}
+				onClick={() => {
+					const m = `${instrKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`;
+					console.log(m);
+				}}
 			>
 				<OnsetInner>
 					{`${beatIdx} ${onsetIdx} ${onset.velocity * 9}`}
