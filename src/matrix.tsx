@@ -41,6 +41,8 @@ const Onset = styled.span`
 	transition: border 1s;
 	border-width: 2px;
 	border-style: solid;
+	border-radius: 15px;
+	cursor: pointer;
 `;
 
 const OnsetInner = styled.div`
