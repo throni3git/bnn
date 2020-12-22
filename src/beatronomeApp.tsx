@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const GlobalStyle = createGlobalStyle`
 	*, *:before, *:after {
 		box-sizing: border-box;
+		outline: none;
 	}
 `;
 
@@ -17,7 +18,7 @@ import {
 	getState,
 	setAudioState,
 	setUserInterfaceState,
-	EDeviceMode
+	EDeviceMode,
 } from "./store";
 import { IDrumset, DrumsetKeyArray, IDrumLoop } from "./types";
 import { audioManInstance } from "./audioMan";
@@ -28,7 +29,7 @@ import {
 	tapTempo,
 	togglePlay,
 	setMasterVolume,
-	resetTimerIfStopped
+	resetTimerIfStopped,
 } from "./util";
 import Button from "./button";
 import { DIR_DRUMSETS, DIR_LOOPS, COLORS } from "./constants";
@@ -169,14 +170,17 @@ const RangeTrackVertical = styled.div`
 	}
 `;
 
-const RangeThumb = styled.div`
-	height: 20px;
-	width: 20px;
-	background-color: ${COLORS.fc};
-	&:focus {
-		outline: none;
-	}
-`;
+const createRangeThumb = ({ props }) => (
+	<div
+		{...props}
+		style={{
+			...props.style,
+			height: "20px",
+			width: "20px",
+			backgroundColor: COLORS.fc,
+		}}
+	/>
+);
 
 const CenteredSmall = styled.div`
 	font-size: 0.7em;
@@ -300,7 +304,7 @@ export class BeatronomeApp extends React.Component<
 			denominator: 4,
 			enumerator: 4,
 			measure: {},
-			compiledMeasure: {}
+			compiledMeasure: {},
 		};
 
 		for (const line of lines) {
@@ -405,7 +409,7 @@ export class BeatronomeApp extends React.Component<
 								{children}
 							</RangeTrackVertical>
 						)}
-						renderThumb={() => <RangeThumb key={1} />}
+						renderThumb={createRangeThumb}
 					></Range>
 				</SliderPadding>
 			</>
@@ -422,7 +426,7 @@ export class BeatronomeApp extends React.Component<
 						{children}
 					</RangeTrackHorizontal>
 				)}
-				renderThumb={() => <RangeThumb key={1} />}
+				renderThumb={createRangeThumb}
 			></Range>
 		);
 
