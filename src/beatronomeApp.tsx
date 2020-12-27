@@ -35,6 +35,7 @@ declare var IS_PRODUCTION: boolean;
 const GlobalStyle = createGlobalStyle`
 	*, *:before, *:after {
 		box-sizing: border-box;
+		user-select: none;
 	}
 `;
 
