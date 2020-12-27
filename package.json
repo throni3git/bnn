@@ -54,7 +54,6 @@
     "react-dom": "^16.8.6",
     "react-range": "^1.6.7",
     "standardized-audio-context": "^20.1.6",
-    "styled-components": "^4.3.1",
-    "ts-keycode-enum": "^1.0.6"
+    "styled-components": "^4.3.1"
   }
 }
