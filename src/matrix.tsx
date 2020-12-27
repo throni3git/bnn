@@ -32,16 +32,16 @@ const Division = styled.span`
 `;
 
 const Onset = styled.span`
-	background: darkgreen;
+	background: #003000;
 	margin: 4px;
 	width: 100%;
 	text-align: center;
 	display: flex;
 	align-items: center;
-	transition: border 1s;
+	transition: transform 0.21s;
 	border-width: 2px;
 	border-style: solid;
-	border-radius: 15px;
+	/* border-radius: 5px; */
 	cursor: pointer;
 `;
 
@@ -97,6 +97,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		onset: Types.IOnset
 	): JSX.Element {
 		const hlState = Store.getState().ui.highlightOnsets;
+		const audioState = Store.getState().audio;
 		const isActive =
 			hlState[instrKey].position == beatIdx &&
 			hlState[instrKey].subEnumerator == onsetIdx;
@@ -109,8 +110,14 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 					transitionTimingFunction: isActive
 						? "step-start"
 						: "linear",
+
+					transform:
+						isActive && audioState.isPlaying
+							? "translateY(5px)"
+							: null,
 					fontWeight: onset.velocity * 1000,
 					color: isActive ? "red" : "white",
+					background: onset.velocity > 0 ? "darkgreen" : null,
 				}}
 				onClick={() => {
 					const m = `${instrKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`;
