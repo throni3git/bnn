@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { subscribe, getState, setAudioState } from "./store";
-
 import styled from "styled-components";
-import { IBeat, DrumsetKeys, IOnset } from "./types";
+
+import * as Store from "./store";
+import * as Types from "./types";
 
 const Container = styled.div`
 	background: limegreen;
@@ -19,7 +19,6 @@ const Row = styled.div`
 	padding: 5px;
 	display: flex;
 	flex: 1;
-	/* max-height: 10%; */
 	justify-content: space-around;
 `;
 
@@ -54,15 +53,8 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		super(props);
 	}
 
-	// public componentDidMount() {
-	// subscribe(() => {
-	// 	console.log("trara");
-	// 	this.setState({});
-	// });
-	// }
-
 	public render(): JSX.Element {
-		const audioState = getState().audio;
+		const audioState = Store.getState().audio;
 		if (audioState.drumLoop == null) {
 			return null;
 		}
@@ -78,7 +70,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				{instrumentKeys.map((instrumentKey, rowIdx: number) => (
 					<Row key={rowIdx}>
 						{compiledMeasure[instrumentKey].map(
-							(beat: IBeat, beatIdx: number) => (
+							(beat: Types.IBeat, beatIdx: number) => (
 								<Division key={beatIdx}>
 									{beat.onsets.map((onset, onsetIdx) =>
 										this.getOnsetElement(
@@ -98,12 +90,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	}
 
 	private getOnsetElement(
-		instrKey: Partial<DrumsetKeys>,
+		instrKey: Partial<Types.DrumsetKeys>,
 		beatIdx: number,
 		onsetIdx: number,
-		onset: IOnset
+		onset: Types.IOnset
 	): JSX.Element {
-		const hlState = getState().ui.highlightOnsets;
+		const hlState = Store.getState().ui.highlightOnsets;
 		const isActive =
 			hlState[instrKey].position == beatIdx &&
 			hlState[instrKey].subEnumerator == onsetIdx;
@@ -125,7 +117,11 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				}}
 			>
 				<OnsetInner>
-					{`${beatIdx} ${onsetIdx} ${onset.velocity * 9}`}
+					{beatIdx}
+					<br></br>
+					{onsetIdx}
+					<br></br>
+					{onset.velocity * 9}
 				</OnsetInner>
 			</Onset>
 		);

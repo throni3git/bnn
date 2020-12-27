@@ -1,5 +1,13 @@
 import { IGainNode, IAudioContext } from "standardized-audio-context";
 
+export enum EDeviceMode {
+	Desktop = "Desktop",
+	SmallPortrait = "SmallPortrait", // smartphone
+	SmallLandscape = "SmallLandscape",
+	BigPortrait = "BigPortrait", // tablet
+	BigLandscape = "BigLandscape",
+}
+
 export interface IDrumInstrument {
 	url: string;
 	audioBuffer?: AudioBuffer;

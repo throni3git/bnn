@@ -2,7 +2,7 @@ import * as React from "react";
 
 import styled from "styled-components";
 
-import { EDeviceMode } from "./store";
+import { EDeviceMode } from "./types";
 import { COLORS } from "./constants";
 
 declare var IS_PRODUCTION: boolean;
@@ -45,13 +45,6 @@ export const ContainerDiv = styled.div`
 	flex: 1;
 	justify-content: space-evenly;
 	padding: 4px;
-`;
-
-// TODO löschen
-export const SliderCaptionDiv = styled.div`
-	display: flex;
-	justify-content: center;
-	/* padding: 3px; */
 `;
 
 export const SliderPadding = styled.div`

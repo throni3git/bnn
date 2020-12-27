@@ -1,20 +1,12 @@
 declare var IS_PRODUCTION: boolean;
 
-import {
-	IDrumLoop,
-	IDrumset,
-	DrumsetKeys,
-	IOnsetUIUpdate,
-	DrumsetKeyArray,
-} from "./types";
-
-export const LOOP_UPDATE_INTERVAL = 0.1;
+import * as Types from "./types";
 
 export interface IAudioState {
 	masterVolume: number;
-	drumLoop: IDrumLoop;
+	drumLoop: Types.IDrumLoop;
 	rawDrumLoopText: string;
-	drumset: IDrumset;
+	drumset: Types.IDrumset;
 	bpm: number;
 	maxBpm: number;
 	minBpm: number;
@@ -26,8 +18,8 @@ export interface IAudioState {
 }
 
 export interface IUserInterfaceState {
-	deviceMode: EDeviceMode;
-	highlightOnsets: Record<DrumsetKeys, IOnsetUIUpdate>;
+	deviceMode: Types.EDeviceMode;
+	highlightOnsets: Record<Types.DrumsetKeys, Types.IOnsetUIUpdate>;
 }
 
 export interface IDebuggingState {
@@ -41,14 +33,6 @@ export interface IState {
 	ui: IUserInterfaceState;
 	debugging: IDebuggingState;
 	audio: IAudioState;
-}
-
-export enum EDeviceMode {
-	Desktop = "Desktop",
-	SmallPortrait = "SmallPortrait", // smartphone
-	SmallLandscape = "SmallLandscape",
-	BigPortrait = "BigPortrait", // tablet
-	BigLandscape = "BigLandscape",
 }
 
 let currentState: IState = {
@@ -73,7 +57,7 @@ let currentState: IState = {
 		logDeviceOrientation: !IS_PRODUCTION,
 	},
 	ui: {
-		deviceMode: EDeviceMode.Desktop,
+		deviceMode: Types.EDeviceMode.Desktop,
 		highlightOnsets: {
 			// eleganter gehts shcon noch
 			bd: { enabled: false, position: 0, subEnumerator: 0 },

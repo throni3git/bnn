@@ -1,40 +1,35 @@
 import { Key } from "ts-keycode-enum";
-import {
-	increaseBpm,
-	decreaseBpm,
-	togglePlay,
-	increaseVolume,
-	decreaseVolume
-} from "./util";
+
+import * as Utils from "./util";
 
 const keyHandler = (event: KeyboardEvent) => {
 	switch (event.which) {
 		case Key.Add: {
-			increaseBpm();
+			Utils.increaseBpm();
 			break;
 		}
 		case Key.Subtract: {
-			decreaseBpm();
+			Utils.decreaseBpm();
 			break;
 		}
 		case Key.Space: {
-			togglePlay();
+			Utils.togglePlay();
 			break;
 		}
 		case Key.UpArrow: {
-			increaseVolume();
+			Utils.increaseVolume();
 			break;
 		}
 		case Key.DownArrow: {
-			decreaseVolume();
+			Utils.decreaseVolume();
 			break;
 		}
 		case Key.RightArrow: {
-			increaseBpm();
+			Utils.increaseBpm();
 			break;
 		}
 		case Key.LeftArrow: {
-			decreaseBpm();
+			Utils.decreaseBpm();
 			break;
 		}
 	}

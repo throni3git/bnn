@@ -4,22 +4,10 @@ import {
 	IAudioContext,
 } from "standardized-audio-context";
 
-import {
-	IDrumInstrument,
-	IDrumset,
-	DrumsetKeys,
-	DrumsetKeyArray,
-	IOnset,
-	IBeat,
-	IOnsetUIUpdate,
-} from "./types";
+import * as Store from "./store";
+import * as Types from "./types";
 import { log } from "./util";
-import {
-	getState,
-	setAudioState,
-	LOOP_UPDATE_INTERVAL,
-	setUserInterfaceState,
-} from "./store";
+import { LOOP_UPDATE_INTERVAL } from "./constants";
 
 export class AudioMan {
 	public audioCtx: AudioContext;
@@ -28,16 +16,16 @@ export class AudioMan {
 	constructor() {
 		this.audioCtx = new AudioContext();
 		this.masterGainNode = this.audioCtx.createGain();
-		const volume = getState().audio.masterVolume;
+		const volume = Store.getState().audio.masterVolume;
 		this.masterGainNode.gain.setValueAtTime(volume, 0);
 		this.masterGainNode.connect(this.audioCtx.destination);
 	}
 
 	public async loadDrumset(
-		drumset: IDrumset,
+		drumset: Types.IDrumset,
 		basePath: string
 	): Promise<void> {
-		const allDrums = Object.keys(drumset) as DrumsetKeys[];
+		const allDrums = Object.keys(drumset) as Types.DrumsetKeys[];
 		const loadingPromises = allDrums.map((instrument) =>
 			this.loadInstrument(drumset[instrument], basePath)
 		);
@@ -50,11 +38,11 @@ export class AudioMan {
 		// 	this.playInstrument(instrument, this.audioCtx.currentTime, 1);
 		// }
 
-		setAudioState("drumset", drumset);
+		Store.setAudioState("drumset", drumset);
 	}
 
 	private async loadInstrument(
-		instrument: IDrumInstrument,
+		instrument: Types.IDrumInstrument,
 		basePath: string
 	): Promise<void> {
 		const result = await fetch(basePath + instrument.url);
@@ -64,7 +52,7 @@ export class AudioMan {
 	}
 
 	private playInstrument(
-		instrument: IDrumInstrument,
+		instrument: Types.IDrumInstrument,
 		startTime: number,
 		velocity: number
 	): void {
@@ -96,7 +84,7 @@ export class AudioMan {
 	private debugPianoRoll: Record<string, number[]>;
 
 	public startLoop(): void {
-		const audioState = getState().audio;
+		const audioState = Store.getState().audio;
 
 		const bpm = audioState.bpm;
 		const bps = bpm / 60;
@@ -105,7 +93,7 @@ export class AudioMan {
 		const dSet = audioState.drumset;
 
 		this.debugPianoRoll = {};
-		for (const instrKey of DrumsetKeyArray) {
+		for (const instrKey of Types.DrumsetKeyArray) {
 			const dl = dLoop.textBeats[instrKey];
 			const instrument = dSet[instrKey];
 			if (!dl || !instrument) {
@@ -125,26 +113,26 @@ export class AudioMan {
 
 		this.loop();
 
-		setAudioState("isPlaying", true);
+		Store.setAudioState("isPlaying", true);
 	}
 
 	public stopLoop(): void {
 		this.masterGainNode.gain.setValueAtTime(0, 0);
 		clearTimeout(this.handleTimeoutLoopUpdate);
 		clearTimeout(this.handleTimeoutMeasureInCurrentTempo);
-		setAudioState("measuresInCurrentTempo", 0);
-		setAudioState("isPlaying", false);
+		Store.setAudioState("measuresInCurrentTempo", 0);
+		Store.setAudioState("isPlaying", false);
 	}
 
 	private currentPosition: number;
 
 	public compile(): void {
-		const audioState = getState().audio;
+		const audioState = Store.getState().audio;
 
 		const drumLoop = audioState.drumLoop;
 		const drumSet = audioState.drumset;
 
-		for (const instrKey of DrumsetKeyArray) {
+		for (const instrKey of Types.DrumsetKeyArray) {
 			const dl = drumLoop.textBeats[instrKey];
 			const instrument = drumSet[instrKey];
 			if (!dl || !instrument) {
@@ -154,7 +142,7 @@ export class AudioMan {
 
 			for (let beatIdx = 0; beatIdx < dl.length; beatIdx++) {
 				const beat = dl[beatIdx];
-				const compiledBeat: IBeat = { onsets: [] };
+				const compiledBeat: Types.IBeat = { onsets: [] };
 				drumLoop.compiledBeats[instrKey].push(compiledBeat);
 
 				for (let digitIdx = 0; digitIdx < beat.length; digitIdx++) {
@@ -165,7 +153,7 @@ export class AudioMan {
 					}
 
 					const position = beatIdx + digitIdx / beat.length;
-					const onset: IOnset = {
+					const onset: Types.IOnset = {
 						position,
 						velocity,
 						isPlanned: false,
@@ -176,7 +164,7 @@ export class AudioMan {
 			}
 		}
 
-		setAudioState("drumLoop", drumLoop);
+		Store.setAudioState("drumLoop", drumLoop);
 	}
 
 	// https://www.html5rocks.com/en/tutorials/audio/scheduling/
@@ -188,7 +176,7 @@ export class AudioMan {
 		// log("logLoopInterval", "vergangen " + this.vergangen);
 		// log("logLoopInterval", "this.currentPosition " + this.currentPosition);
 
-		const audioState = getState().audio;
+		const audioState = Store.getState().audio;
 
 		const dLoop = audioState.drumLoop;
 		const dSet = audioState.drumset;
@@ -207,9 +195,9 @@ export class AudioMan {
 
 			clearTimeout(this.handleTimeoutMeasureInCurrentTempo);
 			this.handleTimeoutMeasureInCurrentTempo = setTimeout(() => {
-				setAudioState(
+				Store.setAudioState(
 					"measuresInCurrentTempo",
-					getState().audio.measuresInCurrentTempo + 1
+					Store.getState().audio.measuresInCurrentTempo + 1
 				);
 			}, (-pNext / bps) * 1000);
 			// TODO 2020-06-05 wenn kurz vor taktende ein tempowechsel erfolgt, kommt der inkrement zu schnell
@@ -220,8 +208,8 @@ export class AudioMan {
 
 		const usedInstruments = Object.keys(dLoop.compiledBeats);
 		for (const instrKey of usedInstruments) {
-			const beats: IBeat[] = dLoop.compiledBeats[instrKey];
-			const instrument: IDrumInstrument = dSet[instrKey];
+			const beats: Types.IBeat[] = dLoop.compiledBeats[instrKey];
+			const instrument: Types.IDrumInstrument = dSet[instrKey];
 
 			for (const beat of beats) {
 				for (const onset of beat.onsets) {
@@ -250,14 +238,14 @@ export class AudioMan {
 						// log("logLoopInterval", "already planned: ", onset);
 
 						setTimeout(() => {
-							const uiUpdate: IOnsetUIUpdate = {
+							const uiUpdate: Types.IOnsetUIUpdate = {
 								enabled: true,
 								position: Math.floor(onset.position),
 								subEnumerator: onset.subEnumerator,
 							};
-							const oldHighlighted = getState().ui
+							const oldHighlighted = Store.getState().ui
 								.highlightOnsets;
-							setUserInterfaceState("highlightOnsets", {
+							Store.setUserInterfaceState("highlightOnsets", {
 								...oldHighlighted,
 								[instrKey]: uiUpdate,
 							});
