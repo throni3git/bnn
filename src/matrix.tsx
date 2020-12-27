@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import * as Store from "./store";
 import * as Types from "./types";
+import { audioManInstance } from "./audioMan";
 
 const Container = styled.div`
 	background: limegreen;
@@ -114,6 +115,19 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				onClick={() => {
 					const m = `${instrKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`;
 					console.log(m);
+
+					// TODO 2020-12-27 besseres benutzungskonzept für laut und leise beats
+					let instr = Store.getState().audio.drumLoop.textBeats[
+						instrKey
+					];
+					let beat = instr[beatIdx];
+					let insertion = onset.velocity > 0 ? 0 : 6;
+					let newBeat =
+						beat.substr(0, onsetIdx) +
+						insertion +
+						beat.substr(onsetIdx + 1);
+					instr[beatIdx] = newBeat;
+					audioManInstance.compile();
 				}}
 			>
 				<OnsetInner>
