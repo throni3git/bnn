@@ -10,42 +10,44 @@ const timestamp = JSON.stringify(new Date().toISOString());
 const config = {
 	entry: "./src/index.ts",
 	resolve: {
-		extensions: [".js", ".ts", ".tsx"]
+		extensions: [".js", ".ts", ".tsx"],
 	},
 	module: {
 		rules: [
 			{
 				test: /.tsx?$/,
-				loader: "ts-loader"
-			}
-		]
+				loader: "ts-loader",
+			},
+		],
 	},
 	plugins: [
 		new webpack.DefinePlugin({
 			BUILD_TIMESTAMP: timestamp,
-			IS_PRODUCTION: false
+			IS_PRODUCTION: false,
 		}),
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
 			title: "Beatronome",
-			favicon: "assets/images/favicon16.png"
+			favicon: "assets/images/favicon16.png",
 		}),
-		new CopyWebpackPlugin([
-			{
-				from: "assets/**/*",
-				to: "./"
-			}
-		])
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: "assets/**/*",
+					to: "./",
+				},
+			],
+		}),
 	],
 	output: {
-		filename: "bundle.[hash].js",
-		path: path.resolve("dist")
+		filename: "bundle.[contenthash].js",
+		path: path.resolve("dist"),
 	},
 	devtool: "source-map",
 	devServer: {
 		port: 3000,
-		stats: "errors-warnings"
-	} as webpackDevServer.Configuration
+		stats: "errors-warnings",
+	} as webpackDevServer.Configuration,
 };
 
 module.exports = config;

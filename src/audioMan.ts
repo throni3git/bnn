@@ -77,9 +77,9 @@ export class AudioMan {
 
 	private startTime: number;
 	private tOld: number;
-	private handleTimeoutLoopUpdate: number;
+	private handleTimeoutLoopUpdate: NodeJS.Timeout;
 	private tPassed: number;
-	private handleTimeoutMeasureInCurrentTempo: number;
+	private handleTimeoutMeasureInCurrentTempo: NodeJS.Timeout;
 
 	private debugPianoRoll: Record<string, number[]>;
 
