@@ -8,7 +8,7 @@ import {
 	faPlayCircle,
 	faStopCircle,
 	faHandPointUp,
-	faUndo
+	faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BeatronomeApp } from "./beatronomeApp";
@@ -17,9 +17,8 @@ import { registerGlobalKeyHandler } from "./keyboard";
 import { COLORS } from "./constants";
 
 declare var BUILD_TIMESTAMP: string;
-console.log("Beatronome " + BUILD_TIMESTAMP);
-
 declare var IS_PRODUCTION: boolean;
+console.log("Beatronome " + BUILD_TIMESTAMP + (IS_PRODUCTION ? "" : " DEBUG"));
 
 // progressive web app service worker
 

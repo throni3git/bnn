@@ -1,5 +1,13 @@
 import { IGainNode, IAudioContext } from "standardized-audio-context";
 
+export enum EDeviceMode {
+	Desktop = "Desktop",
+	SmallPortrait = "SmallPortrait", // smartphone
+	SmallLandscape = "SmallLandscape",
+	BigPortrait = "BigPortrait", // tablet
+	BigLandscape = "BigLandscape",
+}
+
 export interface IDrumInstrument {
 	url: string;
 	audioBuffer?: AudioBuffer;
@@ -14,7 +22,7 @@ export const DrumsetKeyArray = <const>[
 	"tomHi",
 	"tomMidHi",
 	"tomMidLo",
-	"tomLo"
+	"tomLo",
 ];
 
 export type DrumsetKeys = typeof DrumsetKeyArray[number];
@@ -25,15 +33,26 @@ export interface IOnset {
 	position: number;
 	velocity: number;
 	isPlanned: boolean;
+	subEnumerator: number;
+}
+
+export interface IBeat {
+	onsets: IOnset[];
 }
 
 export type IDrumLoop = {
 	denominator: number;
 	enumerator: number;
-	measure: {
+	textBeats: {
 		[key in DrumsetKeys]?: string[];
 	};
-	compiledMeasure: {
-		[key in DrumsetKeys]?: IOnset[];
+	compiledBeats: {
+		[key in DrumsetKeys]?: IBeat[];
 	};
 };
+
+export interface IOnsetUIUpdate {
+	position: number;
+	subEnumerator: number;
+	enabled: boolean;
+}

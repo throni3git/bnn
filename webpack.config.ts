@@ -1,5 +1,4 @@
 import * as webpack from "webpack";
-import * as webpackDevServer from "webpack-dev-server";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as CopyWebpackPlugin from "copy-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
@@ -20,46 +19,48 @@ const filenameManifest =
 const config = {
 	entry: "./src/index.ts",
 	resolve: {
-		extensions: [".js", ".ts", ".tsx"]
+		extensions: [".js", ".ts", ".tsx"],
 	},
 	module: {
 		rules: [
 			{
 				test: /.tsx?$/,
-				loader: "ts-loader"
-			}
-		]
+				loader: "ts-loader",
+			},
+		],
 	},
 	plugins: [
 		new webpack.DefinePlugin({
 			BUILD_TIMESTAMP: timestamp,
-			IS_PRODUCTION: true
+			IS_PRODUCTION: true,
 		}),
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
 			title: "Beatronome",
 			template: "src/index.html",
 			favicon: "assets/images/favicon16.png",
-			templateParameters: { filenameManifest }
+			templateParameters: { filenameManifest },
 		}),
-		new CopyWebpackPlugin([
-			{
-				from: "assets/**/*",
-				to: "./"
-			},
-			{ from: "src/manifest.webmanifest", to: filenameManifest }
-		]),
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: "assets/**/*",
+					to: "./",
+				},
+				{ from: "src/manifest.webmanifest", to: filenameManifest },
+			],
+		}),
 		new WorkboxPlugin.GenerateSW({
 			// these options encourage the ServiceWorkers to get in there fast
 			// and not allow any straggling "old" SWs to hang around
 			clientsClaim: true,
-			skipWaiting: true
-		})
+			skipWaiting: true,
+		}),
 	],
 	output: {
-		filename: "bundle.[hash].js",
-		path: path.resolve("dist")
-	}
+		filename: "bundle.[contenthash].js",
+		path: path.resolve("dist"),
+	},
 };
 
 module.exports = config;

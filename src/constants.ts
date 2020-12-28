@@ -4,7 +4,7 @@ const LIGHT_THEME = {
 	light: "hsl(0, 0%, 90%);",
 	lightBorder: "hsl(0, 0%, 85%)",
 	lightHighlight: "hsl(0, 0%, 87%)",
-	lightActive: "hsl(0, 0%, 85%)"
+	lightActive: "hsl(0, 0%, 85%)",
 };
 
 const DARK_THEME = {
@@ -13,7 +13,7 @@ const DARK_THEME = {
 	light: "hsl(172, 57%, 10%)",
 	lightBorder: "hsl(172, 57%, 15%)",
 	lightHighlight: "hsl(172, 57%, 20%)",
-	lightActive: "hsl(172, 57%, 25%)"
+	lightActive: "hsl(172, 57%, 25%)",
 };
 
 export let COLORS = DARK_THEME;
@@ -21,3 +21,5 @@ export let COLORS = DARK_THEME;
 export const DIR_ASSETS = "assets/";
 export const DIR_DRUMSETS = DIR_ASSETS + "drumsets/";
 export const DIR_LOOPS = DIR_ASSETS + "loops/";
+
+export const LOOP_UPDATE_INTERVAL = 0.1;
