@@ -5,43 +5,42 @@ import styled from "styled-components";
 import * as Store from "./store";
 import * as Types from "./types";
 import { audioManInstance } from "./audioMan";
+import { COLORS } from "./constants";
 
 const Container = styled.div`
-	background: limegreen;
+	background: ${COLORS.bg};
 	height: 100%;
 	width: 100%;
-	padding: 5px;
+	padding: 2px;
 	display: flex;
 	flex-direction: column;
 `;
 
 const Row = styled.div`
-	background: yellow;
-	padding: 5px;
+	background: ${COLORS.bg};
+	padding: 2px;
 	display: flex;
 	flex: 1;
 	justify-content: space-around;
 `;
 
 const Division = styled.span`
-	background: darkviolet;
-	padding: 5px;
+	background: ${COLORS.bg};
+	padding: 2px;
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
 `;
 
 const Onset = styled.span`
-	background: #003000;
+	background: ${COLORS.light};
 	margin: 4px;
 	width: 100%;
 	text-align: center;
 	display: flex;
 	align-items: center;
-	transition: transform 0.21s;
 	border-width: 2px;
 	border-style: solid;
-	/* border-radius: 5px; */
 	cursor: pointer;
 `;
 
@@ -97,7 +96,6 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		onset: Types.IOnset
 	): JSX.Element {
 		const hlState = Store.getState().ui.highlightOnsets;
-		const audioState = Store.getState().audio;
 		const isActive =
 			hlState[instrKey].position == beatIdx &&
 			hlState[instrKey].subEnumerator == onsetIdx;
@@ -106,18 +104,11 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			<Onset
 				key={onsetIdx}
 				style={{
-					borderColor: isActive ? "lightgreen" : "darkgreen",
-					transitionTimingFunction: isActive
-						? "step-start"
-						: "linear",
-
-					transform:
-						isActive && audioState.isPlaying
-							? "translateY(5px)"
-							: null,
+					borderColor: isActive ? COLORS.lightActive : COLORS.light,
 					fontWeight: onset.velocity * 1000,
-					color: isActive ? "red" : "white",
-					background: onset.velocity > 0 ? "darkgreen" : null,
+					color: isActive ? COLORS.bg : null,
+					background:
+						onset.velocity > 0 ? COLORS.lightHighlight : null,
 				}}
 				onClick={() => {
 					const m = `${instrKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`;
@@ -128,7 +119,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 						instrKey
 					];
 					let beat = instr[beatIdx];
-					let insertion = onset.velocity > 0 ? 0 : 6;
+					let insertion = onset.velocity > 0 ? 0 : 4; // von 0..9
 					let newBeat =
 						beat.substr(0, onsetIdx) +
 						insertion +
@@ -138,11 +129,11 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 				}}
 			>
 				<OnsetInner>
-					{beatIdx}
+					{/* {beatIdx}
 					<br></br>
 					{onsetIdx}
 					<br></br>
-					{onset.velocity * 9}
+					{onset.velocity * 9} */}
 				</OnsetInner>
 			</Onset>
 		);
