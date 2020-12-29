@@ -13,6 +13,7 @@ const ButtonDiv = styled.div<{
 	(props) => `
 	background-color: ${COLORS.light};
 	border: 2px solid ${COLORS.lightBorder};
+	border-radius: 1em;
 	opacity: ${props.isDisabled ? 0.5 : 1}
 	cursor: pointer;
 	/* padding: 10px; */

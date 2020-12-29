@@ -26,7 +26,7 @@ const Row = styled.div`
 
 const Division = styled.span`
 	background: ${COLORS.bg};
-	padding: 2px;
+	padding: 4px;
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
@@ -34,7 +34,7 @@ const Division = styled.span`
 
 const Onset = styled.span`
 	background: ${COLORS.light};
-	margin: 4px;
+	margin: 2px;
 	width: 100%;
 	text-align: center;
 	display: flex;
@@ -42,6 +42,12 @@ const Onset = styled.span`
 	border-width: 2px;
 	border-style: solid;
 	cursor: pointer;
+	&:first-child {
+		border-radius: 1em 0 0 1em;
+	}
+	&:last-child {
+		border-radius: 0 1em 1em 0;
+	}
 `;
 
 const OnsetInner = styled.div`
