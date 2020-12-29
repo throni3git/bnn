@@ -65,6 +65,7 @@ appMount.style.width = "100%";
 appMount.style.height = "100%";
 appMount.style.display = "flex";
 appMount.style.justifyContent = "center";
+appMount.style.alignItems = "center";
 
 body.appendChild(appMount);
 
