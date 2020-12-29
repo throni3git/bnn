@@ -23,13 +23,14 @@ export const AllDiv = styled.div<{ deviceMode: EDeviceMode }>(
 			: null
 	}
 	margin: ${props.deviceMode === EDeviceMode.Desktop ? "auto" : null};
-	border: ${
-		props.deviceMode === EDeviceMode.Desktop
-			? "2px solid " + COLORS.lightBorder
-			: null
-	};
 `
 );
+
+// border: ${
+// 	props.deviceMode === EDeviceMode.Desktop
+// 		? "2px solid " + COLORS.lightBorder
+// 		: null
+// };
 
 export const Heading = styled.div`
 	font-size: 2em;
