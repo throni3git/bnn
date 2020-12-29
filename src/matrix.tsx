@@ -104,11 +104,18 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			<Onset
 				key={onsetIdx}
 				style={{
-					borderColor: isActive ? COLORS.lightActive : COLORS.light,
+					borderColor: isActive
+						? COLORS.lightActive
+						: onset.velocity > 0
+						? COLORS.lightActive
+						: COLORS.light,
 					fontWeight: onset.velocity * 1000,
-					color: isActive ? COLORS.bg : null,
-					background:
-						onset.velocity > 0 ? COLORS.lightHighlight : null,
+					// color: isActive ? COLORS.bg : null,
+					background: isActive
+						? COLORS.lightHighlight
+						: onset.velocity > 0
+						? COLORS.lightBorder
+						: COLORS.light,
 				}}
 				onClick={() => {
 					const m = `${instrKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`;
