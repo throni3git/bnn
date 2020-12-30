@@ -33,9 +33,14 @@ import {
 declare var IS_PRODUCTION: boolean;
 
 const GlobalStyle = createGlobalStyle`
+	@font-face {
+		font-family: "comfortaa";
+		src: url(./assets/fonts/Comfortaa-Regular.woff2) format("woff2");
+	}
 	*, *:before, *:after {
 		box-sizing: border-box;
 		user-select: none;
+		font-family: 'comfortaa';
 	}
 	*:focus {
 		outline: none;
