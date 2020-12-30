@@ -1,10 +1,10 @@
 const LIGHT_THEME = {
-	bg: "hsl(0, 0%, 100%);",
-	fc: "hsl(0, 0%, 30%);",
-	light: "hsl(0, 0%, 90%);",
-	lightBorder: "hsl(0, 0%, 85%)",
-	lightHighlight: "hsl(0, 0%, 87%)",
-	lightActive: "hsl(0, 0%, 85%)",
+	bg: "hsl(0, 0%, 100%)",
+	fc: "hsl(0, 0%, 30%)",
+	light: "hsl(0, 0%, 90%)",
+	lightBorder: "hsl(0, 0%, 80%)",
+	lightHighlight: "hsl(0, 0%, 70%)",
+	lightActive: "hsl(0, 0%, 60%)",
 };
 
 const DARK_THEME = {
@@ -16,7 +16,7 @@ const DARK_THEME = {
 	lightActive: "hsl(172, 57%, 25%)",
 };
 
-export let COLORS = DARK_THEME;
+export let COLORS = LIGHT_THEME;
 
 export const DIR_ASSETS = "assets/";
 export const DIR_DRUMSETS = DIR_ASSETS + "drumsets/";
