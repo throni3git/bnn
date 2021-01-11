@@ -33,9 +33,14 @@ import {
 declare var IS_PRODUCTION: boolean;
 
 const GlobalStyle = createGlobalStyle`
+	@font-face {
+		font-family: "comfortaa";
+		src: url(./assets/fonts/Comfortaa-Regular.woff2) format("woff2");
+	}
 	*, *:before, *:after {
 		box-sizing: border-box;
 		user-select: none;
+		font-family: 'comfortaa';
 	}
 	*:focus {
 		outline: none;
@@ -268,7 +273,7 @@ export class BeatronomeApp extends React.Component<
 		const groupVolumeSlider: JSX.Element = (
 			<>
 				<Row>
-					<CenteredSmall>Volume</CenteredSmall>
+					<CenteredSmall>volume</CenteredSmall>
 				</Row>
 				<SliderPadding>
 					<Range
@@ -309,7 +314,7 @@ export class BeatronomeApp extends React.Component<
 		const rowPlayTimer: JSX.Element = (
 			<FixedRow>
 				<Column>
-					<CenteredSmall>Timer</CenteredSmall>
+					<CenteredSmall>timer</CenteredSmall>
 					<CenteredLarge>{timerString}</CenteredLarge>
 				</Column>
 				<FixedColumn deviceMode={deviceMode}>
@@ -350,13 +355,13 @@ export class BeatronomeApp extends React.Component<
 
 		const columnLargeTempoDisplay = (
 			<Column>
-				<CenteredLarge>{audioState.bpm + " BPM"}</CenteredLarge>
+				<CenteredLarge>{audioState.bpm + " bpm"}</CenteredLarge>
 			</Column>
 		);
 
 		const columnSmallTempoDisplay = (
 			<FixedColumn deviceMode={deviceMode}>
-				<CenteredSmall>BPM</CenteredSmall>
+				<CenteredSmall>bpm</CenteredSmall>
 				<CenteredLarge>{audioState.bpm}</CenteredLarge>
 			</FixedColumn>
 		);
@@ -523,7 +528,7 @@ export class BeatronomeApp extends React.Component<
 		return (
 			<AllDiv deviceMode={deviceMode}>
 				<GlobalStyle></GlobalStyle>
-				<Heading>Beatronome</Heading>
+				<Heading>beatronome</Heading>
 				<ContainerDiv>{groupContainer}</ContainerDiv>
 			</AllDiv>
 		);
