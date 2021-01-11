@@ -28,7 +28,7 @@ const config = {
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
 			title: "Beatronome",
-			favicon: "assets/images/favicon16.png",
+			favicon: "assets/icons/logo16.png",
 		}),
 		new CopyWebpackPlugin({
 			patterns: [
