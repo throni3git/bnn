@@ -8,43 +8,98 @@
 	"description": "Nice and easy drum computer.",
 	"icons": [
 		{
-			"src": "assets/images/favicon16.png",
+			"src": "assets/icons/logo180.png",
+			"sizes": "180x180",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo256.png",
+			"sizes": "256x256",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo384.png",
+			"sizes": "384x384",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo16.png",
 			"sizes": "16x16",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon24.png",
+			"src": "assets/icons/logo24.png",
 			"sizes": "24x24",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon32.png",
+			"src": "assets/icons/logo32.png",
 			"sizes": "32x32",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon48.png",
+			"src": "assets/icons/logo48.png",
 			"sizes": "48x48",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon64.png",
+			"src": "assets/icons/logo64.png",
 			"sizes": "64x64",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon96.png",
+			"src": "assets/icons/logo72.png",
+			"sizes": "72x72",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo96.png",
 			"sizes": "96x96",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon128.png",
+			"src": "assets/icons/logo120.png",
+			"sizes": "120x120",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo128.png",
 			"sizes": "128x128",
 			"type": "image/png"
 		},
+
 		{
-			"src": "assets/images/favicon256.png",
-			"sizes": "256x256",
+			"src": "assets/icons/logo144.png",
+			"sizes": "144x144",
+			"type": "image/png"
+		},
+
+		{
+			"src": "assets/icons/logo152.png",
+			"sizes": "152x152",
 			"type": "image/png"
 		}
 	]
