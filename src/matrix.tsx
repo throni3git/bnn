@@ -104,7 +104,8 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		const hlState = Store.getState().ui.highlightOnsets;
 		const isActive =
 			hlState[instrKey].position == beatIdx &&
-			hlState[instrKey].subEnumerator == onsetIdx;
+			hlState[instrKey].subEnumerator == onsetIdx &&
+			hlState[instrKey].enabled;
 
 		return (
 			<Onset
