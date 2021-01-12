@@ -246,15 +246,19 @@ export class BeatronomeApp extends React.Component<
 			0
 		);
 
-		const iconSize = "2x";
 		const deviceMode = Store.getState().ui.deviceMode;
+		const buttonIconSize =
+			deviceMode === Types.EDeviceMode.SmallPortrait ||
+			deviceMode === Types.EDeviceMode.SmallLandscape
+				? "1.5em"
+				: "2em";
 
 		const groupTempoChange: JSX.Element = (
 			<>
 				<Row>
 					<Button action={Utils.increaseBpm}>
 						<FontAwesomeIcon
-							size={iconSize}
+							style={{ fontSize: buttonIconSize }}
 							icon="plus-circle"
 						></FontAwesomeIcon>
 					</Button>
@@ -262,7 +266,7 @@ export class BeatronomeApp extends React.Component<
 				<Row>
 					<Button action={Utils.decreaseBpm}>
 						<FontAwesomeIcon
-							size={iconSize}
+							style={{ fontSize: buttonIconSize }}
 							icon="minus-circle"
 						></FontAwesomeIcon>
 					</Button>
@@ -323,7 +327,7 @@ export class BeatronomeApp extends React.Component<
 						disabled={audioState.isPlaying || audioState.timer < 3}
 					>
 						<FontAwesomeIcon
-							size={iconSize}
+							style={{ fontSize: buttonIconSize }}
 							icon="undo"
 						></FontAwesomeIcon>
 					</Button>
@@ -331,7 +335,7 @@ export class BeatronomeApp extends React.Component<
 				<FixedColumn deviceMode={deviceMode}>
 					<Button action={() => Utils.togglePlay()}>
 						<FontAwesomeIcon
-							size={iconSize}
+							style={{ fontSize: buttonIconSize }}
 							icon={
 								audioState.isPlaying
 									? "stop-circle"
@@ -369,7 +373,7 @@ export class BeatronomeApp extends React.Component<
 		const buttonTapTempo = (
 			<Button action={Utils.tapTempo}>
 				<FontAwesomeIcon
-					size={iconSize}
+							style={{ fontSize: buttonIconSize }}
 					icon="hand-point-up"
 				></FontAwesomeIcon>
 			</Button>
