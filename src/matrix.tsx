@@ -6,6 +6,7 @@ import * as Store from "./store";
 import * as Types from "./types";
 import { audioManInstance } from "./audioMan";
 import { COLORS } from "./constants";
+import Button from "./button";
 
 const Container = styled.div`
 	background: ${COLORS.bg};
@@ -30,6 +31,21 @@ const Division = styled.span`
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
+	position: relative;
+`;
+
+const DivisionOverlay = styled.div`
+	background: ${COLORS.bg};
+	opacity: 0.5;
+	padding: 4px;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 `;
 
 const Onset = styled.span`
@@ -86,6 +102,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											onset
 										)
 									)}
+									<DivisionOverlay>
+										<Button action={() => null}>+</Button>
+										<Button action={() => null}>-</Button>
+									</DivisionOverlay>
 								</Division>
 							)
 						)}
