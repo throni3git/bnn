@@ -11,6 +11,7 @@ import {
 	faUndo,
 	faPlus,
 	faMinus,
+	faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BeatronomeApp } from "./beatronomeApp";
@@ -42,6 +43,7 @@ library.add(
 	faMinusCircle,
 	faPlus,
 	faMinus,
+	faPen,
 	faPlayCircle,
 	faStopCircle,
 	faHandPointUp,

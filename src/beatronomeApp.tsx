@@ -250,7 +250,7 @@ export class BeatronomeApp extends React.Component<
 		const buttonIconSize =
 			deviceMode === Types.EDeviceMode.SmallPortrait ||
 			deviceMode === Types.EDeviceMode.SmallLandscape
-				? "1.5em"
+				? "1.4em"
 				: "2em";
 
 		const groupTempoChange: JSX.Element = (
@@ -375,6 +375,25 @@ export class BeatronomeApp extends React.Component<
 			</Button>
 		);
 
+		const buttonMetricsMode = (
+			<Button
+				action={() => {
+					const isMetricsMode =
+						Store.getState().ui.displayMode ==
+						Types.EDisplayMode.Metrics;
+					const newMode = isMetricsMode
+						? Types.EDisplayMode.Play
+						: Types.EDisplayMode.Metrics;
+					Store.setUserInterfaceState("displayMode", newMode);
+				}}
+			>
+				<FontAwesomeIcon
+					style={{ fontSize: buttonIconSize }}
+					icon="pen"
+				></FontAwesomeIcon>
+			</Button>
+		);
+
 		let groupContainer: JSX.Element;
 
 		// smartphone portrait mode
@@ -387,7 +406,14 @@ export class BeatronomeApp extends React.Component<
 							{groupVolumeSlider}
 						</FixedColumn>
 						<Column>
-							<Row>{buttonTapTempo}</Row>
+							<Row>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonTapTempo}
+								</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonMetricsMode}
+								</FixedColumn>
+							</Row>
 							<FlexRow>{columnSmallTempoDisplay}</FlexRow>
 						</Column>
 						<FixedColumn deviceMode={deviceMode}>
@@ -418,6 +444,7 @@ export class BeatronomeApp extends React.Component<
 					<Row>
 						<FixedColumn deviceMode={deviceMode}>
 							{buttonTapTempo}
+							{buttonMetricsMode}
 						</FixedColumn>
 						<Column>
 							<SliderPadding>{sliderTempo}</SliderPadding>
@@ -442,6 +469,9 @@ export class BeatronomeApp extends React.Component<
 							<Row>
 								<FixedColumn deviceMode={deviceMode}>
 									{buttonTapTempo}
+								</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonMetricsMode}
 								</FixedColumn>
 								<Column>{columnLargeTempoDisplay}</Column>
 								<FixedColumn
@@ -475,6 +505,9 @@ export class BeatronomeApp extends React.Component<
 								<FixedColumn deviceMode={deviceMode}>
 									{buttonTapTempo}
 								</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonMetricsMode}
+								</FixedColumn>
 								<Column>{columnLargeTempoDisplay}</Column>
 								<FixedColumn
 									deviceMode={deviceMode}
@@ -506,6 +539,9 @@ export class BeatronomeApp extends React.Component<
 							<Row>
 								<FixedColumn deviceMode={deviceMode}>
 									{buttonTapTempo}
+								</FixedColumn>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonMetricsMode}
 								</FixedColumn>
 								<Column>{columnLargeTempoDisplay}</Column>
 								<FixedColumn
