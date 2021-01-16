@@ -9,6 +9,9 @@ import {
 	faStopCircle,
 	faHandPointUp,
 	faUndo,
+	faPlus,
+	faMinus,
+	faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BeatronomeApp } from "./beatronomeApp";
@@ -38,6 +41,9 @@ if (IS_PRODUCTION && "serviceWorker" in navigator) {
 library.add(
 	faPlusCircle,
 	faMinusCircle,
+	faPlus,
+	faMinus,
+	faPen,
 	faPlayCircle,
 	faStopCircle,
 	faHandPointUp,

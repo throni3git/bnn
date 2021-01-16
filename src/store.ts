@@ -20,6 +20,7 @@ export interface IAudioState {
 export interface IUserInterfaceState {
 	deviceMode: Types.EDeviceMode;
 	highlightOnsets: Record<Types.DrumsetKeys, Types.IOnsetUIUpdate>;
+	displayMode: Types.EDisplayMode;
 }
 
 export interface IDebuggingState {
@@ -58,6 +59,7 @@ let currentState: IState = {
 	},
 	ui: {
 		deviceMode: Types.EDeviceMode.Desktop,
+		displayMode: Types.EDisplayMode.Play,
 		highlightOnsets: {
 			// eleganter gehts shcon noch
 			bd: { enabled: false, position: 0, subEnumerator: 0 },

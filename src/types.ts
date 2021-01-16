@@ -8,6 +8,13 @@ export enum EDeviceMode {
 	BigLandscape = "BigLandscape",
 }
 
+export enum EDisplayMode {
+	Play = "Play",
+	Metrics = "Metrics",
+	Volume = "Volume",
+	Settings = "Settings",
+}
+
 export interface IDrumInstrument {
 	url: string;
 	audioBuffer?: AudioBuffer;

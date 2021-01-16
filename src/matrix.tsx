@@ -1,11 +1,14 @@
 import * as React from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import styled from "styled-components";
 
 import * as Store from "./store";
 import * as Types from "./types";
 import { audioManInstance } from "./audioMan";
 import { COLORS } from "./constants";
+import Button from "./button";
 
 const Container = styled.div`
 	background: ${COLORS.bg};
@@ -16,20 +19,53 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ isSmallDevice: boolean }>(
+	(props) => `
 	background: ${COLORS.bg};
-	padding: 2px;
+	padding: ${props.isSmallDevice ? 0 : "2px"};
 	display: flex;
 	flex: 1;
 	justify-content: space-around;
-`;
+`
+);
 
-const Division = styled.span`
+const Division = styled.div<{ isSmallDevice: boolean }>(
+	(props) => `
 	background: ${COLORS.bg};
-	padding: 4px;
+	margin: ${props.isSmallDevice ? "2px" : "4px"};
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
+	position: relative;
+`
+);
+
+const DivisionBeats = styled.div`
+	background: ${COLORS.bg};
+	/* padding: 4px; */
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+`;
+
+const DivisionOverlay = styled.div`
+	background: ${COLORS.bg};
+	opacity: 0.7;
+	/* padding: 4px; */
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 `;
 
 const Onset = styled.span`
@@ -71,20 +107,69 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			return null;
 		}
 
+		const uiState = Store.getState().ui;
+		const isSmallDevice =
+			uiState.deviceMode == Types.EDeviceMode.SmallLandscape ||
+			uiState.deviceMode == Types.EDeviceMode.SmallPortrait;
+
+		const buttonIconSize = isSmallDevice ? "1em" : "2em";
+
+		const showMetricsOverlay =
+			uiState.displayMode == Types.EDisplayMode.Metrics;
+
 		return (
 			<Container>
 				{instrumentKeys.map((instrumentKey, rowIdx: number) => (
-					<Row key={rowIdx}>
+					<Row key={rowIdx} isSmallDevice={isSmallDevice}>
 						{compiledMeasure[instrumentKey].map(
 							(beat: Types.IBeat, beatIdx: number) => (
-								<Division key={beatIdx}>
-									{beat.onsets.map((onset, onsetIdx) =>
-										this.getOnsetElement(
-											instrumentKey as any,
-											beatIdx,
-											onsetIdx,
-											onset
-										)
+								<Division
+									key={beatIdx}
+									isSmallDevice={isSmallDevice}
+								>
+									<DivisionBeats>
+										{beat.onsets.map((onset, onsetIdx) =>
+											this.getOnsetElement(
+												instrumentKey as any,
+												beatIdx,
+												onsetIdx,
+												onset
+											)
+										)}
+									</DivisionBeats>
+									{showMetricsOverlay && (
+										<DivisionOverlay>
+											<Button
+												action={() =>
+													this.addOnset(
+														instrumentKey,
+														beatIdx
+													)
+												}
+											>
+												<FontAwesomeIcon
+													style={{
+														fontSize: buttonIconSize,
+													}}
+													icon="plus"
+												></FontAwesomeIcon>
+											</Button>
+											<Button
+												action={() =>
+													this.removeOnset(
+														instrumentKey,
+														beatIdx
+													)
+												}
+											>
+												<FontAwesomeIcon
+													style={{
+														fontSize: buttonIconSize,
+													}}
+													icon="minus"
+												></FontAwesomeIcon>
+											</Button>
+										</DivisionOverlay>
 									)}
 								</Division>
 							)
@@ -94,6 +179,30 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			</Container>
 		);
 	}
+
+	private addOnset = (instrumentKey: string, beatIdx: number) => {
+		const audioState = Store.getState().audio;
+		const instrument: string[] =
+			audioState.drumLoop.textBeats[instrumentKey];
+		let textBeat = instrument[beatIdx];
+		if (textBeat.length < 6) {
+			textBeat += "0";
+			audioState.drumLoop.textBeats[instrumentKey][beatIdx] = textBeat;
+			audioManInstance.compile();
+		}
+	};
+
+	private removeOnset = (instrumentKey: string, beatIdx: number) => {
+		const audioState = Store.getState().audio;
+		const instrument: string[] =
+			audioState.drumLoop.textBeats[instrumentKey];
+		let textBeat = instrument[beatIdx];
+		if (textBeat.length > 3) {
+			textBeat = textBeat.substring(0, textBeat.length - 1);
+			audioState.drumLoop.textBeats[instrumentKey][beatIdx] = textBeat;
+			audioManInstance.compile();
+		}
+	};
 
 	private getOnsetElement(
 		instrKey: Partial<Types.DrumsetKeys>,
