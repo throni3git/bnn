@@ -8,7 +8,7 @@ import * as Store from "./store";
 
 const ButtonDiv = styled.div<{
 	isDisabled?: boolean;
-	deviceMode: Types.EDeviceMode;
+	isSmallDevice: boolean;
 }>(
 	(props) => `
 	background-color: ${COLORS.light};
@@ -17,18 +17,12 @@ const ButtonDiv = styled.div<{
 	opacity: ${props.isDisabled ? 0.5 : 1}
 	cursor: pointer;
 	/* padding: 10px; */
-	width: ${
-		props.deviceMode === Types.EDeviceMode.SmallPortrait ||
-		props.deviceMode === Types.EDeviceMode.SmallLandscape
-			? "42px"
-			: "52px"
-	};
-	height: ${
-		props.deviceMode === Types.EDeviceMode.SmallPortrait ||
-		props.deviceMode === Types.EDeviceMode.SmallLandscape
-			? "42px"
-			: "52px"
-	};
+	height: 100%;
+	width: 100%;
+	max-width: ${props.isSmallDevice ? "42px" : "52px"};
+	max-height: ${props.isSmallDevice ? "42px" : "52px"};
+	min-width: ${props.isSmallDevice ? "32px" : "42px"};
+	min-height: ${props.isSmallDevice ? "32px" : "42px"};
 	margin: 4px;
 	text-align: center;
 	transition: background-color 0.05s linear;
@@ -53,19 +47,26 @@ const ButtonInnerDiv = styled.div`
 	transform: translate(-50%, -50%);
 `;
 
-export const Button: React.FunctionComponent<IButtonProps> = (props) => (
-	<ButtonDiv
-		onClick={(event) => {
-			if (props.disabled !== true) {
-				props.action(event);
-			}
-		}}
-		isDisabled={props.disabled}
-		deviceMode={Store.getState().ui.deviceMode}
-	>
-		<ButtonInnerDiv>{props.children}</ButtonInnerDiv>
-	</ButtonDiv>
-);
+export const Button: React.FunctionComponent<IButtonProps> = (props) => {
+	const deviceMode = Store.getState().ui.deviceMode;
+	const isSmallDevice =
+		deviceMode === Types.EDeviceMode.SmallPortrait ||
+		deviceMode === Types.EDeviceMode.SmallLandscape;
+
+	return (
+		<ButtonDiv
+			onClick={(event) => {
+				if (props.disabled !== true) {
+					props.action(event);
+				}
+			}}
+			isDisabled={props.disabled}
+			isSmallDevice={isSmallDevice}
+		>
+			<ButtonInnerDiv>{props.children}</ButtonInnerDiv>
+		</ButtonDiv>
+	);
+};
 
 Button.displayName = "Button";
 

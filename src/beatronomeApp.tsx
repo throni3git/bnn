@@ -255,22 +255,18 @@ export class BeatronomeApp extends React.Component<
 
 		const groupTempoChange: JSX.Element = (
 			<>
-				<Row>
-					<Button action={Utils.increaseBpm}>
-						<FontAwesomeIcon
-							style={{ fontSize: buttonIconSize }}
-							icon="plus-circle"
-						></FontAwesomeIcon>
-					</Button>
-				</Row>
-				<Row>
-					<Button action={Utils.decreaseBpm}>
-						<FontAwesomeIcon
-							style={{ fontSize: buttonIconSize }}
-							icon="minus-circle"
-						></FontAwesomeIcon>
-					</Button>
-				</Row>
+				<Button action={Utils.increaseBpm}>
+					<FontAwesomeIcon
+						style={{ fontSize: buttonIconSize }}
+						icon="plus-circle"
+					></FontAwesomeIcon>
+				</Button>
+				<Button action={Utils.decreaseBpm}>
+					<FontAwesomeIcon
+						style={{ fontSize: buttonIconSize }}
+						icon="minus-circle"
+					></FontAwesomeIcon>
+				</Button>
 			</>
 		);
 
@@ -373,7 +369,7 @@ export class BeatronomeApp extends React.Component<
 		const buttonTapTempo = (
 			<Button action={Utils.tapTempo}>
 				<FontAwesomeIcon
-							style={{ fontSize: buttonIconSize }}
+					style={{ fontSize: buttonIconSize }}
 					icon="hand-point-up"
 				></FontAwesomeIcon>
 			</Button>
