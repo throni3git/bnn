@@ -25,25 +25,39 @@ const Row = styled.div`
 	justify-content: space-around;
 `;
 
-const Division = styled.span`
+const Division = styled.div`
 	background: ${COLORS.bg};
-	padding: 4px;
+	margin: 4px;
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
 	position: relative;
 `;
 
-const DivisionOverlay = styled.div`
+const DivisionBeats = styled.div`
 	background: ${COLORS.bg};
-	opacity: 0.5;
-	padding: 4px;
+	/* padding: 4px; */
 	width: 100%;
 	display: flex;
 	justify-content: space-around;
 	position: absolute;
 	top: 0;
 	bottom: 0;
+	left: 0;
+	right: 0;
+`;
+
+const DivisionOverlay = styled.div`
+	background: ${COLORS.bg};
+	opacity: 0.5;
+	/* padding: 4px; */
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	bottom: 50%;
 	left: 0;
 	right: 0;
 `;
@@ -94,17 +108,37 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 						{compiledMeasure[instrumentKey].map(
 							(beat: Types.IBeat, beatIdx: number) => (
 								<Division key={beatIdx}>
-									{beat.onsets.map((onset, onsetIdx) =>
-										this.getOnsetElement(
-											instrumentKey as any,
-											beatIdx,
-											onsetIdx,
-											onset
-										)
-									)}
+									<DivisionBeats>
+										{beat.onsets.map((onset, onsetIdx) =>
+											this.getOnsetElement(
+												instrumentKey as any,
+												beatIdx,
+												onsetIdx,
+												onset
+											)
+										)}
+									</DivisionBeats>
 									<DivisionOverlay>
-										<Button action={() => null}>+</Button>
-										<Button action={() => null}>-</Button>
+										<Button
+											action={() =>
+												this.addOnset(
+													instrumentKey,
+													beatIdx
+												)
+											}
+										>
+											+
+										</Button>
+										<Button
+											action={() =>
+												this.removeOnset(
+													instrumentKey,
+													beatIdx
+												)
+											}
+										>
+											-
+										</Button>
 									</DivisionOverlay>
 								</Division>
 							)
@@ -114,6 +148,30 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			</Container>
 		);
 	}
+
+	private addOnset = (instrumentKey: string, beatIdx: number) => {
+		const audioState = Store.getState().audio;
+		const instrument: string[] =
+			audioState.drumLoop.textBeats[instrumentKey];
+		let textBeat = instrument[beatIdx];
+		if (textBeat.length <= 8) {
+			textBeat += "0";
+			audioState.drumLoop.textBeats[instrumentKey][beatIdx] = textBeat;
+			audioManInstance.compile();
+		}
+	};
+
+	private removeOnset = (instrumentKey: string, beatIdx: number) => {
+		const audioState = Store.getState().audio;
+		const instrument: string[] =
+			audioState.drumLoop.textBeats[instrumentKey];
+		let textBeat = instrument[beatIdx];
+		if (textBeat.length > 3) {
+			textBeat = textBeat.substring(0, textBeat.length - 1);
+			audioState.drumLoop.textBeats[instrumentKey][beatIdx] = textBeat;
+			audioManInstance.compile();
+		}
+	};
 
 	private getOnsetElement(
 		instrKey: Partial<Types.DrumsetKeys>,
