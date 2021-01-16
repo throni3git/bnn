@@ -114,7 +114,8 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 
 		const buttonIconSize = isSmallDevice ? "1em" : "2em";
 
-		const showDivisionOverlay = true;
+		const showMetricsOverlay =
+			uiState.displayMode == Types.EDisplayMode.Metrics;
 
 		return (
 			<Container>
@@ -136,7 +137,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 											)
 										)}
 									</DivisionBeats>
-									{showDivisionOverlay && (
+									{showMetricsOverlay && (
 										<DivisionOverlay>
 											<Button
 												action={() =>
