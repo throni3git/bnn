@@ -219,28 +219,34 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 		onsetIdx: number,
 		onset: Types.IOnset
 	): JSX.Element {
+		const audioState = Store.getState().audio;
 		const hlState = Store.getState().ui.highlightOnsets;
 		const isActive =
+			audioState.isPlaying &&
 			hlState[instrKey].position == beatIdx &&
 			hlState[instrKey].subEnumerator == onsetIdx &&
-			hlState[instrKey].enabled;
+			hlState[instrKey].enabled &&
+			onset.velocity > 0;
+
+		const onsetBorderColor = isActive
+			? COLORS.lightActive
+			: onset.velocity > 0
+			? COLORS.lightActive
+			: COLORS.light;
+
+		const onsetBackgroundColor = isActive
+			? COLORS.lightHighlight
+			: onset.velocity > 0
+			? COLORS.lightBorder
+			: COLORS.light;
 
 		return (
 			<Onset
 				key={onsetIdx}
 				style={{
-					borderColor: isActive
-						? COLORS.lightActive
-						: onset.velocity > 0
-						? COLORS.lightActive
-						: COLORS.light,
+					borderColor: onsetBorderColor,
 					fontWeight: onset.velocity * 1000,
-					// color: isActive ? COLORS.bg : null,
-					background: isActive
-						? COLORS.lightHighlight
-						: onset.velocity > 0
-						? COLORS.lightBorder
-						: COLORS.light,
+					background: onsetBackgroundColor,
 				}}
 				onClick={() => {
 					const m = `${instrKey} ${beatIdx} ${onsetIdx} ${onset.velocity}`;
@@ -260,13 +266,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 					audioManInstance.compile();
 				}}
 			>
-				<OnsetInner>
-					{/* {beatIdx}
-					<br></br>
-					{onsetIdx}
-					<br></br>
-					{onset.velocity * 9} */}
-				</OnsetInner>
+				<OnsetInner></OnsetInner>
 			</Onset>
 		);
 	}
