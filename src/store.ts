@@ -36,6 +36,20 @@ export interface IState {
 	audio: IAudioState;
 }
 
+export function getEmptyHighlightOnsetsObject() {
+	return {
+		// eleganter gehts shcon noch
+		bd: { enabled: false, position: 0, subEnumerator: 0 },
+		hho: { enabled: false, position: 0, subEnumerator: 0 },
+		hhc: { enabled: false, position: 0, subEnumerator: 0 },
+		sn: { enabled: false, position: 0, subEnumerator: 0 },
+		tomHi: { enabled: false, position: 0, subEnumerator: 0 },
+		tomMidHi: { enabled: false, position: 0, subEnumerator: 0 },
+		tomMidLo: { enabled: false, position: 0, subEnumerator: 0 },
+		tomLo: { enabled: false, position: 0, subEnumerator: 0 },
+	}
+}
+
 let currentState: IState = {
 	audio: {
 		masterVolume: IS_PRODUCTION ? 1 : 0.3,
@@ -60,17 +74,7 @@ let currentState: IState = {
 	ui: {
 		deviceMode: Types.EDeviceMode.Desktop,
 		displayMode: Types.EDisplayMode.Play,
-		highlightOnsets: {
-			// eleganter gehts shcon noch
-			bd: { enabled: false, position: 0, subEnumerator: 0 },
-			hho: { enabled: false, position: 0, subEnumerator: 0 },
-			hhc: { enabled: false, position: 0, subEnumerator: 0 },
-			sn: { enabled: false, position: 0, subEnumerator: 0 },
-			tomHi: { enabled: false, position: 0, subEnumerator: 0 },
-			tomMidHi: { enabled: false, position: 0, subEnumerator: 0 },
-			tomMidLo: { enabled: false, position: 0, subEnumerator: 0 },
-			tomLo: { enabled: false, position: 0, subEnumerator: 0 },
-		},
+		highlightOnsets: getEmptyHighlightOnsetsObject(),
 	},
 };
 
