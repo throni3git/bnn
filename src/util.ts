@@ -85,6 +85,10 @@ export function togglePlay(): void {
 	if (Store.getState().audio.isPlaying) {
 		audioManInstance.stopLoop();
 
+		// reset highlighted onsets to prevent flickering when beat is stopped and played again
+		const emptyHighlightOnsets = Store.getEmptyHighlightOnsetsObject();
+		Store.setUserInterfaceState("highlightOnsets", emptyHighlightOnsets);
+
 		clearInterval(timerIntervalHandle);
 		timerIntervalHandle = null;
 	} else {
