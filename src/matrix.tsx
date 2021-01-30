@@ -141,21 +141,6 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 										<DivisionOverlay>
 											<Button
 												action={() =>
-													this.addOnset(
-														instrumentKey,
-														beatIdx
-													)
-												}
-											>
-												<FontAwesomeIcon
-													style={{
-														fontSize: buttonIconSize,
-													}}
-													icon="plus"
-												></FontAwesomeIcon>
-											</Button>
-											<Button
-												action={() =>
 													this.removeOnset(
 														instrumentKey,
 														beatIdx
@@ -167,6 +152,21 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 														fontSize: buttonIconSize,
 													}}
 													icon="minus"
+												></FontAwesomeIcon>
+											</Button>
+											<Button
+												action={() =>
+													this.addOnset(
+														instrumentKey,
+														beatIdx
+													)
+												}
+											>
+												<FontAwesomeIcon
+													style={{
+														fontSize: buttonIconSize,
+													}}
+													icon="plus"
 												></FontAwesomeIcon>
 											</Button>
 										</DivisionOverlay>
