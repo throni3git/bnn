@@ -90,6 +90,12 @@ const OnsetInner = styled.div`
 	flex: 1;
 `;
 
+const MetricsDiv = styled.div`
+	width: 18px;
+	text-align: center;
+	font-size: 1.5em;
+`;
+
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	constructor(props: IMatrixProps) {
 		super(props);
@@ -154,6 +160,9 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 													icon="minus"
 												></FontAwesomeIcon>
 											</Button>
+											<MetricsDiv>
+												{beat.onsets.length}
+											</MetricsDiv>
 											<Button
 												action={() =>
 													this.addOnset(
