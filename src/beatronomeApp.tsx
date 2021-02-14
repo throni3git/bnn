@@ -28,6 +28,7 @@ import {
 	createRangeThumb,
 	CenteredSmall,
 	CenteredLarge,
+	MetricsDiv,
 } from "./uiElements";
 
 declare var IS_PRODUCTION: boolean;
@@ -253,6 +254,10 @@ export class BeatronomeApp extends React.Component<
 			deviceMode === Types.EDeviceMode.SmallLandscape;
 		const buttonIconSize = isSmallDevice ? "1.4em" : "2em";
 
+		const modePlay = uiState.displayMode == Types.EDisplayMode.Play;
+		const modeSettings = uiState.displayMode == Types.EDisplayMode.Settings;
+		const modeVolume = uiState.displayMode == Types.EDisplayMode.Volume;
+		const modeMetrics = uiState.displayMode == Types.EDisplayMode.Metrics;
 
 		const groupTempoChange: JSX.Element = (
 			<>
@@ -303,6 +308,21 @@ export class BeatronomeApp extends React.Component<
 				min={audioState.minBpm}
 				max={audioState.maxBpm}
 				onChange={this.changeTempo}
+				renderTrack={({ props, children }) => (
+					<RangeTrackHorizontal {...props}>
+						{children}
+					</RangeTrackHorizontal>
+				)}
+				renderThumb={createRangeThumb}
+			></Range>
+		);
+
+		const sliderDivisions: JSX.Element = (
+			<Range
+				values={[4]}
+				min={3}
+				max={7}
+				onChange={this.changeDivisions}
 				renderTrack={({ props, children }) => (
 					<RangeTrackHorizontal {...props}>
 						{children}
@@ -532,32 +552,77 @@ export class BeatronomeApp extends React.Component<
 			groupContainer = (
 				<>
 					<FlexRow>{columnMatrix}</FlexRow>
-					<Row>
-						<FixedColumn deviceMode={deviceMode}>
-							{groupVolumeSlider}
-						</FixedColumn>
-						<Column>
+					{modePlay && (
+						<Row>
+							<FixedColumn deviceMode={deviceMode}>
+								{groupVolumeSlider}
+							</FixedColumn>
+							<Column>
+								<Row>
+									<FixedColumn deviceMode={deviceMode}>
+										{buttonTapTempo}
+									</FixedColumn>
+									<FixedColumn deviceMode={deviceMode}>
+										{buttonMetricsMode}
+									</FixedColumn>
+									<Column>{columnLargeTempoDisplay}</Column>
+									<FixedColumn
+										deviceMode={deviceMode}
+									></FixedColumn>
+								</Row>
+								<Row>
+									<SliderPadding>{sliderTempo}</SliderPadding>
+								</Row>
+								{rowPlayTimer}
+							</Column>
+							<FixedColumn deviceMode={deviceMode}>
+								{groupTempoChange}
+							</FixedColumn>
+						</Row>
+					)}
+					{modeMetrics && (
+						<>
 							<Row>
 								<FixedColumn deviceMode={deviceMode}>
-									{buttonTapTempo}
+									{sliderDivisions}
 								</FixedColumn>
-								<FixedColumn deviceMode={deviceMode}>
-									{buttonMetricsMode}
-								</FixedColumn>
-								<Column>{columnLargeTempoDisplay}</Column>
 								<FixedColumn
 									deviceMode={deviceMode}
 								></FixedColumn>
 							</Row>
 							<Row>
-								<SliderPadding>{sliderTempo}</SliderPadding>
+								<FixedColumn deviceMode={deviceMode}>
+									{buttonMetricsMode}
+								</FixedColumn>
+								<Row>
+									<Button
+										action={() => Utils.setSubdivisions(3)}
+									>
+										{/* <FontAwesomeIcon
+											style={{
+												fontSize: buttonIconSize,
+											}}
+											icon="minus"
+										></FontAwesomeIcon> */}
+										3
+									</Button>
+									<MetricsDiv isSmallDevice={isSmallDevice}>
+										{4}
+									</MetricsDiv>
+									<Button
+										action={() => Utils.setSubdivisions(4)}
+									>
+										{/* <FontAwesomeIcon
+											style={{
+												fontSize: buttonIconSize,
+											}}
+											icon="plus"
+										></FontAwesomeIcon> */}4
+									</Button>
+								</Row>
 							</Row>
-							{rowPlayTimer}
-						</Column>
-						<FixedColumn deviceMode={deviceMode}>
-							{groupTempoChange}
-						</FixedColumn>
-					</Row>
+						</>
+					)}
 				</>
 			);
 		}
@@ -580,6 +645,18 @@ export class BeatronomeApp extends React.Component<
 
 		Store.setAudioState("measuresInCurrentTempo", -1);
 		Store.setAudioState("bpm", bpm);
+	};
+
+	/**
+	 * callback setting up state for changed divisions
+	 */
+	private changeDivisions = (values: number[]) => {
+		const divisions = values[0];
+		console.log(divisions);
+		console.log("not implemented yet");
+
+		// Store.setAudioState("measuresInCurrentTempo", -1);
+		// Store.setAudioState("bpm", bpm);
 	};
 }
 
