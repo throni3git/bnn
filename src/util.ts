@@ -128,3 +128,21 @@ export function resetTimerIfStopped(): void {
 		Store.setAudioState("measuresInCurrentTempo", 0);
 	}
 }
+
+/** add one more subdivision for all beats */
+export function setSubdivisions(subdivisions: number): void {
+	let textBeats = Store.getState().audio.drumLoop.textBeats;
+	for (const instrumentKey in textBeats) {
+		const instrument: string[] = textBeats[instrumentKey];
+		for (let beatIdx = 0; beatIdx < instrument.length; beatIdx++) {
+			let textBeat = instrument[beatIdx];
+			if (textBeat.length > subdivisions) {
+				textBeat = textBeat.substring(0, subdivisions);
+			} else if (textBeat.length < subdivisions) {
+				textBeat += "0".repeat(subdivisions - textBeat.length);
+			}
+			textBeats[instrumentKey][beatIdx] = textBeat;
+		}
+	}
+	audioManInstance.compile();
+}
