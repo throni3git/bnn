@@ -246,12 +246,13 @@ export class BeatronomeApp extends React.Component<
 			0
 		);
 
-		const deviceMode = Store.getState().ui.deviceMode;
-		const buttonIconSize =
+		const uiState = Store.getState().ui;
+		const deviceMode = uiState.deviceMode;
+		const isSmallDevice =
 			deviceMode === Types.EDeviceMode.SmallPortrait ||
-			deviceMode === Types.EDeviceMode.SmallLandscape
-				? "1.4em"
-				: "2em";
+			deviceMode === Types.EDeviceMode.SmallLandscape;
+		const buttonIconSize = isSmallDevice ? "1.4em" : "2em";
+
 
 		const groupTempoChange: JSX.Element = (
 			<>
