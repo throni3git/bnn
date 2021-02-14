@@ -9,6 +9,7 @@ import * as Types from "./types";
 import { audioManInstance } from "./audioMan";
 import { COLORS, UI_CONSTANTS } from "./constants";
 import Button from "./button";
+import { MetricsDiv } from "./uiElements";
 
 const Container = styled.div`
 	background: ${COLORS.bg};
@@ -71,13 +72,6 @@ const OnsetInner = styled.div`
 	flex: 1;
 `;
 
-const MetricsDiv = styled.div<{ isSmallDevice: boolean }>(
-	(props) => `
-	padding: ${props.isSmallDevice ? "2px 0" : "4px 0"};
-	text-align: center;
-	font-size: ${props.isSmallDevice ? "1em" : "2em"};
-`
-);
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	constructor(props: IMatrixProps) {

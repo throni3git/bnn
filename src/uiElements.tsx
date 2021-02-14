@@ -159,3 +159,12 @@ export const CenteredLarge = styled.div`
 	font-weight: bold;
 	text-align: center;
 `;
+
+
+export const MetricsDiv = styled.div<{ isSmallDevice: boolean }>(
+	(props) => `
+	padding: ${props.isSmallDevice ? "2px 0" : "4px 0"};
+	text-align: center;
+	font-size: ${props.isSmallDevice ? "1em" : "2em"};
+`
+);
