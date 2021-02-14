@@ -3,7 +3,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 import { EDeviceMode } from "./types";
-import { COLORS } from "./constants";
+import { COLORS, UI_CONSTANTS } from "./constants";
 
 declare var IS_PRODUCTION: boolean;
 
@@ -109,7 +109,7 @@ export const RangeTrackHorizontal = styled.div`
 		content: "";
 		background-color: ${COLORS.light};
 		border: 2px solid ${COLORS.lightBorder};
-		border-radius: 1em;
+		border-radius: ${UI_CONSTANTS.br};
 		display: block;
 		width: calc(100% + 20px);
 		height: 20px;
@@ -127,7 +127,7 @@ export const RangeTrackVertical = styled.div`
 		content: "";
 		background-color: ${COLORS.light};
 		border: 2px solid ${COLORS.lightBorder};
-		border-radius: 1em;
+		border-radius: ${UI_CONSTANTS.br};
 		display: block;
 		width: 20px;
 		height: calc(100% + 20px);
@@ -143,7 +143,7 @@ export const createRangeThumb = ({ props }) => (
 			...props.style,
 			height: "20px",
 			width: "20px",
-			borderRadius: "1em",
+			borderRadius: UI_CONSTANTS.br,
 			backgroundColor: COLORS.fc,
 		}}
 	/>

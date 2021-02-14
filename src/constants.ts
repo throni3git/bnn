@@ -18,6 +18,10 @@ const DARK_THEME = {
 
 export let COLORS = LIGHT_THEME;
 
+export const UI_CONSTANTS = {
+	br: "0.5em", // border-radius
+};
+
 export const DIR_ASSETS = "assets/";
 export const DIR_DRUMSETS = DIR_ASSETS + "drumsets/";
 export const DIR_LOOPS = DIR_ASSETS + "loops/";

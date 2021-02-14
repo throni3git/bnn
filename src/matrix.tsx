@@ -7,7 +7,7 @@ import styled from "styled-components";
 import * as Store from "./store";
 import * as Types from "./types";
 import { audioManInstance } from "./audioMan";
-import { COLORS } from "./constants";
+import { COLORS, UI_CONSTANTS } from "./constants";
 import Button from "./button";
 
 const Container = styled.div`
@@ -60,10 +60,10 @@ const Onset = styled.span`
 	border-style: solid;
 	cursor: pointer;
 	&:first-child {
-		border-radius: 1em 0 0 1em;
+		border-radius: ${UI_CONSTANTS.br} 0 0 ${UI_CONSTANTS.br};
 	}
 	&:last-child {
-		border-radius: 0 1em 1em 0;
+		border-radius: 0 ${UI_CONSTANTS.br} ${UI_CONSTANTS.br} 0;
 	}
 `;
 

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import styled from "styled-components";
 
-import { COLORS } from "./constants";
+import { COLORS, UI_CONSTANTS } from "./constants";
 import * as Types from "./types";
 import * as Store from "./store";
 
@@ -13,7 +13,7 @@ const ButtonDiv = styled.div<{
 	(props) => `
 	background-color: ${COLORS.light};
 	border: 2px solid ${COLORS.lightBorder};
-	border-radius: 1em;
+	border-radius:${UI_CONSTANTS.br};
 	opacity: ${props.isDisabled ? 0.5 : 1}
 	cursor: pointer;
 	/* padding: 10px; */
