@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const Row = styled.div<{ isSmallDevice: boolean }>(
 	(props) => `
-	background: ${COLORS.bg};
+	// background: ${COLORS.bg};
 	padding: ${props.isSmallDevice ? 0 : "2px"};
 	display: flex;
 	flex: 1;
@@ -31,7 +31,7 @@ const Row = styled.div<{ isSmallDevice: boolean }>(
 
 const Division = styled.div<{ isSmallDevice: boolean }>(
 	(props) => `
-	background: ${COLORS.bg};
+	// background: ${COLORS.bg};
 	margin: ${props.isSmallDevice ? "2px" : "4px"};
 	width: 100%;
 	display: flex;
@@ -40,38 +40,19 @@ const Division = styled.div<{ isSmallDevice: boolean }>(
 `
 );
 
-const DivisionBeats = styled.div`
-	background: ${COLORS.bg};
-	/* padding: 4px; */
-	width: 100%;
-	display: flex;
-	justify-content: space-around;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-`;
-
-const DivisionOverlay = styled.div`
-	background: ${COLORS.bg};
-	opacity: 0.7;
-	/* padding: 4px; */
+const DivisionInner = styled.div`
+	/* background: ${COLORS.bg}; */
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
 `;
 
 const Onset = styled.span`
 	background: ${COLORS.light};
 	margin: 2px;
 	width: 100%;
+	height: 100%;
 	text-align: center;
 	display: flex;
 	align-items: center;
@@ -90,11 +71,13 @@ const OnsetInner = styled.div`
 	flex: 1;
 `;
 
-const MetricsDiv = styled.div`
-	width: 18px;
+const MetricsDiv = styled.div<{ isSmallDevice: boolean }>(
+	(props) => `
+	padding: ${props.isSmallDevice ? "2px 0" : "4px 0"};
 	text-align: center;
-	font-size: 1.5em;
-`;
+	font-size: ${props.isSmallDevice ? "1em" : "2em"};
+`
+);
 
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	constructor(props: IMatrixProps) {
@@ -120,8 +103,10 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 
 		const buttonIconSize = isSmallDevice ? "1em" : "2em";
 
-		const showMetricsOverlay =
-			uiState.displayMode == Types.EDisplayMode.Metrics;
+		const modePlay = uiState.displayMode == Types.EDisplayMode.Play;
+		const modeSettings = uiState.displayMode == Types.EDisplayMode.Settings;
+		const modeVolume = uiState.displayMode == Types.EDisplayMode.Volume;
+		const modeMetrics = uiState.displayMode == Types.EDisplayMode.Metrics;
 
 		return (
 			<Container>
@@ -133,53 +118,60 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 									key={beatIdx}
 									isSmallDevice={isSmallDevice}
 								>
-									<DivisionBeats>
-										{beat.onsets.map((onset, onsetIdx) =>
-											this.getOnsetElement(
-												instrumentKey as any,
-												beatIdx,
-												onsetIdx,
-												onset
-											)
+									<DivisionInner>
+										{modePlay &&
+											beat.onsets.map((onset, onsetIdx) =>
+												this.getOnsetElement(
+													instrumentKey as any,
+													beatIdx,
+													onsetIdx,
+													onset
+												)
+											)}
+										{modeMetrics && (
+											// <div>
+											<>
+												<Button
+													action={() =>
+														this.removeOnset(
+															instrumentKey,
+															beatIdx
+														)
+													}
+												>
+													<FontAwesomeIcon
+														style={{
+															fontSize: buttonIconSize,
+														}}
+														icon="minus"
+													></FontAwesomeIcon>
+												</Button>
+												<MetricsDiv
+													isSmallDevice={
+														isSmallDevice
+													}
+												>
+													{beat.onsets.length}
+												</MetricsDiv>
+												<Button
+													action={() =>
+														this.addOnset(
+															instrumentKey,
+															beatIdx
+														)
+													}
+												>
+													<FontAwesomeIcon
+														style={{
+															fontSize: buttonIconSize,
+														}}
+														icon="plus"
+													></FontAwesomeIcon>
+												</Button>
+											</>
+											// </div>
 										)}
-									</DivisionBeats>
-									{showMetricsOverlay && (
-										<DivisionOverlay>
-											<Button
-												action={() =>
-													this.removeOnset(
-														instrumentKey,
-														beatIdx
-													)
-												}
-											>
-												<FontAwesomeIcon
-													style={{
-														fontSize: buttonIconSize,
-													}}
-													icon="minus"
-												></FontAwesomeIcon>
-											</Button>
-											<MetricsDiv>
-												{beat.onsets.length}
-											</MetricsDiv>
-											<Button
-												action={() =>
-													this.addOnset(
-														instrumentKey,
-														beatIdx
-													)
-												}
-											>
-												<FontAwesomeIcon
-													style={{
-														fontSize: buttonIconSize,
-													}}
-													icon="plus"
-												></FontAwesomeIcon>
-											</Button>
-										</DivisionOverlay>
-									)}
+									</DivisionInner>
 								</Division>
 							)
 						)}
