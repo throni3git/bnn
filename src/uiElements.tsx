@@ -108,7 +108,7 @@ export const RangeTrackHorizontal = styled.div`
 	&::before {
 		content: "";
 		background-color: ${COLORS.light};
-		border: 2px solid ${COLORS.lightBorder};
+		/* border: 2px solid ${COLORS.lightBorder}; */
 		border-radius: ${UI_CONSTANTS.br};
 		display: block;
 		width: calc(100% + 20px);
@@ -126,7 +126,7 @@ export const RangeTrackVertical = styled.div`
 	&::before {
 		content: "";
 		background-color: ${COLORS.light};
-		border: 2px solid ${COLORS.lightBorder};
+		/* border: 2px solid ${COLORS.lightBorder}; */
 		border-radius: ${UI_CONSTANTS.br};
 		display: block;
 		width: 20px;

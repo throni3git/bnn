@@ -12,7 +12,7 @@ const ButtonDiv = styled.div<{
 }>(
 	(props) => `
 	background-color: ${COLORS.light};
-	border: 2px solid ${COLORS.lightBorder};
+	// border: 2px solid ${COLORS.lightBorder};
 	border-radius:${UI_CONSTANTS.br};
 	opacity: ${props.isDisabled ? 0.5 : 1}
 	cursor: pointer;

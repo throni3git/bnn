@@ -57,8 +57,8 @@ const Onset = styled.span`
 	text-align: center;
 	display: flex;
 	align-items: center;
-	border-width: 2px;
-	border-style: solid;
+	/* border-width: 2px; */
+	/* border-style: solid; */
 	cursor: pointer;
 	&:first-child {
 		border-radius: ${UI_CONSTANTS.br} 0 0 ${UI_CONSTANTS.br};
@@ -230,7 +230,7 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			<Onset
 				key={onsetIdx}
 				style={{
-					borderColor: onsetBorderColor,
+					// borderColor: onsetBorderColor,
 					fontWeight: onset.velocity * 1000,
 					background: onsetBackgroundColor,
 				}}

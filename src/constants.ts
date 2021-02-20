@@ -2,9 +2,9 @@ const LIGHT_THEME = {
 	bg: "hsl(0, 0%, 100%)",
 	fc: "hsl(0, 0%, 30%)",
 	light: "hsl(0, 0%, 90%)",
-	lightBorder: "hsl(0, 0%, 80%)",
-	lightHighlight: "hsl(0, 0%, 70%)",
-	lightActive: "hsl(0, 0%, 60%)",
+	lightBorder: "hsl(0, 0%, 75%)",
+	lightHighlight: "hsl(0, 0%, 60%)",
+	lightActive: "hsl(0, 0%, 50%)",
 };
 
 const DARK_THEME = {
