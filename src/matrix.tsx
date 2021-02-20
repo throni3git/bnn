@@ -72,7 +72,6 @@ const OnsetInner = styled.div`
 	flex: 1;
 `;
 
-
 export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 	constructor(props: IMatrixProps) {
 		super(props);
@@ -84,11 +83,17 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 			return null;
 		}
 		const compiledMeasure = audioState.drumLoop.compiledBeats;
-		const instrumentKeys = Object.keys(compiledMeasure);
-
 		if (!compiledMeasure) {
 			return null;
 		}
+
+		// get sorted keys according to order in Types.DrumsetKeyArray
+		const instrumentKeys = Object.keys(compiledMeasure);
+		instrumentKeys.sort(
+			(a: Types.DrumsetKeys, b: Types.DrumsetKeys) =>
+				Types.DrumsetKeyArray.indexOf(a) -
+				Types.DrumsetKeyArray.indexOf(b)
+		);
 
 		const uiState = Store.getState().ui;
 		const isSmallDevice =

@@ -22,14 +22,14 @@ export interface IDrumInstrument {
 }
 
 export const DrumsetKeyArray = <const>[
-	"bd",
-	"hho",
-	"hhc",
-	"sn",
 	"tomHi",
 	"tomMidHi",
 	"tomMidLo",
 	"tomLo",
+	"hho",
+	"hhc",
+	"sn",
+	"bd",
 ];
 
 export type DrumsetKeys = typeof DrumsetKeyArray[number];
