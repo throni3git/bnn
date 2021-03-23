@@ -37,6 +37,7 @@ const ButtonDiv = styled.div<{
 		background-color: ${COLORS.lightActive};
 		transition: background-color 0.001s linear;
 	}
+	z-index: 2;
 `
 );
 

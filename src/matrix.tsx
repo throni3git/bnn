@@ -18,6 +18,7 @@ const Container = styled.div`
 	padding: 2px;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 `;
 
 const Row = styled.div<{ isSmallDevice: boolean }>(
@@ -27,6 +28,26 @@ const Row = styled.div<{ isSmallDevice: boolean }>(
 	display: flex;
 	flex: 1;
 	justify-content: space-around;
+	position: relative;
+`
+);
+
+const EmblemOverlay = styled.div<{
+	emblemUrl: string;
+	isPlayMode: boolean;
+}>(
+	(props) => `
+	position: absolute;
+	inset: 0;
+	opacity: ${props.isPlayMode ? 0.6 : 0.2};
+	background-image: url(assets/drum-symbols-${
+		props.isPlayMode ? "white" : "black"
+	}/${props.emblemUrl}.png);
+    background-position: left center;
+	background-repeat: no-repeat;
+    background-size: contain;
+	pointer-events: none;
+	z-index:1;
 `
 );
 
@@ -51,7 +72,8 @@ const DivisionInner = styled.div`
 
 const Onset = styled.span`
 	background: ${COLORS.light};
-	margin: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
 	width: 100%;
 	height: 100%;
 	text-align: center;
@@ -62,9 +84,11 @@ const Onset = styled.span`
 	cursor: pointer;
 	&:first-child {
 		border-radius: ${UI_CONSTANTS.br} 0 0 ${UI_CONSTANTS.br};
+		margin-left: 0px;
 	}
 	&:last-child {
 		border-radius: 0 ${UI_CONSTANTS.br} ${UI_CONSTANTS.br} 0;
+		margin-right: 0px;
 	}
 `;
 
@@ -117,6 +141,12 @@ export class Matrix extends React.Component<IMatrixProps, IMatrixState> {
 									key={beatIdx}
 									isSmallDevice={isSmallDevice}
 								>
+									{beatIdx == 0 && (
+										<EmblemOverlay
+											isPlayMode={modePlay}
+											emblemUrl={instrumentKey}
+										></EmblemOverlay>
+									)}
 									<DivisionInner>
 										{modePlay &&
 											beat.onsets.map((onset, onsetIdx) =>
