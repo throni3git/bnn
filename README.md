@@ -1,10 +1,12 @@
-# beatronome
+# beatronome.one
 
-beatronome is a programmable drum computer for the practicing musician. Within seconds beatronome lets you adjust the drum pattern, increase tempo and keep track of time passing by.
+beatronome.one is a programmable drum computer for the practicing musician. Within seconds beatronome lets you adjust the drum pattern, increase tempo and keep track of time passing by while you do your exercises. Ready-to-go drum patterns are provided. With mobile devices in mind it comes as progressive web app, so you can put it on your smartphones home screen.
+
+Developed by Thomas Thron.
 
 ## Build
 
-This project uses [yarn](https://yarnpkg.com/) to manage dependencies. To install the necessary ones, run `yarn`.
+This project uses [yarn](https://yarnpkg.com/) to manage dependencies. To install the necessary packages, run `yarn`.
 
 ### Web
 
@@ -12,8 +14,8 @@ The development mode can be run with `yarn start`, providing a server at `http:/
 
 ### Desktop
 
-With [electron](https://www.electronjs.org) you can build a standalone application for desktop computers. To biuld an executable run `yarn electron`.
+With [electron](https://www.electronjs.org) you can build a standalone application for desktop computers. To build an executable run `yarn electron`.
 
 ### Mobile
 
-We use [react native](https://reactnative.dev/) to build apps for mobile devices. The setup process is provided [here](https://reactnative.dev/docs/environment-setup).
+The web app can be "installed" to your smartphones home screen. No store necessary.
