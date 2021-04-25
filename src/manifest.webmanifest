@@ -1,6 +1,6 @@
 {
-	"name": "Beatronome",
-	"short_name": "Beatronome",
+	"name": "beatronome.one",
+	"short_name": "beatronome.one",
 	"start_url": ".",
 	"display": "standalone",
 	"background_color": "hsl(172, 57%, 40%)",

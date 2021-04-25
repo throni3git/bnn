@@ -9,9 +9,9 @@
     "dist": "webpack --mode=production",
     "deploy": "yarn run dist && gh-pages -d dist",
     "electron-run": "electron ./start-electron.js",
-    "electron-linux": "electron-packager . Beatronome --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
-    "electron-win": "electron-packager . Beatronome --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
-    "electron-mac": "electron-packager . Beatronome --overwrite --arch=x64 --icon=assets/images/favicon64.png --asar --prune=true --ignore=node_modules/ --out=release-builds",
+    "electron-linux": "electron-packager . beatronome-one --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
+    "electron-win": "electron-packager . beatronome-one --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
+    "electron-mac": "electron-packager . beatronome-one --overwrite --arch=x64 --icon=assets/images/favicon64.png --asar --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-all": "yarn electron-linux && yarn electron-win && yarn electron-mac"
   },
   "keywords": [

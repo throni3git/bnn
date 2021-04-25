@@ -36,7 +36,7 @@ const config = {
 		}),
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
-			title: "Beatronome",
+			title: "beatronome.one",
 			template: "src/index.html",
 			favicon: "assets/icons/logo16.png",
 			templateParameters: { filenameManifest },

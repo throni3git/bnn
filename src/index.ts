@@ -21,7 +21,9 @@ import { COLORS } from "./constants";
 
 declare var BUILD_TIMESTAMP: string;
 declare var IS_PRODUCTION: boolean;
-console.log("Beatronome " + BUILD_TIMESTAMP + (IS_PRODUCTION ? "" : " DEBUG"));
+console.log(
+	"beatronome.one " + BUILD_TIMESTAMP + (IS_PRODUCTION ? "" : " DEBUG")
+);
 
 // progressive web app service worker
 

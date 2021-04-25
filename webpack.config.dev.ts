@@ -27,7 +27,7 @@ const config = {
 		}),
 		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
-			title: "Beatronome",
+			title: "beatronome.one",
 			favicon: "assets/icons/logo16.png",
 		}),
 		new CopyWebpackPlugin({
