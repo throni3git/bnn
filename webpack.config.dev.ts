@@ -2,8 +2,6 @@ import * as webpack from "webpack";
 import * as webpackDevServer from "webpack-dev-server";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as CopyWebpackPlugin from "copy-webpack-plugin";
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
-import * as path from "path";
 
 const timestamp = JSON.stringify(new Date().toISOString());
 
@@ -25,7 +23,6 @@ const config = {
 			BUILD_TIMESTAMP: timestamp,
 			IS_PRODUCTION: false,
 		}),
-		new CleanWebpackPlugin({}),
 		new HtmlWebpackPlugin({
 			title: "beatronome.one",
 			favicon: "assets/icons/logo16.png",
@@ -39,10 +36,6 @@ const config = {
 			],
 		}),
 	],
-	output: {
-		filename: "bundle.[contenthash].js",
-		path: path.resolve("dist"),
-	},
 	devtool: "source-map",
 	devServer: {
 		port: 3000,
