@@ -47,13 +47,13 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@fortawesome/react-fontawesome": "^0.1.9",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "o9n": "^2.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
     "react-range": "^1.8.7",
-    "standardized-audio-context": "^25.1.15",
+    "standardized-audio-context": "^25.1.16",
     "styled-components": "^5.2.3"
   }
 }
