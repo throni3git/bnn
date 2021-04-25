@@ -14,7 +14,7 @@ import {
 	faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { BeatronomeApp } from "./beatronomeApp";
+import { BeatronomeOneApp } from "./beatronomeOneApp";
 
 import { registerGlobalKeyHandler } from "./keyboard";
 import { COLORS } from "./constants";
@@ -77,4 +77,4 @@ body.appendChild(appMount);
 
 registerGlobalKeyHandler();
 
-ReactDOM.render(React.createElement(BeatronomeApp), appMount);
+ReactDOM.render(React.createElement(BeatronomeOneApp), appMount);

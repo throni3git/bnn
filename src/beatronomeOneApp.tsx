@@ -53,11 +53,11 @@ const meterRegEx = /\d/;
 const spaceRegEx = /\ /g;
 const rawMeterRegEx = /[\ \d]/;
 
-export class BeatronomeApp extends React.Component<
-	IBeatronomeAppProps,
-	IBeatronomeAppState
+export class BeatronomeOneApp extends React.Component<
+	IBeatronomeOneAppProps,
+	IBeatronomeOneAppState
 > {
-	constructor(props: IBeatronomeAppProps) {
+	constructor(props: IBeatronomeOneAppProps) {
 		super(props);
 
 		Store.subscribe(() => this.setState({}));
@@ -630,7 +630,7 @@ export class BeatronomeApp extends React.Component<
 		return (
 			<AllDiv deviceMode={deviceMode}>
 				<GlobalStyle></GlobalStyle>
-				<Heading>beatronome</Heading>
+				<Heading>beatronome.one</Heading>
 				<ContainerDiv>{groupContainer}</ContainerDiv>
 			</AllDiv>
 		);
@@ -660,8 +660,8 @@ export class BeatronomeApp extends React.Component<
 	};
 }
 
-export default BeatronomeApp;
+export default BeatronomeOneApp;
 
-export interface IBeatronomeAppProps {}
+export interface IBeatronomeOneAppProps {}
 
-interface IBeatronomeAppState {}
+interface IBeatronomeOneAppState {}
