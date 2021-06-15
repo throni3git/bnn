@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 160 161" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-480,-3819)">
+        <g transform="matrix(1.30957,0,0,1.33333,1865.74,2219.07)">
+            <g id="button-minus" transform="matrix(0.113127,0,0,1.19082,-1058.16,1000.12)">
+                <rect x="0" y="167.847" width="1080" height="100.771" style="fill:none;"/>
+                <g transform="matrix(8.4375,0,0,0.787275,-7897.5,-1230.35)">
+                    <rect x="960" y="1830" width="80" height="20" style="fill:rgb(77,77,77);"/>
+                </g>
+                <g transform="matrix(8.4375,0,0,0.787275,-7897.5,-1230.35)">
+                    <path d="M1042.4,1830C1042.4,1828.67 1041.33,1827.6 1040,1827.6L960,1827.6C958.675,1827.6 957.6,1828.67 957.6,1830L957.6,1850C957.6,1851.33 958.675,1852.4 960,1852.4L1040,1852.4C1041.33,1852.4 1042.4,1851.33 1042.4,1850L1042.4,1830Z" style="fill:rgb(77,77,77);"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -12,7 +12,8 @@
     "electron-linux": "electron-packager . beatronome-one --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-win": "electron-packager . beatronome-one --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-mac": "electron-packager . beatronome-one --overwrite --arch=x64 --icon=assets/images/favicon64.png --asar --prune=true --ignore=node_modules/ --out=release-builds",
-    "electron-all": "yarn electron-linux && yarn electron-win && yarn electron-mac"
+    "electron-all": "yarn electron-linux && yarn electron-win && yarn electron-mac",
+    "render-icons": "npx @svgr/cli -d ./src/icons/ ./raw-assets/concept/bounce/ --typescript --replace-attr-values \"#4d4d4d=currentColor\""
   },
   "keywords": [
     "audio",
@@ -21,6 +22,7 @@
   "author": "Thomas Thron <throni3git@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@svgr/cli": "^5.5.0",
     "@types/copy-webpack-plugin": "^8.0.0",
     "@types/html-webpack-plugin": "^3.2.5",
     "@types/react": "^17.0.3",
