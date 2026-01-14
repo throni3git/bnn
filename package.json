@@ -7,12 +7,12 @@
   "scripts": {
     "start": "webpack serve --mode=development --config=webpack.config.dev.ts",
     "dist": "webpack --mode=production",
-    "deploy": "yarn run dist && gh-pages -d dist",
+    "deploy": "npm run dist && gh-pages -d dist",
     "electron-run": "electron ./start-electron.js",
     "electron-linux": "electron-packager . beatronome-one --overwrite --arch=x64 --icon=assets/images/favicon64.png --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-win": "electron-packager . beatronome-one --overwrite --arch=ia32 --platform=win32 --icon=assets/images/winicon.ico --asar --prune=true --ignore=node_modules/ --out=release-builds",
     "electron-mac": "electron-packager . beatronome-one --overwrite --arch=x64 --icon=assets/images/favicon64.png --asar --prune=true --ignore=node_modules/ --out=release-builds",
-    "electron-all": "yarn electron-linux && yarn electron-win && yarn electron-mac",
+    "electron-all": "npm run electron-linux && npm run electron-win && npm run electron-mac",
     "render-icons": "npx @svgr/cli -d ./src/icons/ ./raw-assets/concept/bounce/ --typescript --replace-attr-values \"#4d4d4d=currentColor\""
   },
   "keywords": [
@@ -39,7 +39,7 @@
     "html-webpack-plugin": "^5.3.1",
     "ts-loader": "^9.1.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.4",
+    "typescript": "^5.9.3",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2",
