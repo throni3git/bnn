@@ -1,11 +1,11 @@
 import * as webpack from "webpack";
-import * as webpackDevServer from "webpack-dev-server";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import * as CopyWebpackPlugin from "copy-webpack-plugin";
+import 'webpack-dev-server';
 
 const timestamp = JSON.stringify(new Date().toISOString());
 
-const config = {
+const config: webpack.Configuration = {
 	entry: "./src/index.ts",
 	resolve: {
 		extensions: [".js", ".ts", ".tsx"],
@@ -39,8 +39,7 @@ const config = {
 	devtool: "source-map",
 	devServer: {
 		port: 3000,
-		stats: "errors-warnings",
-	} as webpackDevServer.Configuration,
+	},
 };
 
 module.exports = config;

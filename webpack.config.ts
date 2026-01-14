@@ -16,7 +16,7 @@ const timestamp = JSON.stringify(new Date().toISOString());
 const filenameManifest =
 	"manifest." + funhash(timestamp).toString(16) + ".webmanifest";
 
-const config = {
+const config: webpack.Configuration = {
 	entry: "./src/index.ts",
 	resolve: {
 		extensions: [".js", ".ts", ".tsx"],
